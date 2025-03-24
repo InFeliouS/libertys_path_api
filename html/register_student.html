@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+</head>
+<body>
+    <h2>Student Registration</h2>
+    <form action="../php/auth/register_student.php" method="POST">
+        <label for="given_name">Given Name*:</label>
+        <input type="text" name="given_name" required>
+        
+        <label for="middle_name">Middle Name:</label>
+        <input type="text" name="middle_name">
+        
+        <label for="last_name">Last Name*:</label>
+        <input type="text" name="last_name" required>
+        
+        <label for="section_name">Section Name*:</label>
+        <input type="text" name="section_name" required>
+        
+        <label>Birth Sex*:</label>
+        <input type="radio" name="birth_sex" value="Male" required> Male
+        <input type="radio" name="birth_sex" value="Female" required> Female
+        
+        <h3>Student Account Creation</h3>
+        <label for="username">Username*:</label>
+        <input type="text" name="username" required>
+        
+        <label for="password">Password*:</label>
+        <input type="password" name="password" required>
+        
+        <button type="submit">Create Account</button>
+    </form>
+</body>
+</html>
