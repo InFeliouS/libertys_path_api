@@ -1,19 +1,19 @@
 <?php
 session_start();
-require '../config/db.php';
+require '../config/db.php'; // Ensure path is correct
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
     try {
-        // Check if $conn is set and valid
-        if (!$conn) {
-            throw new Exception("Database connection is missing.");
+        // Verify that $pdo is set
+        if (!isset($pdo)) {
+            throw new Exception("Database connection is not established.");
         }
 
-        // Prepare the SQL statement
-        $stmt = $conn->prepare("SELECT id, username, password FROM teachers WHERE username = :username");
+        // Prepare SQL query
+        $stmt = $pdo->prepare("SELECT id, username, password FROM teachers WHERE username = :username");
         $stmt->bindParam(':username', $username, PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -34,5 +34,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$conn = null; // Close the database connection
+$pdo = null; // Close connection
 ?>
