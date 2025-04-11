@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
 
     try {
-        $stmt = $conn->prepare("INSERT INTO students (given_name, middle_name, last_name, section_name, birth_sex, username, password) 
+        $stmt = $pdo->prepare("INSERT INTO students (given_name, middle_name, last_name, section_name, birth_sex, username, password) 
                                 VALUES (:given_name, :middle_name, :last_name, :section_name, :birth_sex, :username, :password)");
 
         $stmt->bindParam(':given_name', $given_name);

@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $data->password;
 
     try {
-        $stmt = $conn->prepare("SELECT id, username, password FROM students WHERE username = :username");
+        $stmt = $pdo->prepare("SELECT id, username, password FROM students WHERE username = :username");
         $stmt->bindParam(':username', $username);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
