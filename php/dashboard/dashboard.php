@@ -7,8 +7,9 @@ if (!isset($_SESSION['teacher_id'])) {
     exit();
 }
 
+// Get teacher username from session
 $teacher_username = $_SESSION['teacher_username'];
 
-// Load the dashboard HTML
-include '../../html/dashboard_view.html'; // 🔧 Modify this path if the HTML file is moved
+// Include the dashboard HTML view
+include '../../html/dashboard_view.html';
 ?>

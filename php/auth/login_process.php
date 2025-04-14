@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['teacher_id'] = $user['id'];
             $_SESSION['teacher_username'] = $user['username'];
-            header("Location: ../dashboard/dashboard.php");
+            header("Location: /libertys_path_api/dashboard");
             exit();
         } else {
             echo "Invalid username or password!";

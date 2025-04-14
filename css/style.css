@@ -1,21 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Karla&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Karla', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Karla", sans-serif;
 }
 
 body {
-    height: 100vh;
-    background-color: #5e5540; 
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-image 1s ease-in-out;
+  height: 100vh;
+  background-color: #5e5540;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-image 1s ease-in-out;
 }
 
 .container {
@@ -28,106 +28,106 @@ body {
 }
 
 .left-panel {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background-color: #57472a;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.15);
-    padding: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #57472a;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.15);
+  padding: 0;
 }
 
 .left-panel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 .right-panel {
-    flex: 0 0 auto;
-    width: 340px;
-    padding: 40px;
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.35);
+  flex: 0 0 auto;
+  width: 340px;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.35);
 }
 
 .login-form label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 8px;
-    display: block;
-    color: #2e2e2e;
-    letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: block;
+  color: #2e2e2e;
+  letter-spacing: 1px;
 }
 
 .login-form input[type="text"],
 .login-form input[type="password"] {
-    width: 100%;
-    max-width: 300px; 
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #b3a28b; 
-    border-radius: 4px;
-    font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #b3a28b;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .login-form input:focus {
-    background-color: #ffffff;
-    border-color: #8e7658;
-    outline: none;
+  background-color: #ffffff;
+  border-color: #8e7658;
+  outline: none;
 }
 
 .password-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
 }
 
 .password-wrapper input {
-    padding: 12px 80px 12px 12px;
+  padding: 12px 80px 12px 12px;
 }
 
 .password-wrapper span {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 13px;
-    padding: 6px 10px;
-    background-color: #e2d8c1;
-    color: #4e3b1f;
-    cursor: pointer;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: background-color 0.2s;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 13px;
+  padding: 6px 10px;
+  background-color: #e2d8c1;
+  color: #4e3b1f;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.2s;
 }
 
 .password-wrapper span:hover {
-    background-color: #d1c5a7;
+  background-color: #d1c5a7;
 }
 
 button[type="submit"] {
-    padding: 12px;
-    width: 100%;
-    max-width: 300px; 
-    background-color: #4b2e0b;
-    color: white;
-    border: none;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+  padding: 12px;
+  width: 100%;
+  max-width: 300px;
+  background-color: #4b2e0b;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 button[type="submit"]:hover {
-    background-color: #443319;
+  background-color: #443319;
 }
