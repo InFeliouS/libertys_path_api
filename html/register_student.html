@@ -3,24 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Student</title>
-    <link rel="stylesheet" href="/libertys_path_api/css/styles.css">
+    <title>Student Account Creation</title>
+    <link rel="icon" href="/libertys_path_api/assets/libertys-path-logo-2d.png" type="image/png"/>
+    <link rel="stylesheet" href="/libertys_path_api/css/register_student.css">
 </head>
 <body>
-    <h2>Register New Student</h2>
-    <form action="/libertys_path_api/register_student" method="POST">
-        <label>Given Name*: <input type="text" name="given_name" required></label><br>
-        <label>Middle Name: <input type="text" name="middle_name"></label><br>
-        <label>Last Name*: <input type="text" name="last_name" required></label><br>
-        <label>Section Name*: <input type="text" name="section_name" required></label><br>
-        <label>Birth Sex*: 
-            <input type="radio" name="birth_sex" value="Male" required> Male
-            <input type="radio" name="birth_sex" value="Female" required> Female
-        </label><br>
-        <label>Username*: <input type="text" name="username" required></label><br>
-        <label>Password*: <input type="password" name="password" required></label><br>
-        <button type="submit">Register Student</button>
-    </form>
-    <a href="/libertys_path_api/dashboard">Back to Dashboard</a>
+    <div id="form-container">
+        <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
+        <h3>BASIC INFORMATION</h3>
+        <form id="student-form" action="/libertys_path_api/register_student" method="POST">
+            <label class="input-label" id="label">GIVEN NAME</label>
+                <input type="text" name="given_name" placeholder="e.g. CASSIANO LUTHER" required />
+            
+            <label class="input-label" id="label">MIDDLE NAME (Optional)</label>
+                <input type="text" name="middle_name" placeholder="e.g. MARENO" />
+            
+            <label class="input-label" id="label">LAST NAME</label>
+                <input type="text" name="last_name" placeholder="e.g. TROYAN" required />
+            
+            <label class="input-label" id="label">SECTION NAME</label>
+                <input type="text" name="section_name" placeholder="e.g. ST. ANDREW" required>
+            
+            <label class="input-label" id="label">BIRTH SEX 
+                <div id="radio-group">
+                    <label><input type="radio" name="birth_sex" value="Male" required> Male</label>
+                    <label><input type="radio" name="birth_sex" value="Female" required> Female</label>
+                </div>
+            </label>
+
+            <h3>GAME ACCOUNT</h3>
+            <!-- Username -->
+            <label for="username" class="input-label">USERNAME</label>
+                <input type="text" id="username" name="username" placeholder="Enter username here" required />
+            <!-- Password -->
+            <label for="password" class="input-label" id="label">PASSWORD</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" name="password" placeholder="Enter password here" required />
+                    <button type="button" id="togglePassword">Show</button>
+                </div>
+            <button type="submit">REGISTER STUDENT</button>
+        </form>
+        <a id="dashboard-link" href="/libertys_path_api/dashboard">Back to Teacher Admin Monitoring Board</a>
+    </div>
+
+    <script src="/libertys_path_api/js/register_student.js"></script>
 </body>
 </html>
