@@ -65,7 +65,7 @@ AddDefaultCharset UTF-8
 </IfModule>
 
 # Custom error pages
-ErrorDocument 404 /libertys_path_api/html/errors/404.php
+ErrorDocument 404 /libertys_path_api/html/errors/404.html
 ErrorDocument 500 /libertys_path_api/html/errors/500.html
 
 # Cache control for static assets

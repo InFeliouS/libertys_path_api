@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Karla:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: linear-gradient(135deg, #5a381e, #c2b280);
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-blend-mode: overlay;
+  font-family: 'Karla', sans-serif;
+  color: #2c1b0c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 6rem;
+  font-family: 'Playfair Display', serif;
+  color: #2c1b0c;
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2rem;
+  font-family: 'Karla', sans-serif;
+  color: #2c1b0c; 
+  margin: 10px 0;
+  max-width: 600px;
+}
+
+a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #a86c3d;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+a:hover {
+  background-color: #804a24;
+}
