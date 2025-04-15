@@ -133,13 +133,13 @@ h3 {
     position: relative;
     width: 100%;
     margin-bottom: 20px;
-  }
+}
   
-  .password-wrapper input {
+.password-wrapper input {
     padding-right: 85px; 
-  }
+}
   
-  .password-wrapper button {
+.password-wrapper button {
     position: absolute;
     top: 50%;
     right: 10px;
@@ -153,11 +153,11 @@ h3 {
     cursor: pointer;
     font-size: 13px;
     transition: background-color 0.2s;
-  }
+}
   
-  .password-wrapper button:hover {
+.password-wrapper button:hover {
     background-color: #d1c5a7;
-  }
+}
 
 @keyframes fadeIn {
     from {
@@ -191,4 +191,4 @@ h3 {
         flex-direction: column;  
         gap: 8px;                
     }
-}
+} 
