@@ -9,9 +9,9 @@
 </head>
 <body>
     <header>
-        <h1>Teacher Admin Monitoring Board</h1>
+        <h1>TEACHER ADMIN MONITORING BOARD</h1>
         <nav>
-            <a href="/libertys_path_api/logout">Logout</a>
+            <button onclick="showLogoutConfirmation()">LOG OUT</button>
         </nav>
     </header>
 
@@ -28,14 +28,14 @@
                     <th>LAST NAME</th>
                     <th>SECTION NAME</th>
                     <th>BIRTH SEX</th>
-                    <th>ROOM #1<br>(1ST QUARTER)</th>
-                    <th>RESTART<br>(ROOM #1)</th>
-                    <th>ROOM #2<br>(2ND QUARTER)</th>
-                    <th>RESTART<br>(ROOM #2)</th>
-                    <th>ROOM #3<br>(3RD QUARTER)</th>
-                    <th>RESTART<br>(ROOM #3)</th>
-                    <th>ROOM #4<br>(4TH QUARTER)</th>
-                    <th>RESTART<br>(ROOM #4)</th>
+                    <th>1ST QPR<br>STATUS</th>
+                    <th>RESTART<br>(1ST QPR)</th>
+                    <th>2ND QPR<br>STATUS</th>
+                    <th>RESTART<br>(2ND QPR)</th>
+                    <th>3RD QPR<br>STATUS</th>
+                    <th>RESTART<br>(3RD QPR)</th>
+                    <th>4TH QPR<br>STATUS</th>
+                    <th>RESTART<br>(4TH QPR)</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +48,17 @@
             <span>&#9675;</span>
         </div>
     </main>
+
+    <div class="modal" id="logoutModal">
+        <div class="modal-content">
+            <h3>CONFIRM LOGOUT</h3>
+            <p>Are you sure you want to log out?</p>
+            <div class="modal-buttons">
+            <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+            <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+          </div>
+        </div>
+      </div>
 
     <script src="/libertys_path_api/js/dashboard_view.js"></script>
 </body>

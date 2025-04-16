@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Karla', sans-serif;
     background-color: #f9f9f9;
     margin: 0;
     padding: 0;
@@ -31,13 +33,20 @@ nav li {
     display: inline;
 }
 
-nav a {
+nav button {
     color: white;
-    text-decoration: none;
-    background-color: red;
+    background-color: #b66203;
     padding: 8px 15px;
-    border-radius: 4px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+nav button:hover {
+    background-color: #b60303;
 }
 
 main {
@@ -59,22 +68,24 @@ input[type="text"] {
     width: 250px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-family: 'Karla', sans-serif;
     font-size: 14px;
 }
 
 .add-btn {
-    background-color: #007bff;
+    background-color: #b66203;
     color: white;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold; 
     transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
-    background-color: #0056b3;
+    background-color: #694604;
 }
 
 table {
@@ -110,4 +121,69 @@ th {
 
 .pagination span:hover {
     color: #007bff;
+}
+
+.modal, .modal * {
+    font-family: 'Karla', sans-serif;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 25px 20px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-buttons .confirm-btn {
+    background-color: #b66203;
+    color: white;
+}
+
+.modal-buttons .confirm-btn:hover {
+    background-color: #944b02;
+}
+
+.modal-buttons .cancel-btn {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.modal-buttons .cancel-btn:hover {
+    background-color: #bdbdbd;
 }
