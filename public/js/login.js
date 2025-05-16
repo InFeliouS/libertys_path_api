@@ -11,9 +11,9 @@ if (togglePassword && passwordInput) {
 
 // Background image rotation
 const backgroundImages = [
-  "/libertys_path_api/assets/libertys-path-bg-design-1.png",
-  "/libertys_path_api/assets/libertys-path-bg-design-2.png",
-  "/libertys_path_api/assets/libertys-path-bg-design-3.png",
+  "/assets/libertys-path-bg-design-1.png",
+  "/assets/libertys-path-bg-design-2.png",
+  "/assets/libertys-path-bg-design-3.png",
 ]
 
 let currentIndex = 0

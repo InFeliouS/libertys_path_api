@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liberty's Path | Registration</title>
-    <link rel="icon" href="/libertys_path_api/assets/libertys-path-logo-2d.png" type="image/png"/>
-    <link rel="stylesheet" href="/libertys_path_api/css/register_student.css">
+    <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
+    <link rel="stylesheet" href="css/register_student.css">
 </head>
 <body>
     <div id="form-container">
         <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
         <h3>BASIC INFORMATION</h3>
-        <form id="student-form" action="/libertys_path_api/register_student" method="POST">
+        <form id="student-form" action="/register/process" method="POST">
             <label class="input-label" id="label">GIVEN NAME</label>
                 <input type="text" name="given_name" placeholder="e.g. CASSIANO LUTHER" required />
             
@@ -43,9 +43,9 @@
                 </div>
             <button type="submit">REGISTER STUDENT</button>
         </form>
-        <a id="dashboard-link" href="/libertys_path_api/dashboard">Back to Teacher Admin Monitoring Board</a>
+        <a id="dashboard-link" href="/dashboard">Back to Teacher Admin Monitoring Board</a>
     </div>
 
-    <script src="/libertys_path_api/js/register_student.js"></script>
+    <script src="js/register_student.js"></script>
 </body>
 </html>

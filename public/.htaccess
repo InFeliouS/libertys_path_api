@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+    # Enable URL rewriting
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect any legacy /libertys_path_api prefix to root
+    RewriteRule ^libertys_path_api/(.*)$ /$1 [L,R=301]
+
+    # Serve existing files and directories directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Allow API v1 endpoints through unmodified
+    RewriteRule ^api/v1/ - [L]
+
+    # All other requests go to the front controller
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Disable directory indexing
+Options -Indexes
+
+# Custom error documents
+ErrorDocument 404 /html/errors/404.html
+ErrorDocument 500 /html/errors/500.html
+
+# Set long cache headers for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/png   "access plus 1 year"
+    ExpiresByType image/jpeg  "access plus 1 year"
+    ExpiresByType image/svg   "access plus 1 year"
+    ExpiresByType text/css    "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>

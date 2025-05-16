@@ -7,5 +7,5 @@ function showLogoutConfirmation() {
   }
 
   function confirmLogout() {
-    window.location.href = "/libertys_path_api/logout";
+    window.location.href = "/logout";
   }
