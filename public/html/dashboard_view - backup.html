@@ -17,7 +17,35 @@
 
     <main>
         <div class="search-bar">
+            <input type="text" id="searchLastName" placeholder="Search for student last name here" />
+            <input type="text" id="searchSectionName" placeholder="Search for section name here" />
             <button class="add-btn" onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
+        </div>
+
+        <table id="studentTable">
+            <thead>
+                <tr>
+                    <th>LAST NAME</th>
+                    <th>SECTION NAME</th>
+                    <th>BIRTH SEX</th>
+                    <th>1ST QPR<br>STATUS</th>
+                    <th>RESTART<br>(1ST QPR)</th>
+                    <th>2ND QPR<br>STATUS</th>
+                    <th>RESTART<br>(2ND QPR)</th>
+                    <th>3RD QPR<br>STATUS</th>
+                    <th>RESTART<br>(3RD QPR)</th>
+                    <th>4TH QPR<br>STATUS</th>
+                    <th>RESTART<br>(4TH QPR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php include $_SERVER['DOCUMENT_ROOT'] . "/libertys_path_api/php/fetch_students.php"; ?>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <span>&#9679; 1</span>
+            <span>&#9675;</span>
         </div>
     </main>
 
