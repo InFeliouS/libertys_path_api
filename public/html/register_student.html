@@ -1,51 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liberty's Path | Registration</title>
-    <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
-    <link rel="stylesheet" href="css/register_student.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Liberty's Path | Registration</title>
+  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
+  <!-- point at /css, not html/css -->
+  <link rel="stylesheet" href="/css/register_student.css"/>
 </head>
 <body>
-    <div id="form-container">
-        <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
-        <h3>BASIC INFORMATION</h3>
-        <form id="student-form" action="/register/process" method="POST">
-            <label class="input-label" id="label">GIVEN NAME</label>
-                <input type="text" name="given_name" placeholder="e.g. CASSIANO LUTHER" required />
-            
-            <label class="input-label" id="label">MIDDLE NAME (Optional)</label>
-                <input type="text" name="middle_name" placeholder="e.g. MARENO" />
-            
-            <label class="input-label" id="label">LAST NAME</label>
-                <input type="text" name="last_name" placeholder="e.g. TROYAN" required />
-            
-            <label class="input-label" id="label">SECTION NAME</label>
-                <input type="text" name="section_name" placeholder="e.g. ST. ANDREW" required>
-            
-            <label class="input-label" id="label">BIRTH SEX 
-                <div id="radio-group">
-                    <label><input type="radio" name="birth_sex" value="Male" required> Male</label>
-                    <label><input type="radio" name="birth_sex" value="Female" required> Female</label>
-                </div>
-            </label>
+  <div id="form-container">
+    <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
 
-            <h3>GAME ACCOUNT</h3>
-            <!-- Username -->
-            <label for="username" class="input-label">USERNAME</label>
-                <input type="text" id="username" name="username" placeholder="Enter username here" required />
-            <!-- Password -->
-            <label for="password" class="input-label" id="label">PASSWORD</label>
-                <div class="password-wrapper">
-                    <input type="password" id="password" name="password" placeholder="Enter password here" required />
-                    <button type="button" id="togglePassword">Show</button>
-                </div>
-            <button type="submit">REGISTER STUDENT</button>
-        </form>
-        <a id="dashboard-link" href="/dashboard">Back to Teacher Admin Monitoring Board</a>
-    </div>
+    <form id="student-form" action="/register/process" method="POST">
+      <h3>BASIC INFORMATION</h3>
 
-    <script src="js/register_student.js"></script>
+      <label for="given_name">GIVEN NAME</label>
+      <input type="text" id="given_name" name="given_name" placeholder="e.g. CASSIANO LUTHER" required/>
+
+      <label for="middle_name">MIDDLE NAME (Optional)</label>
+      <input type="text" id="middle_name" name="middle_name" placeholder="e.g. MARENO"/>
+
+      <label for="last_name">LAST NAME</label>
+      <input type="text" id="last_name" name="last_name" placeholder="e.g. TROYAN" required/>
+
+      <label for="section_id">SECTION</label>
+      <select id="section_id" name="section_id" required>
+        <option value="">Loading sections…</option>
+      </select>
+
+      <label>BIRTH SEX</label>
+      <div id="radio-group">
+        <label><input type="radio" name="birth_sex" value="Male" required/> Male</label>
+        <label><input type="radio" name="birth_sex" value="Female" required/> Female</label>
+      </div>
+
+      <h3>GAME ACCOUNT</h3>
+
+      <label for="username">USERNAME</label>
+      <input type="text" id="username" name="username" placeholder="Enter username here" required/>
+
+      <label for="password">PASSWORD</label>
+      <div class="password-wrapper">
+        <input type="password" id="password" name="password" placeholder="Enter password here" required/>
+        <button type="button" id="togglePassword">Show</button>
+      </div>
+
+      <button type="submit">REGISTER STUDENT</button>
+    </form>
+
+    <a id="dashboard-link" href="/dashboard">Back to Teacher Admin Monitoring Board</a>
+  </div>
+
+  <!-- point at /js, not html/js -->
+  <script src="/js/register_student.js"></script>
 </body>
 </html>

@@ -1,37 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Liberty's Path | Monitoring</title>
-    <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
-    <link rel="stylesheet" href="css/dashboard_view.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Liberty's Path | Monitoring</title>
+  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="/css/dashboard_view.css"/>
 </head>
 <body>
-    <header>
-        <h1>TEACHER ADMIN MONITORING BOARD</h1>
-        <nav>
-            <button onclick="showLogoutConfirmation()">LOG OUT</button>
-        </nav>
-    </header>
+  <header>
+    <h1>TEACHER ADMIN MONITORING BOARD</h1>
+    <nav>
+      <button onclick="showLogoutConfirmation()">LOG OUT</button>
+    </nav>
+  </header>
 
-    <main>
-        <div class="search-bar">
-            <button class="add-btn" onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
-        </div>
-    </main>
+  <main>
+    <!-- ADD BUTTONS -->
+    <div class="search-bar">
+      <button class="add-btn" onclick="location.href='/register'">
+        ADD STUDENT ACCOUNT
+      </button>
+      <button class="add-btn" onclick="location.href='/sections/create'">
+        ADD NEW SECTION
+      </button>
+    </div>
 
-    <div class="modal" id="logoutModal">
-        <div class="modal-content">
-            <h3>CONFIRM LOGOUT</h3>
-            <p>Are you sure you want to log out?</p>
-            <div class="modal-buttons">
-            <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
-            <button class="confirm-btn" onclick="confirmLogout()">YES</button>
-          </div>
-        </div>
+    <!-- SECTION CARDS GRID (populated by JS) -->
+    <div id="sectionCards" class="section-cards">
+      <p>Loading sections…</p>
+    </div>
+  </main>
+
+  <!-- LOGOUT MODAL -->
+  <div class="modal" id="logoutModal">
+    <div class="modal-content">
+      <h3>CONFIRM LOGOUT</h3>
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-buttons">
+        <button class="cancel-btn" onclick="closeLogoutConfirmation()">
+          CANCEL
+        </button>
+        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
       </div>
+    </div>
+  </div>
 
-    <script src="js/dashboard_view.js"></script>
+  <script src="/js/dashboard_view.js"></script>
+  <script src="/js/dashboard_cards.js"></script>
 </body>
 </html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Section: <?= htmlspecialchars($section['section_name']) ?></title>
+  <link rel="stylesheet" href="/css/dashboard_view.css"/>
+</head>
+<body>
+  <header>
+    <h1>
+      <?= htmlspecialchars($section['section_name']) ?>
+      (<?= htmlspecialchars($section['start_school_year']) ?>
+      &ndash; <?= htmlspecialchars($section['end_school_year']) ?>)
+    </h1>
+    <button onclick="location.href='/dashboard'">← Back to Sections</button>
+  </header>
+
+  <main>
+    <!-- → Only one search field now ← -->
+    <div class="search-bar">
+      <input
+        type="text"
+        id="searchLastName"
+        placeholder="Search by last name…"
+      />
+    </div>
+
+    <table id="studentTable">
+      <thead>
+        <tr>
+          <th>LAST NAME</th>
+          <th>SECTION NAME</th>
+          <th>BIRTH SEX</th>
+          <th>USERNAME</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($students as $st): ?>
+          <tr>
+            <td><?= htmlspecialchars($st['last_name']) ?></td>
+            <td><?= htmlspecialchars($st['section_name']) ?></td>
+            <td><?= htmlspecialchars($st['birth_sex']) ?></td>
+            <td><?= htmlspecialchars($st['username']) ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </main>
+
+  <script src="/js/section_detail.js"></script>
+</body>
+</html>

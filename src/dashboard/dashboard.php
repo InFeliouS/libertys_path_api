@@ -1,7 +1,7 @@
 <?php
 // src/dashboard/dashboard.php
 
-// Ensure session is active (it’s started in public/index.php)
+// Only start a session if one isn't already active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -12,9 +12,6 @@ if (!isset($_SESSION['teacher_id'])) {
     exit;
 }
 
-// (Optional) Expose teacher username to the view
-$teacher_username = $_SESSION['teacher_username'] ?? '';
-
-// Include the dashboard HTML view from public/html
+// We’ll let the JS fetch & render your section cards,
+// so we just serve the static HTML now:
 include __DIR__ . '/../../public/html/dashboard_view.html';
-?>

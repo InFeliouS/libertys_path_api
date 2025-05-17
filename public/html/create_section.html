@@ -1,0 +1,52 @@
+<!-- public/html/create_section.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Liberty's Path | New Section</title>
+  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="/css/register_student.css"/>
+</head>
+<body>
+  <header>
+    <h1>Create New Section</h1>
+    <nav>
+      <button onclick="location.href='/dashboard'">← Back to Dashboard</button>
+    </nav>
+  </header>
+
+  <main>
+    <form id="create-section-form" action="/sections/create/process" method="POST">
+      <div class="form-group">
+        <label for="section_name">Section Name</label>
+        <input
+          type="text"
+          id="section_name"
+          name="section_name"
+          placeholder="e.g. GRADE 8 – SECTION A"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="start_school_year">Start School Year</label>
+        <select id="start_school_year" name="start_school_year" required>
+          <option value="">Select year…</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="end_school_year">End School Year</label>
+        <select id="end_school_year" name="end_school_year" required>
+          <option value="">Select year…</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">Create Section</button>
+    </form>
+  </main>
+
+  <script src="/js/create_section_form.js"></script>
+</body>
+</html>

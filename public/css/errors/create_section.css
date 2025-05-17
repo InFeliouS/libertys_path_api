@@ -1,3 +1,6 @@
+/* public/css/create_section.css */
+/* — copied and adapted from register_student.css :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1} */
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Karla:wght@400;700&display=swap');
 
 * {
@@ -39,7 +42,7 @@ body, html {
     color: #2c1b0c;
 }
 
-form label {
+form label, .form-group label {
     display: block;
     margin-bottom: 10px;
     font-size: 1rem;
@@ -53,14 +56,15 @@ form label {
     font-size: 1rem;
     font-weight: 700;
     color: #2c1b0c;
-  }
+}
 
 #label {
     margin-top: 12px; 
-  }
+}
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+select {
     width: 100%;
     padding: 12px 15px;
     font-size: 15px;
@@ -70,32 +74,15 @@ input[type="password"] {
     background-color: rgba(255, 255, 255, 0.95);
     box-sizing: border-box;
     outline: none;
-  }
+    margin-bottom: 20px;
+}
 
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+select:focus {
     background-color: #fffaf0;
     box-shadow: 0 0 0 2px #c68b59;
 }
-
-select {
-  width: 100%;
-  padding: 12px 15px;
-  font-size: 15px;
-  color: #3b2f2f;
-  border: 1px solid #d6ae7b;
-  border-radius: 10px;
-  background-color: rgba(255,255,255,0.95);
-  box-sizing: border-box;
-  outline: none;
-  margin-bottom: 20px;
-}
-
-select:focus {
-  background-color: #fffaf0;
-  box-shadow: 0 0 0 2px #c68b59;
-}
-
 
 #radio-group {
     display: flex;
@@ -106,7 +93,8 @@ select:focus {
     color: #2c1b0c;
 }
 
-button[type="submit"] {
+button[type="submit"],
+.btn-primary {
     width: 100%;
     padding: 12px;
     background-color: #a86c3d;
@@ -120,11 +108,13 @@ button[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover,
+.btn-primary:hover {
     background-color: #804a24;
 }
 
-#dashboard-link {
+#dashboard-link,
+nav button {
     display: block;
     text-align: center;
     margin-top: 20px;
@@ -134,7 +124,8 @@ button[type="submit"]:hover {
     transition: color 0.3s ease;
 }
 
-#dashboard-link:hover {
+#dashboard-link:hover,
+nav button:hover {
     color: #7c3905;
 }
 
@@ -153,11 +144,11 @@ h3 {
     width: 100%;
     margin-bottom: 20px;
 }
-  
+
 .password-wrapper input {
     padding-right: 85px; 
 }
-  
+
 .password-wrapper button {
     position: absolute;
     top: 50%;
@@ -173,7 +164,7 @@ h3 {
     font-size: 13px;
     transition: background-color 0.2s;
 }
-  
+
 .password-wrapper button:hover {
     background-color: #d1c5a7;
 }
@@ -192,23 +183,23 @@ h3 {
 @media (max-width: 600px) {
     #form-container {
         padding: 20px;
-        max-width: 95vw;         
-        min-width: 320px;       
+        max-width: 95vw;
+        min-width: 320px;
     }
 
     #form-title {
-        font-size: 1.6rem;      
+        font-size: 1.6rem;
     }
 
     input[type="text"],
     input[type="password"],
+    select,
     button[type="submit"] {
-        font-size: 1rem;         
+        font-size: 1rem;
     }
 
     #radio-group {
-        flex-direction: column;  
-        gap: 8px;                
+        flex-direction: column;
+        gap: 8px;
     }
-} 
-
+}
