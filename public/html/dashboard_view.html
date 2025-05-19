@@ -3,46 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Liberty's Path | Monitoring</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/dashboard_view.css"/>
+  <title>Liberty’s Path | Monitoring Board</title>
+  <link rel="stylesheet" href="/css/dashboard_view.css" />
 </head>
 <body>
   <header>
     <h1>TEACHER ADMIN MONITORING BOARD</h1>
-    <nav>
-      <button onclick="showLogoutConfirmation()">LOG OUT</button>
-    </nav>
+    <button onclick="location.href='/logout'">LOG OUT</button>
   </header>
 
   <main>
-    <!-- ADD BUTTONS -->
-    <div class="search-bar">
-      <button class="add-btn" onclick="location.href='/register'">
-        ADD STUDENT ACCOUNT
-      </button>
-      <button class="add-btn" onclick="location.href='/sections/create'">
-        ADD NEW SECTION
-      </button>
+    <div class="controls">
+      <button onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
+      <button onclick="location.href='/sections/create'">ADD NEW SECTION</button>
     </div>
 
-    <!-- SECTION CARDS GRID (populated by JS) -->
-    <div id="sectionCards" class="section-cards">
+    <div id="sectionCards" class="cards-container">
       <p>Loading sections…</p>
     </div>
   </main>
 
-  <!-- LOGOUT MODAL -->
-  <div class="modal" id="logoutModal">
+  <!-- Edit-Section Modal -->
+  <div id="editSectionModal" class="modal">
     <div class="modal-content">
-      <h3>CONFIRM LOGOUT</h3>
-      <p>Are you sure you want to log out?</p>
-      <div class="modal-buttons">
-        <button class="cancel-btn" onclick="closeLogoutConfirmation()">
-          CANCEL
-        </button>
-        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
-      </div>
+      <span id="closeEditSectionModal" class="modal-close">&times;</span>
+      <h2>Edit Section</h2>
+      <form id="editSectionForm">
+        <input type="hidden" id="editSectionId">
+
+        <label for="editSectionName">Section Name</label>
+        <input
+          type="text"
+          id="editSectionName"
+          name="section_name"
+          placeholder="E.G. Grade 8 – Section A"
+          required
+        />
+
+        <label for="editStartYear">Start School Year</label>
+        <select id="editStartYear" name="start_school_year" required>
+          <option value="">Select year…</option>
+        </select>
+
+        <label for="editEndYear">End School Year</label>
+        <select id="editEndYear" name="end_school_year" required>
+          <option value="">Select year…</option>
+        </select>
+
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
     </div>
   </div>
 

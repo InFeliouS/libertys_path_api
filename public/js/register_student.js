@@ -1,51 +1,105 @@
-// public/js/register_student.js
+document.addEventListener('DOMContentLoaded', () => {
+  const form        = document.getElementById('student-form');
+  const givenInput  = document.getElementById('given_name');
+  const middleInput = document.getElementById('middle_name');
+  const lastInput   = document.getElementById('last_name');
+  const sectionSel  = document.getElementById('section_id');
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Only the three name inputs exist now
-  const givenName  = document.querySelector('input[name="given_name"]');
-  const middleName = document.querySelector('input[name="middle_name"]');
-  const lastName   = document.querySelector('input[name="last_name"]');
-  const sectionSel = document.getElementById("section_id");
-  const toggle     = document.getElementById("togglePassword");
-  const pwInput    = document.getElementById("password");
+  const previewUser = document.getElementById('previewUsername');
+  const previewPass = document.getElementById('previewPassword');
 
-  // Uppercase only the name fields
-  [givenName, middleName, lastName].forEach(input => {
-    if (!input) return;
-    input.addEventListener("input", () => {
-      input.value = input.value.toUpperCase();
+  let nextId = null;
+
+  // Force uppercase on name fields
+  [givenInput, middleInput, lastInput].forEach(inp =>
+    inp.addEventListener('input', () => inp.value = inp.value.toUpperCase())
+  );
+
+  // Fetch next student ID
+  fetch('/api/v1/next_student_id.php')
+    .then(r => r.json())
+    .then(json => {
+      if (json.success) nextId = json.next_id;
+    })
+    .catch(console.error)
+    .finally(updatePreview);
+
+  // Load sections into dropdown
+  sectionSel.innerHTML = '<option>Loading sections…</option>';
+  fetch('/api/v1/sections.php')
+    .then(r => r.json())
+    .then(json => {
+      if (json.success) {
+        sectionSel.innerHTML = '<option value="">— Select a section —</option>' +
+          json.sections.map(s =>
+            `<option value="${s.id}">
+               ${s.section_name} (${s.start_school_year}–${s.end_school_year})
+             </option>`
+          ).join('');
+      } else {
+        sectionSel.innerHTML = '<option>Error loading sections</option>';
+      }
+    })
+    .catch(() => {
+      sectionSel.innerHTML = '<option>Error fetching sections</option>';
     });
-  });
 
-  // Toggle password visibility
-  if (toggle && pwInput) {
-    toggle.addEventListener("click", () => {
-      const isPwd = pwInput.type === "password";
-      pwInput.type = isPwd ? "text" : "password";
-      toggle.textContent = isPwd ? "Hide" : "Show";
-    });
+  // Preview every time inputs change
+  [givenInput, middleInput, lastInput].forEach(i =>
+    i.addEventListener('input', updatePreview)
+  );
+
+  function updatePreview() {
+    if (!nextId) {
+      previewUser.textContent = '—';
+      previewPass.textContent = '—';
+      return;
+    }
+    const g = givenInput.value.trim();
+    const l = lastInput.value.trim();
+    if (!g || !l) {
+      previewUser.textContent = '—';
+      previewPass.textContent = '—';
+      return;
+    }
+
+    // username: first initial + lastname(without spaces) + id
+    const uname = g.charAt(0).toLowerCase()
+                + l.replace(/\s+/g,'').toLowerCase()
+                + nextId;
+    // password: middle or given (no spaces, capitalized) + id
+    let src = (middleInput.value.trim() || g).replace(/\s+/g,'').toLowerCase();
+    const pwd = src.charAt(0).toUpperCase() + src.slice(1) + nextId;
+
+    previewUser.textContent = uname;
+    previewPass.textContent = pwd;
   }
 
-  // Populate the Section dropdown
-  if (sectionSel) {
-    fetch("/api/v1/sections.php", { headers: { "Accept":"application/json" } })
-      .then(res => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then(json => {
-        if (!json.success) throw new Error(json.message || "API error");
-        sectionSel.innerHTML = '<option value="">Select section…</option>';
-        json.sections.forEach(sec => {
-          const opt = document.createElement("option");
-          opt.value       = sec.id;
-          opt.textContent = `${sec.section_name} (${sec.start_school_year}–${sec.end_school_year})`;
-          sectionSel.appendChild(opt);
-        });
-      })
-      .catch(err => {
-        console.error("Error loading sections:", err);
-        sectionSel.innerHTML = '<option value="">Unable to load sections</option>';
+  // When form submits, let PHP handle creation, then show credentials in an alert
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    // gather form data
+    const fd = new FormData(form);
+    try {
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        body: fd,
+        headers: { 'Accept': 'application/json' }
       });
-  }
+      const json = await resp.json();
+
+      if (resp.ok && json.success) {
+        alert(
+          `Student Registered!\n\nUsername: ${json.username}\n` +
+          `Password: ${json.password}`
+        );
+        window.location.href = '/dashboard';
+      } else {
+        alert(`Registration failed:\n${json.error||'Unknown error'}`);
+      }
+    } catch (err) {
+      alert(`Network error:\n${err.message}`);
+    }
+  });
 });

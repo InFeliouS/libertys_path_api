@@ -3,50 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Section: <?= htmlspecialchars($section['section_name']) ?></title>
+  <title>Liberty's Path | Section: <?= htmlspecialchars($section['section_name']) ?></title>
+  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
   <link rel="stylesheet" href="/css/dashboard_view.css"/>
+  <link rel="stylesheet" href="/css/section_detail.css"/>
 </head>
 <body>
   <header>
     <h1>
       <?= htmlspecialchars($section['section_name']) ?>
-      (<?= htmlspecialchars($section['start_school_year']) ?>
-      &ndash; <?= htmlspecialchars($section['end_school_year']) ?>)
+      (<?= htmlspecialchars($section['start_school_year']) ?>&ndash;<?= htmlspecialchars($section['end_school_year']) ?>)
     </h1>
-    <button onclick="location.href='/dashboard'">← Back to Sections</button>
+    <button onclick="location.href='/dashboard'">← Back to Dashboard</button>
   </header>
 
-  <main>
-    <!-- → Only one search field now ← -->
+  <main class="section-detail-container">
     <div class="search-bar">
-      <input
-        type="text"
-        id="searchLastName"
-        placeholder="Search by last name…"
-      />
+      <input type="text" id="searchLastname" placeholder="Search by last name…" />
+      <button id="deleteBtn">DELETE SELECTED</button>
     </div>
 
-    <table id="studentTable">
-      <thead>
-        <tr>
-          <th>LAST NAME</th>
-          <th>SECTION NAME</th>
-          <th>BIRTH SEX</th>
-          <th>USERNAME</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($students as $st): ?>
+    <div class="table-container">
+      <table id="studentsTable">
+        <thead>
           <tr>
-            <td><?= htmlspecialchars($st['last_name']) ?></td>
-            <td><?= htmlspecialchars($st['section_name']) ?></td>
-            <td><?= htmlspecialchars($st['birth_sex']) ?></td>
-            <td><?= htmlspecialchars($st['username']) ?></td>
+            <th><input type="checkbox" id="selectAll" /></th>
+            <th>LAST NAME</th>
+            <th>FIRST NAME</th>
+            <th>MIDDLE NAME</th>
+            <th>BIRTH SEX</th>
+            <th>1ST QPR STATUS</th>
+            <th>1ST QPR RETRIES</th>
+            <th>2ND QPR STATUS</th>
+            <th>2ND QPR RETRIES</th>
+            <th>3RD QPR STATUS</th>
+            <th>3RD QPR RETRIES</th>
+            <th>4TH QPR STATUS</th>
+            <th>4TH QPR RETRIES</th>
+            <th>Edit</th>
           </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <?php foreach($students as $stu): ?>
+          <tr>
+            <td><input type="checkbox" class="student-checkbox" value="<?= $stu['student_id'] ?>" /></td>
+            <td><?= htmlspecialchars($stu['last_name']) ?></td>
+            <td><?= htmlspecialchars($stu['given_name']) ?></td>
+            <td><?= htmlspecialchars($stu['middle_name']) ?></td>
+            <td><?= htmlspecialchars($stu['birth_sex']) ?></td>
+            <td><?= htmlspecialchars($stu['first_qpr_status_text']) ?></td>
+            <td><?= htmlspecialchars($stu['first_qpr_retries']) ?></td>
+            <td><?= htmlspecialchars($stu['second_qpr_status_text']) ?></td>
+            <td><?= htmlspecialchars($stu['second_qpr_retries']) ?></td>
+            <td><?= htmlspecialchars($stu['third_qpr_status_text']) ?></td>
+            <td><?= htmlspecialchars($stu['third_qpr_retries']) ?></td>
+            <td><?= htmlspecialchars($stu['fourth_qpr_status_text']) ?></td>
+            <td><?= htmlspecialchars($stu['fourth_qpr_retries']) ?></td>
+            <td>
+              <button class="editBtn" data-id="<?= $stu['student_id'] ?>">Edit</button>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
   </main>
+
+  <!-- Edit Student Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="modal-close">&times;</span>
+      <h2>Edit Student</h2>
+      <form id="editForm">
+        <input type="hidden" name="student_id" id="editStudentId">
+
+        <label for="editLastName">Last Name</label>
+        <input
+          type="text"
+          name="last_name"
+          id="editLastName"
+          required
+          style="text-transform:uppercase"
+          oninput="this.value=this.value.toUpperCase()"
+        >
+
+        <label for="editGivenName">Given Name</label>
+        <input
+          type="text"
+          name="given_name"
+          id="editGivenName"
+          required
+          style="text-transform:uppercase"
+          oninput="this.value=this.value.toUpperCase()"
+        >
+
+        <label for="editMiddleName">Middle Name</label>
+        <input
+          type="text"
+          name="middle_name"
+          id="editMiddleName"
+          style="text-transform:uppercase"
+          oninput="this.value=this.value.toUpperCase()"
+        >
+
+        <label for="editBirthSex">Birth Sex</label>
+        <select name="birth_sex" id="editBirthSex" required>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
 
   <script src="/js/section_detail.js"></script>
 </body>

@@ -1,59 +1,69 @@
 <?php
 // src/routes.php
 
-// Ensure session is started (public/index.php already invoked start)
+// start session if none
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Directory where your HTML fragments live
-$publicHtml = __DIR__ . '/../public/html';
-
-// Parse the request URI (strip base path & leading/trailing slashes)
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
 switch ($uri) {
-    // Login
     case '':
     case 'login':
-        include $publicHtml . '/login.html';
+        require __DIR__ . '/../public/html/login.html';
         break;
+
     case 'login/process':
         require __DIR__ . '/auth/login_process.php';
         break;
 
-    // Logout
     case 'logout':
         require __DIR__ . '/auth/logout.php';
         break;
 
-    // Register
-    case 'register':
-        include $publicHtml . '/register_student.html';
-        break;
-    case 'register/process':
-        require __DIR__ . '/dashboard/student_register.php';
-        break;
-
-    // Dashboard
     case 'dashboard':
         require __DIR__ . '/dashboard/dashboard.php';
         break;
 
-    // View one Section’s students
-    case 'sections/view':
-        require __DIR__ . '/dashboard/section_detail.php';
+    case 'register':
+        require __DIR__ . '/../public/html/register_student.html';
         break;
-        
-    // Create Section (both GET & POST handled in same script)
+
+    case 'register/process':
+        require __DIR__ . '/dashboard/student_register.php';
+        break;
+
     case 'sections/create':
+        require __DIR__ . '/../public/html/create_section.html';
+        break;
+
     case 'sections/create/process':
         require __DIR__ . '/dashboard/create_section.php';
         break;
+        
+    case 'sections/update':
+        require __DIR__ . '/dashboard/update_section.php';
+        break;
 
-    // 404 fallback
+    case 'sections/deleteSection':
+        require __DIR__ . '/dashboard/delete_section.php';
+        break;
+
+    case 'sections/view':
+        require __DIR__ . '/dashboard/section_detail.php';
+        break;
+
+    case 'students/update':
+        require __DIR__ . '/dashboard/update_student.php';
+        break;
+
+    case 'sections/delete':
+        require __DIR__ . '/dashboard/delete_students.php';
+        break;
+
     default:
-        header("HTTP/1.0 404 Not Found");
-        include $publicHtml . '/errors/404.html';
+        http_response_code(404);
+        require __DIR__ . '/../public/html/errors/404.html';
         break;
 }

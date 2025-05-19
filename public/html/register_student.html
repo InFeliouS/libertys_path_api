@@ -5,54 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liberty's Path | Registration</title>
   <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <!-- point at /css, not html/css -->
   <link rel="stylesheet" href="/css/register_student.css"/>
 </head>
 <body>
   <div id="form-container">
     <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
-
+    <h3>BASIC INFORMATION</h3>
     <form id="student-form" action="/register/process" method="POST">
-      <h3>BASIC INFORMATION</h3>
+      <label for="given_name" class="input-label">GIVEN NAME</label>
+      <input type="text" id="given_name" name="given_name" placeholder="e.g. CASSIANO" required />
 
-      <label for="given_name">GIVEN NAME</label>
-      <input type="text" id="given_name" name="given_name" placeholder="e.g. CASSIANO LUTHER" required/>
+      <label for="middle_name" class="input-label">MIDDLE NAME (Optional)</label>
+      <input type="text" id="middle_name" name="middle_name" placeholder="e.g. LUTHER" />
 
-      <label for="middle_name">MIDDLE NAME (Optional)</label>
-      <input type="text" id="middle_name" name="middle_name" placeholder="e.g. MARENO"/>
+      <label for="last_name" class="input-label">LAST NAME</label>
+      <input type="text" id="last_name" name="last_name" placeholder="e.g. TROYAN" required />
 
-      <label for="last_name">LAST NAME</label>
-      <input type="text" id="last_name" name="last_name" placeholder="e.g. TROYAN" required/>
-
-      <label for="section_id">SECTION</label>
+      <label for="section_id" class="input-label">SECTION</label>
       <select id="section_id" name="section_id" required>
         <option value="">Loading sections…</option>
       </select>
 
-      <label>BIRTH SEX</label>
+      <label class="input-label">BIRTH SEX</label>
       <div id="radio-group">
         <label><input type="radio" name="birth_sex" value="Male" required/> Male</label>
         <label><input type="radio" name="birth_sex" value="Female" required/> Female</label>
       </div>
 
       <h3>GAME ACCOUNT</h3>
-
-      <label for="username">USERNAME</label>
-      <input type="text" id="username" name="username" placeholder="Enter username here" required/>
-
-      <label for="password">PASSWORD</label>
-      <div class="password-wrapper">
-        <input type="password" id="password" name="password" placeholder="Enter password here" required/>
-        <button type="button" id="togglePassword">Show</button>
+      <p class="note">(Username &amp; password will be generated automatically.)</p>
+      <div id="preview">
+        <p>Will be Username: <span id="previewUsername">—</span></p>
+        <p>Will be Password: <span id="previewPassword">—</span></p>
       </div>
 
       <button type="submit">REGISTER STUDENT</button>
     </form>
-
-    <a id="dashboard-link" href="/dashboard">Back to Teacher Admin Monitoring Board</a>
+    <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
   </div>
 
-  <!-- point at /js, not html/js -->
   <script src="/js/register_student.js"></script>
 </body>
 </html>

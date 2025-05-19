@@ -1,26 +1,13 @@
 <?php
-// public/index.php – Front controller
+// public/index.php
 
-// Start the session so controllers can read/write $_SESSION
-session_start();
-
-// Show errors in development (disable in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Autoload Composer dependencies (if any)
-$autoload = __DIR__ . '/../vendor/autoload.php';
-if (file_exists($autoload)) {
-    require $autoload;
+// load Composer, .env, your DB config, etc., if you need them here
+if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    require __DIR__ . '/../vendor/autoload.php';
+    if (class_exists('Dotenv\Dotenv') && file_exists(__DIR__ . '/../.env')) {
+        Dotenv\Dotenv::createImmutable(__DIR__ . '/..')->load();
+    }
 }
 
-// Load environment variables
-$envFile = __DIR__ . '/../.env';
-if (file_exists($envFile) && class_exists('Dotenv\Dotenv')) {
-    $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
-    $dotenv->load();
-}
-
-// Dispatch routes
+// now hand off every request to src/routes.php
 require __DIR__ . '/../src/routes.php';

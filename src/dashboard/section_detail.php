@@ -1,48 +1,73 @@
 <?php
 // src/dashboard/section_detail.php
 
-// (Session already started)
+// 1) Session & Auth
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($_SESSION['teacher_id'])) {
-    header("Location: /login");
+    header('Location: /login');
+    exit;
+}
+
+// 2) Validate section_id
+$section_id = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
+if (!$section_id) {
+    header('Location: /dashboard');
     exit;
 }
 
 require_once __DIR__ . '/../config/db.php';
 
-// Validate section_id query parameter
-$secId = filter_input(INPUT_GET, 'section_id', FILTER_VALIDATE_INT);
-if (!$secId) {
-    header("Location: /dashboard");
-    exit;
-}
-
-// Fetch section info
+// 3) Fetch section meta (for header)
 $stmt = $pdo->prepare("
   SELECT section_name, start_school_year, end_school_year
-  FROM sections
-  WHERE id = ?
+    FROM sections 
+   WHERE id = ?
 ");
-$stmt->execute([$secId]);
+$stmt->execute([$section_id]);
 $section = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$section) {
-    header("Location: /dashboard");
+    header('Location: /dashboard');
     exit;
 }
 
-// Fetch students in that section
-$stmt2 = $pdo->prepare("
-  SELECT s.last_name,
-         sec.section_name,
-         s.birth_sex,
-         sa.username
-  FROM students AS s
-  JOIN sections AS sec ON s.section_id = sec.id
-  JOIN student_accounts AS sa ON sa.student_id = s.id
-  WHERE s.section_id = ?
-  ORDER BY s.last_name
-");
-$stmt2->execute([$secId]);
-$students = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+// 4) Fetch students + their progress
+$sql = "
+  SELECT
+    st.id                 AS student_id,
+    st.last_name,
+    st.given_name,
+    st.middle_name,
+    st.birth_sex,
+    sp.first_qpr_status,   sp.first_qpr_retries,
+    sp.second_qpr_status,  sp.second_qpr_retries,
+    sp.third_qpr_status,   sp.third_qpr_retries,
+    sp.fourth_qpr_status,  sp.fourth_qpr_retries
+  FROM students st
+  LEFT JOIN student_progress sp
+    ON sp.student_id = st.id
+  WHERE st.section_id = ?
+  ORDER BY st.last_name, st.given_name
+";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$section_id]);
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Render the Section Detail view
+// 5) Map the raw ENUM strings → display text
+$status_map = [
+  'unvisited' => 'unvisited',
+  'visited'   => 'visited',
+  'complete'  => 'completed',
+];
+
+foreach ($students as &$s) {
+  foreach (['first','second','third','fourth'] as $q) {
+    $raw = $s["{$q}_qpr_status"];
+    $s["{$q}_qpr_status_text"] = $status_map[$raw] ?? 'unknown';
+  }
+}
+unset($s);
+
+// 6) Render your HTML template (no path change)
 include __DIR__ . '/../../public/html/section_detail.html';
