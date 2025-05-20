@@ -41,7 +41,7 @@ switch ($uri) {
     case 'sections/create/process':
         require __DIR__ . '/dashboard/create_section.php';
         break;
-        
+
     case 'sections/update':
         require __DIR__ . '/dashboard/update_section.php';
         break;
@@ -60,6 +60,11 @@ switch ($uri) {
 
     case 'sections/delete':
         require __DIR__ . '/dashboard/delete_students.php';
+        break;
+
+    case 'api/v1/student_info.php':
+    case 'api/v1/student_info':
+        require __DIR__ . '/api/v1/student_info.php';
         break;
 
     default:
