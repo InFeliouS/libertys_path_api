@@ -67,6 +67,11 @@ switch ($uri) {
         require __DIR__ . '/api/v1/student_info.php';
         break;
 
+    case 'api/v1/update_qpr_status.php':
+    case 'api/v1/update_qpr_status':
+        require __DIR__ . '/api/v1/update_qpr_status.php';
+        break;
+
     default:
         http_response_code(404);
         require __DIR__ . '/../public/html/errors/404.html';
