@@ -31,6 +31,20 @@ header {
   align-items: center;
   position: relative;
   z-index: 1000;
+  position: relative;
+}
+
+.header-left-logos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 15px;
+}
+
+.header-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
 }
 
 header h1 { 
@@ -233,7 +247,7 @@ main {
 
 .top-control {
   position: fixed;
-  top: 110px;
+  top: 160px;
   left: 20px;
   background-color: #b66203;
   color: white;
@@ -248,7 +262,7 @@ main {
 }
 
 .top-control.second {
-  top: 160px; 
+  top: 210px; 
 }
 
 .top-control:hover {
