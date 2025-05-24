@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liberty's Path | Login</title>
   <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png" />
-  <link rel="stylesheet" href="/css/login.css" />
+  <link rel="stylesheet" href="../css/login.css" />
 </head>
 <body>
   <div class="container">
@@ -14,6 +14,10 @@
     </div>
     <div class="right-panel">
       <form class="login-form" action="/login/process" method="POST">
+        <div class="logo-wrapper">
+          <img src="/assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="school-logo" />
+        </div>
+
         <label for="username">USERNAME</label>
         <input type="text" id="username" name="username" placeholder="Enter username here" required />
 

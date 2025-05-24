@@ -19,6 +19,7 @@ body, html {
 }
 
 /* MAIN CONTAINER FOR BOTH FORMS */
+
 #main-container {
     display: flex;
     gap: 40px;

@@ -4,22 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Liberty’s Path | Monitoring Board</title>
+  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png" />
   <link rel="stylesheet" href="/css/dashboard_view.css" />
 </head>
 <body>
   <header>
     <h1>TEACHER ADMIN MONITORING BOARD</h1>
-    <button onclick="location.href='/logout'">LOG OUT</button>
   </header>
 
-  <main>
-    <div class="controls">
-      <button onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
-      <button onclick="location.href='/sections/create'">ADD NEW SECTION</button>
+  <main class="div_parent_main">
+    <div class="div_sidebar_left">
+    <div class="controls"> 
+      <button class="top-control" onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
+      <button class="top-control second" onclick="location.href='/sections/create'">ADD NEW SECTION</button>
+      <button onclick="showLogoutConfirmation()" class="logout-baba">LOG OUT</button>
     </div>
-
+    </div>
+    <div class="div_sidebar_right">
+    <div class="section-divider">
+      <h2>GRADE 8 SECTIONS & SCHOOL YEARS</h2>
     <div id="sectionCards" class="cards-container">
-      <p>Loading sections…</p>
+      <p>Loading sections . . .</p>
+    </div>
+    </div>
     </div>
   </main>
 
@@ -31,23 +38,23 @@
       <form id="editSectionForm">
         <input type="hidden" id="editSectionId">
 
-        <label for="editSectionName">Section Name</label>
+        <label for="editSectionName">SECTION NAME</label>
         <input
           type="text"
           id="editSectionName"
           name="section_name"
-          placeholder="E.G. Grade 8 – Section A"
+          placeholder="e.g., ST. ALBERT"
           required
         />
 
-        <label for="editStartYear">Start School Year</label>
+        <label for="editStartYear">START OF SCHOOL YEAR</label>
         <select id="editStartYear" name="start_school_year" required>
-          <option value="">Select year…</option>
+          <option value="">Select Year . . .</option>
         </select>
 
-        <label for="editEndYear">End School Year</label>
+        <label for="editEndYear">END OF SCHOOL YEAR</label>
         <select id="editEndYear" name="end_school_year" required>
-          <option value="">Select year…</option>
+          <option value="">Select  Year . . .</option>
         </select>
 
         <button type="submit" class="btn-primary">Save Changes</button>
@@ -55,7 +62,20 @@
     </div>
   </div>
 
+<div class="logout-modal">
+  <div class="logout-modal-content">
+    <h3>CONFIRM LOGOUT</h3>
+    <p>Are you sure you want to log out?</p>
+    <div class="logout-modal-buttons">
+      <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+      <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+    </div>
+  </div>
+</div>
+
+
   <script src="/js/dashboard_view.js"></script>
   <script src="/js/dashboard_cards.js"></script>
+
 </body>
 </html>

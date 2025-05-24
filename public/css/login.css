@@ -129,5 +129,18 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #443319;
+  background-color: #79592a;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  padding: 16px;
+}
+
+.school-logo {
+  max-width: 150px;   
+  width: 100%;
+  height: auto;
 }
