@@ -1,7 +1,7 @@
 <?php
 // src/routes.php
 
-// start session if none
+// Start session if none
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -70,6 +70,18 @@ switch ($uri) {
     case 'api/v1/update_qpr_status.php':
     case 'api/v1/update_qpr_status':
         require __DIR__ . '/api/v1/update_qpr_status.php';
+        break;
+
+    // Download CSV (with or without .php)
+    case 'download_section_students_csv':
+    case 'download_section_students_csv.php':
+        require __DIR__ . '/dashboard/download_section_students_csv.php';
+        break;
+
+    // Batch upload (with or without .php)
+    case 'batch_upload':
+    case 'batch_upload.php':
+        require __DIR__ . '/dashboard/batch_upload.php';
         break;
 
     default:
