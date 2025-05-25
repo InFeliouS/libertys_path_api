@@ -38,45 +38,38 @@
   <div id="editSectionModal" class="modal">
     <div class="modal-content">
       <span id="closeEditSectionModal" class="modal-close">&times;</span>
-      <h2>Edit Section</h2>
+      <h2>EDIT SECTION</h2>
       <form id="editSectionForm">
-        <input type="hidden" id="editSectionId">
+        <input type="hidden" id="editSectionId"/>
 
         <label for="editSectionName">SECTION NAME</label>
-        <input
-          type="text"
-          id="editSectionName"
-          name="section_name"
-          placeholder="e.g., ST. ALBERT"
-          required
-        />
+        <input type="text" id="editSectionName" name="section_name" placeholder="ST. DIEGO" required/>
 
         <label for="editStartYear">START OF SCHOOL YEAR</label>
         <select id="editStartYear" name="start_school_year" required>
-          <option value="">Select Year . . .</option>
+          <option value="">--Select Year--</option>
         </select>
 
         <label for="editEndYear">END OF SCHOOL YEAR</label>
         <select id="editEndYear" name="end_school_year" required>
-          <option value="">Select  Year . . .</option>
+          <option value="">--Select  Year--</option>
         </select>
 
-        <button type="submit" class="btn-primary">Save Changes</button>
+        <button type="submit" class="btn-primary">SAVE CHANGES</button>
       </form>
     </div>
   </div>
 
-<div class="logout-modal">
-  <div class="logout-modal-content">
-    <h3>CONFIRM LOGOUT</h3>
-    <p>Are you sure you want to log out?</p>
-    <div class="logout-modal-buttons">
-      <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
-      <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+  <div class="logout-modal">
+    <div class="logout-modal-content">
+      <h3>CONFIRM LOGOUT</h3>
+      <p>Are you sure you want to log out?</p>
+      <div class="logout-modal-buttons">
+        <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+      </div>
     </div>
   </div>
-</div>
-
 
   <script src="/js/dashboard_view.js"></script>
   <script src="/js/dashboard_cards.js"></script>

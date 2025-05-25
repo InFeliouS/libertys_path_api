@@ -27,17 +27,17 @@
 
           <label for="section_id" class="input-label">SECTION</label>
           <select id="section_id" name="section_id" required>
-            <option value="">Loading sections…</option>
+            <option value="">Loading sections . . .</option>
           </select>
 
-          <label class="input-label">BIRTH SEX</label>
+          <label class="input-label">SEX</label>
           <div id="radio-group">
             <label><input type="radio" name="birth_sex" value="Male" required/> Male</label>
             <label><input type="radio" name="birth_sex" value="Female" required/> Female</label>
           </div>
 
           <h3>GAME ACCOUNT</h3>
-          <p class="note">(Username &amp; password will be generated automatically.)</p>
+          <p class="note">(Note: Student username &amp; password will be generated automatically.)</p>
           <div id="preview">
             <p>Will be Username: <span id="previewUsername">—</span></p>
             <p>Will be Password: <span id="previewPassword">—</span></p>
@@ -49,18 +49,18 @@
 
       <!-- Batch upload form -->
       <div id="batch-upload-container" class="form-box">
-        <h2>BATCH UPLOAD STUDENTS</h2>
+        <h3>BATCH UPLOAD STUDENTS</h3>
         <p>Upload a CSV file with the following columns:</p>
         <ul>
           <li><b>Given Name</b></li>
-          <li><b>Middle Name</b> (optional)</li>
+          <li><b>Middle Name</b> (Optional)</li>
           <li><b>Last Name</b></li>
           <li><b>Section</b> (must match existing section names exactly)</li>
-          <li><b>Birth Sex</b> (Male or Female)</li>
+          <li><b>Sex</b> (Male or Female)</li>
         </ul>
         <form action="/batch_upload" method="POST" enctype="multipart/form-data" id="batch-upload-form">
           <input type="file" name="csv_file" accept=".csv" required />
-          <button type="submit">Upload CSV</button>
+          <button type="submit">UPLOAD CSV (Comma-Separated Values)</button>
         </form>
       </div>
     </div>

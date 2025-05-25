@@ -6,46 +6,36 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Liberty's Path | New Section</title>
   <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/register_student.css"/>
+  <link rel="stylesheet" href="/css/create_section.css"/>
 </head>
 <body>
-  <header>
-    <h1>Create New Section</h1>
-    <nav>
-      <button onclick="location.href='/dashboard'">← Back to Dashboard</button>
-    </nav>
-  </header>
-
-  <main>
+<main id="main-container">
+  <section id="form-container">
+    <h2 id="form-title">CREATE NEW SECTION</h2>
     <form id="create-section-form" action="/sections/create/process" method="POST">
-      <div class="form-group">
-        <label for="section_name">Section Name</label>
-        <input
-          type="text"
-          id="section_name"
-          name="section_name"
-          placeholder="WEEH"
-          required
-        />
-      </div>
+      
+      <label for="section_name">SECTION NAME</label>
+      <input type="text" id="section_name" name="section_name" placeholder="ST. DIEGO" required/>
 
-      <div class="form-group">
-        <label for="start_school_year">Start School Year</label>
-        <select id="start_school_year" name="start_school_year" required>
-          <option value="">Select year…</option>
-        </select>
-      </div>
+      <label for="start_school_year">START OF SCHOOL YEAR</label>
+      <select id="start_school_year" name="start_school_year" required>
+        <option value="">— Select Year —</option>
+      </select>
 
-      <div class="form-group">
-        <label for="end_school_year">End School Year</label>
-        <select id="end_school_year" name="end_school_year" required>
-          <option value="">Select year…</option>
-        </select>
-      </div>
+      <label for="end_school_year">END OF SCHOOL YEAR</label>
+      <select id="end_school_year" name="end_school_year" required>
+        <option value="">— Select Year —</option>
+      </select>
 
-      <button type="submit" class="btn-primary">Create Section</button>
+      <button type="submit">CREATE SECTION</button>
     </form>
-  </main>
+  </section>
+</main>
+
+  <!-- Back to monitoring board link -->
+  <div>
+    <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
+  </div>
 
   <script src="/js/create_section_form.js"></script>
 </body>

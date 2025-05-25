@@ -62,14 +62,15 @@ form label {
 
 .input-label {
     display: block;
-    margin-bottom: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 1rem;
     font-weight: 700;
     color: #2c1b0c;
 }
 
 #label {
-    margin-top: 12px; 
+    margin-top: 10px;
 }
 
 input[type="text"],

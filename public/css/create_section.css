@@ -1,6 +1,3 @@
-/* public/css/create_section.css */
-/* — copied and adapted from register_student.css :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1} */
-
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Karla:wght@400;700&display=swap');
 
 * {
@@ -13,12 +10,18 @@
 body, html {
     min-height: 100vh;
     background: linear-gradient(135deg, #faf6f3, #cac8c1);
-    display: flex;
-    justify-content: center;
     align-items: center;
     background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
     background-blend-mode: overlay;
     padding: 20px; 
+}
+
+/* MAIN CONTAINER FOR BOTH FORMS */
+
+#main-container {
+    max-width: 500px;
+    margin: 30px auto 0;
+    padding: 20px;
 }
 
 #form-container {
@@ -27,11 +30,9 @@ body, html {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     padding: 30px;
-    width: 100%;
-    max-width: 450px;
     color: #2c1b0c;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    animation: fadeIn 1s ease-in-out;
+    box-sizing: border-box;
 }
 
 #form-title {
@@ -42,8 +43,9 @@ body, html {
     color: #2c1b0c;
 }
 
-form label, .form-group label {
+form label {
     display: block;
+    margin-top: 10px;
     margin-bottom: 10px;
     font-size: 1rem;
     font-weight: 600;
@@ -52,19 +54,18 @@ form label, .form-group label {
 
 .input-label {
     display: block;
-    margin-bottom: 6px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-size: 1rem;
     font-weight: 700;
     color: #2c1b0c;
 }
 
 #label {
-    margin-top: 12px; 
+    margin-top: 10px;
 }
 
-input[type="text"],
-input[type="password"],
-select {
+input[type="text"] {
     width: 100%;
     padding: 12px 15px;
     font-size: 15px;
@@ -74,27 +75,36 @@ select {
     background-color: rgba(255, 255, 255, 0.95);
     box-sizing: border-box;
     outline: none;
+}
+
+input[type="text"]:focus {
+    background-color: #fffaf0;
+    box-shadow: 0 0 0 2px #c68b59;
+}
+
+select {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 15px;
+    color: #3b2f2f;
+    border: 1px solid #d6ae7b;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.95);
+    box-sizing: border-box;
+    outline: none;
     margin-bottom: 20px;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
+#start_school_year {
+    margin-bottom: 0;
+}
+
 select:focus {
     background-color: #fffaf0;
     box-shadow: 0 0 0 2px #c68b59;
 }
 
-#radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 8px;
-    font-size: 0.95rem;
-    color: #2c1b0c;
-}
-
-button[type="submit"],
-.btn-primary {
+button[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: #a86c3d;
@@ -108,24 +118,22 @@ button[type="submit"],
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover,
-.btn-primary:hover {
+button[type="submit"]:hover {
     background-color: #804a24;
 }
 
-#dashboard-link,
-nav button {
+#dashboard-link {
     display: block;
+    width: fit-content;
+    margin: 30px auto 40px;
     text-align: center;
-    margin-top: 20px;
     color: #2c1b0c;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
 }
 
-#dashboard-link:hover,
-nav button:hover {
+#dashboard-link:hover {
     color: #7c3905;
 }
 
@@ -139,35 +147,7 @@ h3 {
     letter-spacing: 0.5px;
 }
 
-.password-wrapper {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.password-wrapper input {
-    padding-right: 85px; 
-}
-
-.password-wrapper button {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    padding: 6px 12px;
-    background-color: #e2d8c1;
-    color: #4e3b1f;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.2s;
-}
-
-.password-wrapper button:hover {
-    background-color: #d1c5a7;
-}
+/* Animations */
 
 @keyframes fadeIn {
     from {
@@ -180,26 +160,15 @@ h3 {
     }
 }
 
-@media (max-width: 600px) {
-    #form-container {
-        padding: 20px;
-        max-width: 95vw;
-        min-width: 320px;
-    }
+/* Responsive */
 
+@media (max-width: 600px) {
+    #main-container {
+        flex-direction: column;
+        padding: 10px;
+    }
     #form-title {
         font-size: 1.6rem;
     }
-
-    input[type="text"],
-    input[type="password"],
-    select,
-    button[type="submit"] {
-        font-size: 1rem;
-    }
-
-    #radio-group {
-        flex-direction: column;
-        gap: 8px;
-    }
 }
+
