@@ -5,6 +5,9 @@ header('Content-Type: application/json');
 // Load DB connection
 require_once __DIR__ . '/../../../src/config/db.php';
 
+// Load QPR attempt initializer function
+require_once __DIR__ . '/../../../src/utils/student_helpers.php';
+
 // Decode the incoming JSON
 $payload  = json_decode(file_get_contents('php://input'), true);
 $username = trim($payload['username']  ?? '');
@@ -39,6 +42,10 @@ try {
 
     if ($row && password_verify($password, $row['hash'])) {
         // Successful login
+
+        // Initialize QPR attempt rows if missing
+        insert_attempt_rows_if_missing($pdo, $row['student_id']);
+
         $response['status']     = 'success';
         $response['message']    = 'Login successful';
         $response['student_id'] = (string)$row['student_id'];
