@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2025 at 05:39 AM
+-- Generation Time: May 27, 2025 at 04:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,101 @@ SET time_zone = "+00:00";
 --
 -- Database: `libertys_path_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `first_qpr_attempts`
+--
+
+CREATE TABLE `first_qpr_attempts` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `q1_attempts` int(11) NOT NULL DEFAULT 0,
+  `q2_attempts` int(11) NOT NULL DEFAULT 0,
+  `q3_attempts` int(11) NOT NULL DEFAULT 0,
+  `q4_attempts` int(11) NOT NULL DEFAULT 0,
+  `q5_attempts` int(11) NOT NULL DEFAULT 0,
+  `q6_attempts` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `first_qpr_attempts`
+--
+
+INSERT INTO `first_qpr_attempts` (`id`, `student_id`, `q1_attempts`, `q2_attempts`, `q3_attempts`, `q4_attempts`, `q5_attempts`, `q6_attempts`, `updated_at`) VALUES
+(1, 11, 2, 0, 0, 0, 3, 0, '2025-05-27 00:32:17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `first_qpr_progress`
+--
+
+CREATE TABLE `first_qpr_progress` (
+  `student_id` int(11) NOT NULL,
+  `status` enum('unvisited','visited','complete') NOT NULL DEFAULT 'unvisited',
+  `retries` int(11) NOT NULL DEFAULT 0,
+  `q1_attempts` int(11) NOT NULL DEFAULT 0,
+  `q2_attempts` int(11) NOT NULL DEFAULT 0,
+  `q3_attempts` int(11) NOT NULL DEFAULT 0,
+  `q4_attempts` int(11) NOT NULL DEFAULT 0,
+  `q5_attempts` int(11) NOT NULL DEFAULT 0,
+  `q6_attempts` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fourth_qpr_attempts`
+--
+
+CREATE TABLE `fourth_qpr_attempts` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `question1` int(11) NOT NULL DEFAULT 0,
+  `question2` int(11) NOT NULL DEFAULT 0,
+  `question3` int(11) NOT NULL DEFAULT 0,
+  `question4` int(11) NOT NULL DEFAULT 0,
+  `question5` int(11) NOT NULL DEFAULT 0,
+  `question6` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `fourth_qpr_attempts`
+--
+
+INSERT INTO `fourth_qpr_attempts` (`id`, `student_id`, `question1`, `question2`, `question3`, `question4`, `question5`, `question6`, `updated_at`) VALUES
+(1, 11, 1, 0, 1, 1, 0, 0, '2025-05-27 01:26:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `second_qpr_attempts`
+--
+
+CREATE TABLE `second_qpr_attempts` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `bench1_attempts` int(11) NOT NULL DEFAULT 0,
+  `bench2_attempts` int(11) NOT NULL DEFAULT 0,
+  `bench3_attempts` int(11) NOT NULL DEFAULT 0,
+  `bench4_attempts` int(11) NOT NULL DEFAULT 0,
+  `bench5_attempts` int(11) NOT NULL DEFAULT 0,
+  `bench6_attempts` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `second_qpr_attempts`
+--
+
+INSERT INTO `second_qpr_attempts` (`id`, `student_id`, `bench1_attempts`, `bench2_attempts`, `bench3_attempts`, `bench4_attempts`, `bench5_attempts`, `bench6_attempts`, `updated_at`) VALUES
+(1, 11, 0, 0, 0, 2, 0, 1, '2025-05-27 00:39:00');
 
 -- --------------------------------------------------------
 
@@ -199,7 +294,7 @@ CREATE TABLE `student_progress` (
 
 INSERT INTO `student_progress` (`id`, `student_id`, `first_qpr_status`, `first_qpr_retries`, `second_qpr_status`, `second_qpr_retries`, `third_qpr_status`, `third_qpr_retries`, `fourth_qpr_status`, `fourth_qpr_retries`, `created_at`) VALUES
 (9, 9, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-19 13:44:04'),
-(11, 11, 'complete', 1, 'complete', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-19 16:42:03'),
+(11, 11, 'complete', 1, 'complete', 0, 'visited', 4, 'unvisited', 0, '2025-05-19 16:42:03'),
 (12, 12, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-20 06:40:34'),
 (23, 23, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:46:56'),
 (24, 24, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:46:56'),
@@ -261,9 +356,61 @@ CREATE TABLE `teachers` (
 INSERT INTO `teachers` (`id`, `username`, `password`) VALUES
 (1, 'admin', '$2y$10$6pno/1twL7Q6n4qQW0UWL./GyWI6AXK5Pi3Vu3ts61u/jo1aOmHqW');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `third_qpr_attempts`
+--
+
+CREATE TABLE `third_qpr_attempts` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `question1` int(11) NOT NULL DEFAULT 0,
+  `question2` int(11) NOT NULL DEFAULT 0,
+  `question3` int(11) NOT NULL DEFAULT 0,
+  `question4` int(11) NOT NULL DEFAULT 0,
+  `question5` int(11) NOT NULL DEFAULT 0,
+  `question6` int(11) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `third_qpr_attempts`
+--
+
+INSERT INTO `third_qpr_attempts` (`id`, `student_id`, `question1`, `question2`, `question3`, `question4`, `question5`, `question6`, `updated_at`) VALUES
+(1, 11, 5, 0, 1, 1, 0, 1, '2025-05-27 01:05:10');
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `first_qpr_attempts`
+--
+ALTER TABLE `first_qpr_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_first_student` (`student_id`);
+
+--
+-- Indexes for table `first_qpr_progress`
+--
+ALTER TABLE `first_qpr_progress`
+  ADD PRIMARY KEY (`student_id`);
+
+--
+-- Indexes for table `fourth_qpr_attempts`
+--
+ALTER TABLE `fourth_qpr_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_fourth_student` (`student_id`);
+
+--
+-- Indexes for table `second_qpr_attempts`
+--
+ALTER TABLE `second_qpr_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_second_student` (`student_id`);
 
 --
 -- Indexes for table `sections`
@@ -301,8 +448,33 @@ ALTER TABLE `teachers`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `third_qpr_attempts`
+--
+ALTER TABLE `third_qpr_attempts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uq_third_student` (`student_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `first_qpr_attempts`
+--
+ALTER TABLE `first_qpr_attempts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `fourth_qpr_attempts`
+--
+ALTER TABLE `fourth_qpr_attempts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `second_qpr_attempts`
+--
+ALTER TABLE `second_qpr_attempts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sections`
@@ -335,8 +507,38 @@ ALTER TABLE `teachers`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `third_qpr_attempts`
+--
+ALTER TABLE `third_qpr_attempts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `first_qpr_attempts`
+--
+ALTER TABLE `first_qpr_attempts`
+  ADD CONSTRAINT `first_qpr_attempts_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `first_qpr_progress`
+--
+ALTER TABLE `first_qpr_progress`
+  ADD CONSTRAINT `fk_first_qpr_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `fourth_qpr_attempts`
+--
+ALTER TABLE `fourth_qpr_attempts`
+  ADD CONSTRAINT `fourth_qpr_attempts_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `second_qpr_attempts`
+--
+ALTER TABLE `second_qpr_attempts`
+  ADD CONSTRAINT `second_qpr_attempts_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `students`
@@ -355,6 +557,12 @@ ALTER TABLE `student_accounts`
 --
 ALTER TABLE `student_progress`
   ADD CONSTRAINT `fk_progress_student` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `third_qpr_attempts`
+--
+ALTER TABLE `third_qpr_attempts`
+  ADD CONSTRAINT `third_qpr_attempts_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
