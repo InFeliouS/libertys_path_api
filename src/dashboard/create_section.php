@@ -1,53 +1,32 @@
 <?php
-// src/dashboard/create_section.php
+declare(strict_types=1);
 
-// Start session if needed
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
+header('Content-Type: application/json; charset=utf-8');
+
+if (empty($_SESSION['teacher_id'])) { http_response_code(401); echo json_encode(['success'=>false,'error'=>'Unauthorized']); exit; }
+
+$ct = $_SERVER['CONTENT_TYPE'] ?? '';
+$body = (stripos($ct, 'application/json') !== false) ? json_decode(file_get_contents('php://input'), true) : $_POST;
+
+$section_name       = trim((string)($body['section_name'] ?? ''));
+$start_school_year  = trim((string)($body['start_school_year'] ?? ''));
+$end_school_year    = trim((string)($body['end_school_year'] ?? ''));
+
+if ($section_name === '' || $start_school_year === '' || $end_school_year === '') {
+    http_response_code(422);
+    echo json_encode(['success'=>false,'error'=>'Missing fields']); exit;
 }
 
-// Protect route
-if (!isset($_SESSION['teacher_id'])) {
-    header("Location: /login");
-    exit;
-}
-
-// DB connection
 require_once __DIR__ . '/../config/db.php';
+if (!isset($mysqli)) { http_response_code(500); echo json_encode(['success'=>false,'error'=>'DB not initialized']); exit; }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sectionName  = trim($_POST['section_name']      ?? '');
-    $startYear    = trim($_POST['start_school_year'] ?? '');
-    $endYear      = trim($_POST['end_school_year']   ?? '');
+$stmt = $mysqli->prepare("INSERT INTO sections (section_name, start_school_year, end_school_year) VALUES (?,?,?)");
+$stmt->bind_param("sss", $section_name, $start_school_year, $end_school_year);
+$ok = $stmt->execute();
+$newId = $ok ? $stmt->insert_id : null;
+$stmt->close();
 
-    // Basic validation
-    if (
-        $sectionName === '' ||
-        !preg_match('/^\d{4}$/', $startYear) ||
-        !preg_match('/^\d{4}$/', $endYear)
-    ) {
-        // If invalid, reload form (you could pass an error here)
-        header("Location: /sections/create");
-        exit;
-    }
+if (!$ok) { http_response_code(500); echo json_encode(['success'=>false,'error'=>$mysqli->error]); exit; }
 
-    // Insert new section
-    $stmt = $pdo->prepare("
-        INSERT INTO sections
-          (section_name, start_school_year, end_school_year)
-        VALUES
-          (:section, :start, :end)
-    ");
-    $stmt->execute([
-        ':section' => $sectionName,
-        ':start'   => $startYear,
-        ':end'     => $endYear,
-    ]);
-
-    // On success, go back to dashboard
-    header("Location: /dashboard");
-    exit;
-}
-
-// GET → show the form
-include __DIR__ . '/../../public/html/create_section.html';
+echo json_encode(['success'=>true,'id'=>(int)$newId]);

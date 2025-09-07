@@ -1,42 +1,39 @@
-<!-- public/html/create_section.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liberty's Path | New Section</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/create_section.css"/>
+  <!-- base href injected by routes.php -->
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="css/create_section.css"/>
 </head>
 <body>
-<main id="main-container">
-  <section id="form-container">
-    <h2 id="form-title">CREATE NEW SECTION</h2>
-    <form id="create-section-form" action="/sections/create/process" method="POST">
-      
+  <h1>CREATE NEW SECTION</h1>
+
+  <form id="create-section-form" autocomplete="off">
+    <div class="row">
       <label for="section_name">SECTION NAME</label>
-      <input type="text" id="section_name" name="section_name" placeholder="ST. DIEGO" required/>
+      <input id="section_name" name="section_name" placeholder="e.g. ST. DIEGO" required>
+    </div>
 
+    <div class="row">
       <label for="start_school_year">START OF SCHOOL YEAR</label>
-      <select id="start_school_year" name="start_school_year" required>
-        <option value="">— Select Year —</option>
-      </select>
+      <select id="start_school_year" name="start_school_year" required></select>
+    </div>
 
+    <div class="row">
       <label for="end_school_year">END OF SCHOOL YEAR</label>
-      <select id="end_school_year" name="end_school_year" required>
-        <option value="">— Select Year —</option>
-      </select>
+      <select id="end_school_year" name="end_school_year" required></select>
+    </div>
 
+    <div class="row">
       <button type="submit">CREATE SECTION</button>
-    </form>
-  </section>
-</main>
+    </div>
+  </form>
 
-  <!-- Back to monitoring board link -->
-  <div>
-    <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
-  </div>
+  <p><a href="index.php?route=dashboard">← Back to Teacher Admin Monitoring Board</a></p>
 
-  <script src="/js/create_section_form.js"></script>
+  <script src="js/create_section_form.js"></script>
 </body>
 </html>

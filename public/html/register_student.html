@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liberty's Path | Registration</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/register_student.css"/>
+  <!-- base href injected by routes.php -->
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="css/register_student.css"/>
 </head>
 <body>
-  <!-- Main wrapper for both forms and the back link -->
-  <div id="main-wrapper">
-    <div id="main-container">
-      <!-- Single registration form -->
-      <div id="form-container" class="form-box">
-        <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
-        <h3>BASIC INFORMATION</h3>
-        <form id="student-form" action="/register/process" method="POST">
-          <label for="given_name" class="input-label">GIVEN NAME</label>
-          <input type="text" id="given_name" name="given_name" placeholder="e.g. CASSIANO" required />
+  <h1>STUDENT ACCOUNT CREATION</h1>
 
-          <label for="middle_name" class="input-label">MIDDLE NAME (Optional)</label>
-          <input type="text" id="middle_name" name="middle_name" placeholder="e.g. LUTHER" />
+  <section class="block">
+    <h2>BASIC INFORMATION</h2>
 
-          <label for="last_name" class="input-label">LAST NAME</label>
-          <input type="text" id="last_name" name="last_name" placeholder="e.g. TROYAN" required />
-
-          <label for="section_id" class="input-label">SECTION</label>
-          <select id="section_id" name="section_id" required>
-            <option value="">Loading sections . . .</option>
-          </select>
-
-          <label class="input-label">SEX</label>
-          <div id="radio-group">
-            <label><input type="radio" name="birth_sex" value="Male" required/> Male</label>
-            <label><input type="radio" name="birth_sex" value="Female" required/> Female</label>
-          </div>
-
-          <h3>GAME ACCOUNT</h3>
-          <p class="note">(Note: Student username &amp; password will be generated automatically.)</p>
-          <div id="preview">
-            <p>Will be Username: <span id="previewUsername">—</span></p>
-            <p>Will be Password: <span id="previewPassword">—</span></p>
-          </div>
-
-          <button type="submit">REGISTER STUDENT</button>
-        </form>
+    <form id="register-student-form" autocomplete="off">
+      <div class="row">
+        <label for="given_name">GIVEN NAME</label>
+        <input id="given_name" name="given_name" placeholder="e.g. CASSIANO" required>
       </div>
 
-      <!-- Batch upload form -->
-      <div id="batch-upload-container" class="form-box">
-        <h3>BATCH UPLOAD STUDENTS</h3>
-        <p>Upload a CSV file with the following columns:</p>
-        <ul>
-          <li><b>Given Name</b></li>
-          <li><b>Middle Name</b> (Optional)</li>
-          <li><b>Last Name</b></li>
-          <li><b>Section</b> (must match existing section names exactly)</li>
-          <li><b>Sex</b> (Male or Female)</li>
-        </ul>
-        <form action="/batch_upload" method="POST" enctype="multipart/form-data" id="batch-upload-form">
-          <input type="file" name="csv_file" accept=".csv" required />
-          <button type="submit">UPLOAD CSV (Comma-Separated Values)</button>
-        </form>
+      <div class="row">
+        <label for="middle_name">MIDDLE NAME (Optional)</label>
+        <input id="middle_name" name="middle_name" placeholder="e.g. LUTHER">
       </div>
-    </div>
 
-    <!-- Back to monitoring board link -->
-    <div>
-      <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
-    </div>
-  </div>
+      <div class="row">
+        <label for="last_name">LAST NAME</label>
+        <input id="last_name" name="last_name" placeholder="e.g. TROYAN" required>
+      </div>
 
-  <script src="/js/register_student.js"></script>
+      <div class="row">
+        <label for="section_id">SECTION</label>
+        <select id="section_id" name="section_id">
+          <option value="">Loading sections . . .</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <span>SEX</span>
+        <label><input type="radio" name="birth_sex" value="Male" required> Male</label>
+        <label><input type="radio" name="birth_sex" value="Female"> Female</label>
+      </div>
+
+      <div class="row">
+        <button type="submit" id="btn-register">REGISTER STUDENT</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="block">
+    <h2>GAME ACCOUNT</h2>
+    <p>(Note: Student username &amp; password will be generated automatically.)</p>
+    <p>Will be Username: —</p>
+    <p>Will be Password: —</p>
+  </section>
+
+  <section class="block">
+    <h2>BATCH UPLOAD STUDENTS</h2>
+    <p>Upload a CSV file with the following columns:</p>
+    <ul>
+      <li>Given Name</li>
+      <li>Middle Name (Optional)</li>
+      <li>Last Name</li>
+      <li>Section (must match existing section names exactly)</li>
+      <li>Sex (Male or Female)</li>
+    </ul>
+
+    <form id="batch-upload-form" enctype="multipart/form-data">
+      <input type="hidden" name="section_id" id="batch_section_id" value="">
+      <input type="file" name="csv" accept=".csv">
+      <button type="submit">UPLOAD CSV (Comma-Separated Values)</button>
+    </form>
+  </section>
+
+  <p><a href="index.php?route=dashboard">← Back to Teacher Admin Monitoring Board</a></p>
+
+  <script src="js/register_student.js"></script>
 </body>
 </html>

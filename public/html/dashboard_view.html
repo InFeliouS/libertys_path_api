@@ -4,33 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Liberty’s Path | Monitoring Board</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png" />
-  <link rel="stylesheet" href="/css/dashboard_view.css" />
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
+  <link rel="stylesheet" href="css/dashboard_view.css" />
 </head>
 <body>
   <header>
     <h1>TEACHER ADMIN MONITORING BOARD</h1>
     <div class="header-left-logos">
-      <img src="/assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="header-logo" />
-      <img src="/assets/libertys-path-logo-2d-transparent.png" alt="Liberty's Path Logo" class="header-logo" />
+      <img src="assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="header-logo" />
+      <img src="assets/libertys-path-logo-2d-transparent.png" alt="Liberty's Path Logo" class="header-logo" />
     </div>
   </header>
 
   <main class="div_parent_main">
     <div class="div_sidebar_left">
-    <div class="controls"> 
-      <button class="top-control" onclick="location.href='/register'">ADD STUDENT ACCOUNT</button>
-      <button class="top-control second" onclick="location.href='/sections/create'">ADD NEW SECTION</button>
-      <button onclick="showLogoutConfirmation()" class="logout-baba">LOG OUT</button>
+      <div class="controls"> 
+        <button class="top-control" onclick="location.href='index.php?route=register'">ADD STUDENT ACCOUNT</button>
+        <button class="top-control second" onclick="location.href='index.php?route=sections/create'">ADD NEW SECTION</button>
+        <button onclick="showLogoutConfirmation()" class="logout-baba">LOG OUT</button>
+      </div>
     </div>
-    </div>
+
     <div class="div_sidebar_right">
-    <div class="section-divider">
-      <h2>GRADE 8 SECTIONS & SCHOOL YEARS</h2>
-    <div id="sectionCards" class="cards-container">
-      <p>Loading sections . . .</p>
-    </div>
-    </div>
+      <div class="section-divider">
+        <h2>GRADE 8 SECTIONS &amp; SCHOOL YEARS</h2>
+        <div id="sectionCards" class="cards-container">
+          <p>Loading sections . . .</p>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -71,8 +72,7 @@
     </div>
   </div>
 
-  <script src="/js/dashboard_view.js"></script>
-  <script src="/js/dashboard_cards.js"></script>
-
+  <script src="js/dashboard_view.js"></script>
+  <script src="js/dashboard_cards.js"></script>
 </body>
 </html>

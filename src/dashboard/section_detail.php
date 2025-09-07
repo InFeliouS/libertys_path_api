@@ -1,109 +1,72 @@
 <?php
 // src/dashboard/section_detail.php
+declare(strict_types=1);
 
-// 1) Session & authorization
 if (session_status() === PHP_SESSION_NONE) session_start();
-if (!isset($_SESSION['teacher_id'])) {
-    header('Location: /login');
-    exit;
-}
+if (empty($_SESSION['teacher_id'])) { header('Location: index.php?route=login'); exit; }
 
-// 2) Validate section_id
-$section_id = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
-if (!$section_id) {
-    header('Location: /dashboard');
-    exit;
-}
+$sectionId = (int)($_GET['id'] ?? 0);
+if ($sectionId <= 0) { http_response_code(400); echo "Missing section ID."; exit; }
 
 require_once __DIR__ . '/../config/db.php';
+if (!isset($mysqli)) { http_response_code(500); echo "Database connection not initialized."; exit; }
 
-// 3) Fetch section info
-$stmt = $pdo->prepare("
-    SELECT section_name, start_school_year, end_school_year
-      FROM sections
-     WHERE id = ?
-");
-$stmt->execute([$section_id]);
-$section = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$section) {
-    header('Location: /dashboard');
-    exit;
+/* Section info */
+$stmt = $mysqli->prepare("SELECT id, section_name, start_school_year, end_school_year
+                          FROM sections WHERE id = ? LIMIT 1");
+$stmt->bind_param("i", $sectionId);
+$stmt->execute();
+$section = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+if (!$section) { http_response_code(404); echo "Section not found."; exit; }
+
+/* Students in this section */
+$stmt = $mysqli->prepare("SELECT id, given_name, middle_name, last_name, birth_sex
+                          FROM students
+                          WHERE section_id = ?
+                          ORDER BY last_name, given_name, middle_name");
+$stmt->bind_param("i", $sectionId);
+$stmt->execute();
+$res = $stmt->get_result();
+$students = [];
+while ($row = $res->fetch_assoc()) {
+    $full = trim($row['given_name'].' '.($row['middle_name'] ? $row['middle_name'].' ' : '').$row['last_name']);
+    $students[] = [
+        'id'        => (int)$row['id'],
+        'full_name' => $full,
+        'birth_sex' => $row['birth_sex'],
+    ];
 }
+$stmt->close();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Section Detail</title>
+  <link rel="stylesheet" href="css/section_detail.css">
+</head>
+<body>
+  <h1><?= htmlspecialchars($section['section_name']) ?></h1>
+  <p>School Year: <?= htmlspecialchars($section['start_school_year']) ?> - <?= htmlspecialchars($section['end_school_year']) ?></p>
 
-// 4) Fetch students + progress + wrong-attempt counts
-$sql = "
-SELECT
-  st.id                   AS student_id,
-  st.last_name,
-  st.given_name,
-  st.middle_name,
-  st.birth_sex,
+  <h2>Students</h2>
+  <?php if (!$students): ?>
+    <p>No students in this section yet.</p>
+  <?php else: ?>
+    <table>
+      <thead><tr><th>Name</th><th>Sex</th></tr></thead>
+      <tbody>
+      <?php foreach ($students as $s): ?>
+        <tr>
+          <td><?= htmlspecialchars($s['full_name']) ?></td>
+          <td><?= htmlspecialchars($s['birth_sex']) ?></td>
+        </tr>
+      <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php endif; ?>
 
-  -- QPR status & retries
-  sp.first_qpr_status,   sp.first_qpr_retries,
-  sp.second_qpr_status,  sp.second_qpr_retries,
-  sp.third_qpr_status,   sp.third_qpr_retries,
-  sp.fourth_qpr_status,  sp.fourth_qpr_retries,
-
-  -- 1st-room wrong attempts
-  fqa.q1_attempts AS first_q1_attempts,
-  fqa.q2_attempts AS first_q2_attempts,
-  fqa.q3_attempts AS first_q3_attempts,
-  fqa.q4_attempts AS first_q4_attempts,
-  fqa.q5_attempts AS first_q5_attempts,
-  fqa.q6_attempts AS first_q6_attempts,
-
-  -- 2nd-room wrong attempts
-  sqa.bench1_attempts AS second_q1_attempts,
-  sqa.bench2_attempts AS second_q2_attempts,
-  sqa.bench3_attempts AS second_q3_attempts,
-  sqa.bench4_attempts AS second_q4_attempts,
-  sqa.bench5_attempts AS second_q5_attempts,
-  sqa.bench6_attempts AS second_q6_attempts,
-
-  -- 3rd-room wrong attempts
-  tqa.question1 AS third_q1_attempts,
-  tqa.question2 AS third_q2_attempts,
-  tqa.question3 AS third_q3_attempts,
-  tqa.question4 AS third_q4_attempts,
-  tqa.question5 AS third_q5_attempts,
-  tqa.question6 AS third_q6_attempts,
-
-  -- 4th-room wrong attempts
-  foqa.question1 AS fourth_q1_attempts,
-  foqa.question2 AS fourth_q2_attempts,
-  foqa.question3 AS fourth_q3_attempts,
-  foqa.question4 AS fourth_q4_attempts,
-  foqa.question5 AS fourth_q5_attempts,
-  foqa.question6 AS fourth_q6_attempts
-
-FROM students st
-LEFT JOIN student_progress sp  ON sp.student_id = st.id
-LEFT JOIN first_qpr_attempts  fqa ON fqa.student_id  = st.id
-LEFT JOIN second_qpr_attempts sqa ON sqa.student_id  = st.id
-LEFT JOIN third_qpr_attempts  tqa ON tqa.student_id  = st.id
-LEFT JOIN fourth_qpr_attempts foqa ON foqa.student_id = st.id
-
-WHERE st.section_id = ?
-ORDER BY st.last_name, st.given_name
-";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([$section_id]);
-$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// 5) Map raw ENUMs to display text
-$status_map = [
-  'unvisited' => 'Unvisited',
-  'visited'   => 'Visited',
-  'complete'  => 'Completed',
-];
-foreach ($students as &$s) {
-  foreach (['first','second','third','fourth'] as $q) {
-    $raw = $s["{$q}_qpr_status"];
-    $s["{$q}_qpr_status_text"] = $status_map[$raw] ?? ucfirst($raw);
-  }
-}
-unset($s);
-
-// 6) Render HTML
-include __DIR__ . '/../../public/html/section_detail.html';
+  <p><a href="index.php?route=dashboard">Back to Dashboard</a></p>
+</body>
+</html>

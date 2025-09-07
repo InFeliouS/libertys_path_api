@@ -1,68 +1,39 @@
 <?php
-// src/dashboard/delete_section.php
+declare(strict_types=1);
 
-// 0) Silence notices
-ini_set('display_errors', '0');
-error_reporting(E_ALL & ~E_NOTICE);
+if (session_status() === PHP_SESSION_NONE) session_start();
+header('Content-Type: application/json; charset=utf-8');
 
-// 1) Start session if none
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (empty($_SESSION['teacher_id'])) { http_response_code(401); echo json_encode(['success'=>false,'error'=>'Unauthorized']); exit; }
 
-// 2) JSON header
-header('Content-Type: application/json');
+$ct = $_SERVER['CONTENT_TYPE'] ?? '';
+$data = (stripos($ct, 'application/json') !== false) ? json_decode(file_get_contents('php://input'), true) : $_POST;
 
-// 3) Authentication
-if (!isset($_SESSION['teacher_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'error' => 'Not logged in']);
-    exit;
-}
+$section_id = (int)($data['section_id'] ?? $data['id'] ?? 0);
+if ($section_id <= 0) { http_response_code(422); echo json_encode(['success'=>false,'error'=>'Missing section_id']); exit; }
 
-// 4) Parse payload
-$in = json_decode(file_get_contents('php://input'), true);
-if (empty($in['section_id'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Missing section_id']);
-    exit;
-}
-
-$id = (int)$in['section_id'];
 require_once __DIR__ . '/../config/db.php';
+if (!isset($mysqli)) { http_response_code(500); echo json_encode(['success'=>false,'error'=>'DB not initialized']); exit; }
+
+$mysqli->begin_transaction();
 
 try {
-    $pdo->beginTransaction();
+    // delete students in section
+    $stmt = $mysqli->prepare("DELETE FROM students WHERE section_id=?");
+    $stmt->bind_param("i", $section_id);
+    $stmt->execute();
+    $stmt->close();
 
-    // a) Grab student IDs
-    $stmt = $pdo->prepare("SELECT id FROM students WHERE section_id = ?");
-    $stmt->execute([$id]);
-    $ids = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    // delete section
+    $stmt = $mysqli->prepare("DELETE FROM sections WHERE id=?");
+    $stmt->bind_param("i", $section_id);
+    $stmt->execute();
+    $stmt->close();
 
-    if ($ids) {
-        $ph = implode(',', array_fill(0, count($ids), '?'));
-
-        // b) Delete progress
-        $pdo->prepare("DELETE FROM student_progress WHERE student_id IN ($ph)")
-            ->execute($ids);
-
-        // c) Delete accounts
-        $pdo->prepare("DELETE FROM student_accounts WHERE student_id IN ($ph)")
-            ->execute($ids);
-
-        // d) Delete students
-        $pdo->prepare("DELETE FROM students WHERE id IN ($ph)")
-            ->execute($ids);
-    }
-
-    // e) Delete the section
-    $pdo->prepare("DELETE FROM sections WHERE id = ?")
-        ->execute([$id]);
-
-    $pdo->commit();
-    echo json_encode(['success' => true]);
-} catch (Exception $e) {
-    $pdo->rollBack();
+    $mysqli->commit();
+    echo json_encode(['success'=>true]);
+} catch (Throwable $e) {
+    $mysqli->rollback();
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    echo json_encode(['success'=>false,'error'=>$e->getMessage()]);
 }

@@ -4,18 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Liberty's Path | Login</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png" />
-  <link rel="stylesheet" href="../css/login.css" />
+  <!-- <base href="..."> is injected by routes.php -->
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
+  <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
   <div class="container">
     <div class="left-panel">
-      <img src="/assets/libertys-path-abstract-two.png" alt="Decorative background pattern" />
+      <img src="assets/libertys-path-abstract-two.png" alt="Decorative background pattern" />
     </div>
+
     <div class="right-panel">
-      <form class="login-form" action="/login/process" method="POST">
+      <form id="loginForm" class="login-form" action="index.php?route=login/process" method="POST" autocomplete="off">
         <div class="logo-wrapper">
-          <img src="/assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="school-logo" />
+          <img src="assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="school-logo" />
         </div>
 
         <label for="username">USERNAME</label>
@@ -32,6 +34,6 @@
     </div>
   </div>
 
-  <script src="/js/login.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>

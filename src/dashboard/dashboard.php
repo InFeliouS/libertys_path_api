@@ -1,17 +1,19 @@
 <?php
-// src/dashboard/dashboard.php
+declare(strict_types=1);
 
-// Only start a session if one isn't already active
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
+
+if (!function_exists('route_to')) {
+    function route_to(string $path): string {
+        $bp = rtrim((string)($_ENV['BASE_PATH'] ?? ''), '/');
+        $base = $bp === '' ? '/' : $bp . '/';
+        return $base . 'index.php?route=' . ltrim($path, '/');
+    }
 }
 
-// Redirect to login if not authenticated
-if (!isset($_SESSION['teacher_id'])) {
-    header("Location: /login");
+if (empty($_SESSION['teacher_id'])) {
+    header('Location: ' . route_to('login'));
     exit;
 }
 
-// We’ll let the JS fetch & render your section cards,
-// so we just serve the static HTML now:
-include __DIR__ . '/../../public/html/dashboard_view.html';
+require __DIR__ . '/../../public/html/dashboard_view.html';
