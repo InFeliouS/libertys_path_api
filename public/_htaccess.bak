@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # If deploying under a subfolder on production, you may also set:
+  # RewriteBase /libertys_path_api/public/
+
+  # Let real files through (assets, HTML, JS, CSS, API endpoint PHP, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Allow direct API access (your /public/api/v1/*.php)
+  RewriteRule ^api/ - [L]
+
+  # Everything else → index.php (front controller)
+  RewriteRule ^ index.php [L]
+</IfModule>
