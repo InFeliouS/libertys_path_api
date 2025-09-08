@@ -1,37 +1,55 @@
 <?php
-declare(strict_types=1);
-
-if (session_status() === PHP_SESSION_NONE) session_start();
-if (empty($_SESSION['teacher_id'])) { header('Location: index.php?route=login'); exit; }
-
-$section_id = (int)($_GET['section_id'] ?? 0);
-if ($section_id <= 0) { http_response_code(400); echo "Missing section_id"; exit; }
+// src/dashboard/download_section_students_csv.php
 
 require_once __DIR__ . '/../config/db.php';
-if (!isset($mysqli)) { http_response_code(500); echo "DB not initialized"; exit; }
 
-$stmt = $mysqli->prepare("SELECT s.given_name, s.middle_name, s.last_name, s.birth_sex, sec.section_name
-                          FROM students s
-                          JOIN sections sec ON sec.id = s.section_id
-                          WHERE s.section_id=?
-                          ORDER BY s.last_name, s.given_name, s.middle_name");
-$stmt->bind_param("i", $section_id);
-$stmt->execute();
-$res = $stmt->get_result();
+// 1) Validate section_id
+$sectionId = isset($_GET['section_id']) ? (int) $_GET['section_id'] : 0;
+if ($sectionId <= 0) {
+    exit('Invalid section ID.');
+}
 
+// 2) Fetch student info + account_id
+$stmt = $pdo->prepare("
+    SELECT
+      s.given_name,
+      s.middle_name,
+      s.last_name,
+      sa.username,
+      sa.account_id AS account_id
+    FROM students s
+    JOIN student_accounts sa
+      ON sa.student_id = s.id
+    WHERE s.section_id = ?
+    ORDER BY s.last_name, s.given_name
+");
+$stmt->execute([$sectionId]);
+$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 3) Send CSV headers
 header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename="section_'.$section_id.'_students.csv"');
+header('Content-Disposition: attachment; filename="section_' . $sectionId . '_students.csv"');
 
-$out = fopen('php://output', 'w');
-fputcsv($out, ['Section', 'Given Name', 'Middle Name', 'Last Name', 'Sex']);
-while ($row = $res->fetch_assoc()) {
-    fputcsv($out, [
-        $row['section_name'],
-        $row['given_name'],
-        $row['middle_name'],
-        $row['last_name'],
-        $row['birth_sex'],
+// 4) Open output stream & write header row
+$output = fopen('php://output', 'w');
+fputcsv($output, ['Given Name','Middle Name','Last Name','Username','Password']);
+
+// 5) For each student, rebuild plain-text password
+//    (same logic as in student_register.php: ucfirst(strtolower(base)) . account_id)
+foreach ($students as $stu) {
+    // base = middle_name if present, else given_name
+    $pBase = $stu['middle_name'] ?: $stu['given_name'];
+    $pBase = str_replace(' ', '', $pBase);
+    $passwordPlain = ucfirst(strtolower($pBase)) . $stu['account_id'];
+
+    fputcsv($output, [
+        $stu['given_name'],
+        $stu['middle_name'],
+        $stu['last_name'],
+        $stu['username'],
+        $passwordPlain,
     ]);
 }
-fclose($out);
-$stmt->close();
+
+fclose($output);
+exit;

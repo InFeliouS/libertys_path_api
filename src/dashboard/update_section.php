@@ -1,32 +1,65 @@
 <?php
-declare(strict_types=1);
+// src/dashboard/update_section.php
 
-if (session_status() === PHP_SESSION_NONE) session_start();
-header('Content-Type: application/json; charset=utf-8');
+// 0) Turn off notice‐level output so JSON stays clean
+ini_set('display_errors', '0');
+error_reporting(E_ALL & ~E_NOTICE);
 
-if (empty($_SESSION['teacher_id'])) { http_response_code(401); echo json_encode(['success'=>false,'error'=>'Unauthorized']); exit; }
+// 1) Start session only if none
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-$ct = $_SERVER['CONTENT_TYPE'] ?? '';
-$data = (stripos($ct, 'application/json') !== false) ? json_decode(file_get_contents('php://input'), true) : $_POST;
+// 2) JSON response header
+header('Content-Type: application/json');
 
-$section_id         = (int)($data['section_id'] ?? $data['id'] ?? 0);
-$section_name       = trim((string)($data['section_name'] ?? ''));
-$start_school_year  = trim((string)($data['start_school_year'] ?? ''));
-$end_school_year    = trim((string)($data['end_school_year'] ?? ''));
+// 3) Authentication
+if (!isset($_SESSION['teacher_id'])) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'error' => 'Not logged in']);
+    exit;
+}
 
-if ($section_id <= 0 || $section_name === '' || $start_school_year === '' || $end_school_year === '') {
-    http_response_code(422);
-    echo json_encode(['success'=>false,'error'=>'Missing fields']); exit;
+// 4) Parse & validate payload
+$in = json_decode(file_get_contents('php://input'), true);
+if (
+    empty($in['section_id']) ||
+    !isset($in['section_name'], $in['start_school_year'], $in['end_school_year'])
+) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Missing parameters']);
+    exit;
+}
+
+$id    = (int)$in['section_id'];
+$name  = trim($in['section_name']);
+$start = trim($in['start_school_year']);
+$end   = trim($in['end_school_year']);
+
+if ($name === '' ||
+    !preg_match('/^\d{4}$/', $start) ||
+    !preg_match('/^\d{4}$/', $end)
+) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'Invalid input']);
+    exit;
 }
 
 require_once __DIR__ . '/../config/db.php';
-if (!isset($mysqli)) { http_response_code(500); echo json_encode(['success'=>false,'error'=>'DB not initialized']); exit; }
 
-$stmt = $mysqli->prepare("UPDATE sections SET section_name=?, start_school_year=?, end_school_year=? WHERE id=?");
-$stmt->bind_param("sssi", $section_name, $start_school_year, $end_school_year, $section_id);
-$ok = $stmt->execute();
-$stmt->close();
+// 5) Update DB
+try {
+    $stmt = $pdo->prepare("
+        UPDATE sections
+           SET section_name      = ?,
+               start_school_year = ?,
+               end_school_year   = ?
+         WHERE id = ?
+    ");
+    $stmt->execute([$name, $start, $end, $id]);
 
-if (!$ok) { http_response_code(500); echo json_encode(['success'=>false,'error'=>$mysqli->error]); exit; }
-
-echo json_encode(['success'=>true]);
+    echo json_encode(['success' => true]);
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+}

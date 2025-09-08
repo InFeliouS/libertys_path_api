@@ -1,22 +1,28 @@
 <?php
 // src/config/db.php
 
-// Adjust username/password if your MySQL differs
-$DB_HOST = 'localhost';
-$DB_USER = 'root';
-$DB_PASS = '';  // default XAMPP MySQL root has no password
-$DB_NAME = 'libertys_path_db';
+// Load Composer autoloader
+require_once __DIR__ . '/../../vendor/autoload.php';
 
-$mysqli = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-if ($mysqli->connect_errno) {
-    die('DB connection failed: ' . $mysqli->connect_error);
+// Load environment variables
+if (class_exists('Dotenv\Dotenv') && file_exists(__DIR__ . '/../../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
+    $dotenv->load();
 }
-$mysqli->set_charset('utf8mb4');
 
-// Optional PDO (not required if mysqli is enough)
-// $pdo = new PDO(
-//     "mysql:host=$DB_HOST;dbname=$DB_NAME;charset=utf8mb4",
-//     $DB_USER,
-//     $DB_PASS,
-//     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-// );
+$host     = $_ENV['DB_HOST'] ?? '127.0.0.1';
+$dbname   = $_ENV['DB_NAME'] ?? 'database';
+$username = $_ENV['DB_USER'] ?? 'root';
+$password = $_ENV['DB_PASS'] ?? '';
+
+try {
+    $pdo = new PDO(
+        "mysql:host={$host};dbname={$dbname};charset=utf8mb4",
+        $username,
+        $password,
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    // In production you might log this instead of outputting
+    die(json_encode(['error' => 'Connection failed: ' . $e->getMessage()]));
+}
