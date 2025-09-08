@@ -4,14 +4,14 @@
 // 1) Session & authorization
 if (session_status() === PHP_SESSION_NONE) session_start();
 if (!isset($_SESSION['teacher_id'])) {
-    header('Location: /login');
+    header("Location: ./index.php?r=login");
     exit;
 }
 
 // 2) Validate section_id
 $section_id = isset($_GET['section_id']) ? intval($_GET['section_id']) : 0;
 if (!$section_id) {
-    header('Location: /dashboard');
+    header("Location: ./index.php?r=dashboard");
     exit;
 }
 
@@ -26,7 +26,7 @@ $stmt = $pdo->prepare("
 $stmt->execute([$section_id]);
 $section = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$section) {
-    header('Location: /dashboard');
+    header("Location: ./index.php?r=dashboard");
     exit;
 }
 

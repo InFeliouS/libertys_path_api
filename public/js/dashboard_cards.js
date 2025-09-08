@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       end_school_year:   editEndYear.value
     };
 
-    fetch("/sections/update", {
+    fetch("index.php?r=sections/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 6) Fetch & render all section cards
-  fetch("/api/v1/sections.php", { headers: { "Accept":"application/json" } })
+  fetch("api/v1/sections.php", { headers: { "Accept":"application/json" } })
     .then(r => r.json())
     .then(data => {
       if (!data.success) throw new Error(data.message || "Load failed");
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const viewBtn = document.createElement("button");
         viewBtn.textContent = "View Students";
         viewBtn.onclick = () =>
-          location.href = `/sections/view?section_id=${sec.id}`;
+          location.href = `index.php?r=sections/detail&section_id=${sec.id}`;
         card.appendChild(viewBtn);
 
         // Edit
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!confirm(
             `Delete section "${sec.section_name}"?\nAll students in it will be removed.`
           )) return;
-          fetch("/sections/deleteSection", {
+          fetch("index.php?r=sections/deleteSection", {
             method: "POST",
             headers: { "Content-Type":"application/json" },
             body: JSON.stringify({ section_id: sec.id })

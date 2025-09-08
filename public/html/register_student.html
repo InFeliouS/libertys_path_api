@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Liberty's Path | Registration</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/register_student.css"/>
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="css/register_student.css"/>
 </head>
 <body>
   <!-- Main wrapper for both forms and the back link -->
@@ -15,7 +15,7 @@
       <div id="form-container" class="form-box">
         <h2 id="form-title">STUDENT ACCOUNT CREATION</h2>
         <h3>BASIC INFORMATION</h3>
-        <form id="student-form" action="/register/process" method="POST">
+        <form id="student-form" action="index.php?r=register/process" method="POST">
           <label for="given_name" class="input-label">GIVEN NAME</label>
           <input type="text" id="given_name" name="given_name" placeholder="e.g. CASSIANO" required />
 
@@ -58,7 +58,7 @@
           <li><b>Section</b> (must match existing section names exactly)</li>
           <li><b>Sex</b> (Male or Female)</li>
         </ul>
-        <form action="/batch_upload" method="POST" enctype="multipart/form-data" id="batch-upload-form">
+        <form action="index.php?r=batch_upload" method="POST" enctype="multipart/form-data" id="batch-upload-form">
           <input type="file" name="csv_file" accept=".csv" required />
           <button type="submit">UPLOAD CSV (Comma-Separated Values)</button>
         </form>
@@ -67,10 +67,10 @@
 
     <!-- Back to monitoring board link -->
     <div>
-      <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
+      <a id="dashboard-link" href="index.php?r=dashboard">← Back to Teacher Admin Monitoring Board</a>
     </div>
   </div>
 
-  <script src="/js/register_student.js"></script>
+  <script src="js/register_student.js?v=20250908"></script>
 </body>
 </html>

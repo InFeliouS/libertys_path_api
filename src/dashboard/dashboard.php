@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Redirect to login if not authenticated
 if (!isset($_SESSION['teacher_id'])) {
-    header("Location: /login");
+    header("Location: ./index.php?r=login");
     exit;
 }
 

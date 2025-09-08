@@ -7,7 +7,7 @@ function closeLogoutConfirmation() {
 }
 
 function confirmLogout() {
-  window.location.href = "/logout";
+  window.location.href = "index.php?r=logout";
 }**/
 
   function showLogoutConfirmation() {
@@ -19,5 +19,5 @@ function confirmLogout() {
   }
 
   function confirmLogout() {
-    window.location.href = "/libertys_path_api/logout";
+    window.location.href = "index.php?r=logout";
   }

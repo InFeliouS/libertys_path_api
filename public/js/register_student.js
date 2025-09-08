@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   // Fetch next student ID
-  fetch('/api/v1/next_student_id.php')
+  fetch('api/v1/next_student_id.php')
     .then(r => r.json())
     .then(json => {
       if (json.success) nextId = json.next_id;
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load sections into dropdown
   sectionSel.innerHTML = '<option>Loading sections…</option>';
-  fetch('/api/v1/sections.php')
+  fetch('api/v1/sections.php')
     .then(r => r.json())
     .then(json => {
       if (json.success) {
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
           `Student Registered!\n\nUsername: ${json.username}\n` +
           `Password: ${json.password}`
         );
-        window.location.href = '/dashboard';
+        window.location.href = 'index.php?r=dashboard';
       } else {
         alert(`Registration failed:\n${json.error||'Unknown error'}`);
       }

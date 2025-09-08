@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Protect route
 if (!isset($_SESSION['teacher_id'])) {
-    header("Location: /login");
+    header("Location: ./index.php?r=login");
     exit;
 }
 
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         !preg_match('/^\d{4}$/', $endYear)
     ) {
         // If invalid, reload form (you could pass an error here)
-        header("Location: /sections/create");
+        header("Location: ./index.php?r=sections/create");
         exit;
     }
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     // On success, go back to dashboard
-    header("Location: /dashboard");
+    header("Location: ./index.php?r=dashboard");
     exit;
 }
 

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!ids.length) return alert('No students selected.');
     if (!confirm('Delete selected students?')) return;
 
-    fetch('/api/v1/delete_students.php', {
+    fetch('api/v1/delete_students.php', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({student_ids: ids})

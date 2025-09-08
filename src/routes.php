@@ -1,91 +1,38 @@
 <?php
-// src/routes.php
-
-// Start session if none
+// src/routes.php — router for XAMPP without .htaccess
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+$route = isset($_GET['r']) ? trim($_GET['r'], "/") : "";
+if ($route === "" && (isset($_GET['route']) && $_GET['route'] !== "")) {
+    $route = trim($_GET['route'], "/");
+}
+if ($route === "") $route = "login";
 
-switch ($uri) {
-    case '':
-    case 'login':
-        require __DIR__ . '/../public/html/login.html';
-        break;
+switch ($route) {
+    case "login":              require __DIR__ . "/../public/html/login.html"; break;
+    case "login/process":      require __DIR__ . "/auth/login_process.php";    break;
+    case "logout":             require __DIR__ . "/auth/logout.php";           break;
 
-    case 'login/process':
-        require __DIR__ . '/auth/login_process.php';
-        break;
+    case "dashboard":          require __DIR__ . "/dashboard/dashboard.php";   break;
 
-    case 'logout':
-        require __DIR__ . '/auth/logout.php';
-        break;
+    case "sections/create":    require __DIR__ . "/dashboard/create_section.php"; break;
+    case "sections/detail":    require __DIR__ . "/dashboard/section_detail.php"; break;
+    case "sections/update":    require __DIR__ . "/dashboard/update_section.php"; break;
+    case "sections/deleteSection":
+                               require __DIR__ . "/dashboard/delete_section.php"; break;
+    case "sections/download_csv":
+                               require __DIR__ . "/dashboard/download_section_students_csv.php"; break;
 
-    case 'dashboard':
-        require __DIR__ . '/dashboard/dashboard.php';
-        break;
+    case "register":           require __DIR__ . "/../public/html/register_student.html"; break;
+    case "register/process":   require __DIR__ . "/dashboard/student_register.php";       break;
 
-    case 'register':
-        require __DIR__ . '/../public/html/register_student.html';
-        break;
-
-    case 'register/process':
-        require __DIR__ . '/dashboard/student_register.php';
-        break;
-
-    case 'sections/create':
-        require __DIR__ . '/../public/html/create_section.html';
-        break;
-
-    case 'sections/create/process':
-        require __DIR__ . '/dashboard/create_section.php';
-        break;
-
-    case 'sections/update':
-        require __DIR__ . '/dashboard/update_section.php';
-        break;
-
-    case 'sections/deleteSection':
-        require __DIR__ . '/dashboard/delete_section.php';
-        break;
-
-    case 'sections/view':
-        require __DIR__ . '/dashboard/section_detail.php';
-        break;
-
-    case 'students/update':
-        require __DIR__ . '/dashboard/update_student.php';
-        break;
-
-    case 'sections/delete':
-        require __DIR__ . '/dashboard/delete_students.php';
-        break;
-
-    case 'api/v1/student_info.php':
-    case 'api/v1/student_info':
-        require __DIR__ . '/api/v1/student_info.php';
-        break;
-
-    case 'api/v1/update_qpr_status.php':
-    case 'api/v1/update_qpr_status':
-        require __DIR__ . '/api/v1/update_qpr_status.php';
-        break;
-
-    // Download CSV (with or without .php)
-    case 'download_section_students_csv':
-    case 'download_section_students_csv.php':
-        require __DIR__ . '/dashboard/download_section_students_csv.php';
-        break;
-
-    // Batch upload (with or without .php)
-    case 'batch_upload':
-    case 'batch_upload.php':
-        require __DIR__ . '/dashboard/batch_upload.php';
-        break;
+    case "batch_upload":       require __DIR__ . "/dashboard/batch_upload.php"; break;
 
     default:
         http_response_code(404);
-        require __DIR__ . '/../public/html/errors/404.html';
-        break;
+        $p = __DIR__ . "/../public/html/errors/404.html";
+        if (file_exists($p)) { require $p; }
+        else { echo "404"; }
 }

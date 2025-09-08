@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['teacher_username'] = $user['username'];
 
             // Redirect to dashboard via front-controller
-            header("Location: /dashboard");
+            header("Location: ./index.php?r=dashboard");
             exit;
         } else {
             echo "Invalid username or password!";

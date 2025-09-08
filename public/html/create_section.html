@@ -5,14 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Liberty's Path | New Section</title>
-  <link rel="icon" href="/assets/libertys-path-logo-2d.png" type="image/png"/>
-  <link rel="stylesheet" href="/css/create_section.css"/>
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png"/>
+  <link rel="stylesheet" href="css/create_section.css"/>
 </head>
 <body>
 <main id="main-container">
   <section id="form-container">
     <h2 id="form-title">CREATE NEW SECTION</h2>
-    <form id="create-section-form" action="/sections/create/process" method="POST">
+    <form id="create-section-form" action="index.php?r=sections/create" method="POST">
       
       <label for="section_name">SECTION NAME</label>
       <input type="text" id="section_name" name="section_name" placeholder="ST. DIEGO" required/>
@@ -34,9 +34,9 @@
 
   <!-- Back to monitoring board link -->
   <div>
-    <a id="dashboard-link" href="/dashboard">← Back to Teacher Admin Monitoring Board</a>
+    <a id="dashboard-link" href="index.php?r=dashboard">← Back to Teacher Admin Monitoring Board</a>
   </div>
 
-  <script src="/js/create_section_form.js"></script>
+  <script src="js/create_section_form.js"></script>
 </body>
 </html>
