@@ -266,6 +266,11 @@ main {
   top: 210px; 
 }
 
+.top-control.third {
+  top: 260px; /* below the .second */
+}
+
+
 .top-control:hover {
   background-color: #944b02;
 }

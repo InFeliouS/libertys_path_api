@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guard Question Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
+  <link rel="stylesheet" href="css/dashboard_view.css" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
+    h1 { margin-bottom: 10px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px; margin-bottom: 16px; background:#fff; }
+    label { font-weight: 600; display:block; margin: 8px 0 6px; }
+    input[type=text], textarea, input[type=number] { width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; }
+    textarea { min-height: 80px; }
+    button { padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer; }
+    .btn-primary { background:#2563eb; color:white; }
+    .btn-ghost { background:#f3f4f6; }
+    .hidden { display:none; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { border:1px solid #e5e7eb; padding:8px; text-align:left; vertical-align: top; }
+    th { background:#f9fafb; }
+    .row-actions button { margin-right:6px; }
+    .muted { color:#6b7280; font-size: 12px; }
+    .grid2 { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+  </style>
+</head>
+<body>
+  <h1>Guard Question Bank</h1>
+  <p class="muted">Route: <code>index.php?r=questions/manage</code></p>
+
+  <!-- Create / Update Form -->
+  <div class="card">
+    <h2 id="formTitle">Add New Question</h2>
+    <form id="qForm" autocomplete="off">
+      <input type="hidden" id="qId" />
+      <label for="question_text">Question</label>
+      <textarea id="question_text" required></textarea>
+
+      <div class="grid2">
+        <div>
+          <label for="choice1">Choice 0</label>
+          <input type="text" id="choice1" required />
+        </div>
+        <div>
+          <label for="choice2">Choice 1</label>
+          <input type="text" id="choice2" required />
+        </div>
+        <div>
+          <label for="choice3">Choice 2</label>
+          <input type="text" id="choice3" required />
+        </div>
+        <div>
+          <label for="choice4">Choice 3</label>
+          <input type="text" id="choice4" required />
+        </div>
+      </div>
+
+      <label for="correct_index">Correct Index (0–3)</label>
+      <input type="number" id="correct_index" min="0" max="3" required />
+
+      <div style="margin-top:10px">
+        <button type="submit" class="btn-primary" id="submitBtn">Create</button>
+        <button type="button" class="btn-ghost hidden" id="cancelEditBtn">Cancel Edit</button>
+      </div>
+      <div id="formMsg" class="muted" style="margin-top:6px"></div>
+    </form>
+  </div>
+
+  <!-- Table -->
+  <div class="card">
+    <h2>Existing Questions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:60px;">ID</th>
+          <th>Question</th>
+          <th>Choices</th>
+          <th style="width:110px;">Correct</th>
+          <th style="width:160px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="qTbody"></tbody>
+    </table>
+  </div>
+
+  <script src="js/questions_manage.js"></script>
+</body>
+</html>
