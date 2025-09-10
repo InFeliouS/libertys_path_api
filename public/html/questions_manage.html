@@ -6,30 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
   <link rel="stylesheet" href="css/dashboard_view.css" />
-  <style>
-    body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
-    h1 { margin-bottom: 10px; }
-    .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px; margin-bottom: 16px; background:#fff; }
-    label { font-weight: 600; display:block; margin: 8px 0 6px; }
-    input[type=text], textarea, input[type=number] { width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; }
-    textarea { min-height: 80px; }
-    button { padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer; }
-    .btn-primary { background:#2563eb; color:white; }
-    .btn-ghost { background:#f3f4f6; }
-    .hidden { display:none; }
-    table { width:100%; border-collapse:collapse; }
-    th, td { border:1px solid #e5e7eb; padding:8px; text-align:left; vertical-align: top; }
-    th { background:#f9fafb; }
-    .row-actions button { margin-right:6px; }
-    .muted { color:#6b7280; font-size: 12px; }
-    .grid2 { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
-  </style>
+  <!-- Page-specific styles + scroll fix -->
+  <link rel="stylesheet" href="css/questions_manage.css" />
 </head>
+
 <body>
   <h1>Guard Question Bank</h1>
-  <p class="muted">Route: <code>index.php?r=questions/manage</code></p>
+  <!--<p class="muted">Route: <code>index.php?r=questions/manage</code></p>-->
 
-  <!-- Create / Update Form -->
+  <!--Create / Update Form -->
   <div class="card">
     <h2 id="formTitle">Add New Question</h2>
     <form id="qForm" autocomplete="off">
@@ -65,23 +50,23 @@
       </div>
       <div id="formMsg" class="muted" style="margin-top:6px"></div>
     </form>
-  </div>
 
-  <!-- Table -->
-  <div class="card">
-    <h2>Existing Questions</h2>
-    <table>
-      <thead>
-        <tr>
-          <th style="width:60px;">ID</th>
-          <th>Question</th>
-          <th>Choices</th>
-          <th style="width:110px;">Correct</th>
-          <th style="width:160px;">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="qTbody"></tbody>
-    </table>
+    <!-- Table -->
+    <div class="card">
+      <h2>Existing Questions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px;">ID</th>
+            <th>Question</th>
+            <th>Choices</th>
+            <th style="width:110px;">Correct</th>
+            <th style="width:160px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="qTbody"></tbody>
+      </table>
+    </div>
   </div>
 
   <script src="js/questions_manage.js"></script>
