@@ -62,6 +62,19 @@ switch ($route) {
         require __DIR__ . "/../public/api/v1/guard_questions/unity_list.php";
         break;
 
+    case "leaderboard":
+        require __DIR__ . "/../public/html/leaderboard.html";
+        break;
+
+    case "api/leaderboard/team/submit":
+        require __DIR__ . "/../public/api/v1/leaderboard/team_submit.php";
+        break;
+
+    case "api/leaderboard/team/top":
+        require __DIR__ . "/../public/api/v1/leaderboard/team_top.php";
+        break;
+
+
     default:
         http_response_code(404);
         $p = __DIR__ . "/../public/html/errors/404.html";

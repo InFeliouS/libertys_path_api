@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 27, 2025 at 04:13 AM
+-- Generation Time: Sep 13, 2025 at 02:30 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -94,6 +94,52 @@ INSERT INTO `fourth_qpr_attempts` (`id`, `student_id`, `question1`, `question2`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `guard_questions`
+--
+
+CREATE TABLE `guard_questions` (
+  `id` int(11) NOT NULL,
+  `question_text` text NOT NULL,
+  `choice1` varchar(255) NOT NULL,
+  `choice2` varchar(255) NOT NULL,
+  `choice3` varchar(255) NOT NULL,
+  `choice4` varchar(255) NOT NULL,
+  `correct_index` tinyint(4) NOT NULL CHECK (`correct_index` between 0 and 3),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `guard_questions`
+--
+
+INSERT INTO `guard_questions` (`id`, `question_text`, `choice1`, `choice2`, `choice3`, `choice4`, `correct_index`, `created_at`) VALUES
+(1, 'this is a test question', 'Answer', 'test', 'test', 'test', 0, '2025-09-09 14:19:58'),
+(2, 'this is the 2nd test question', 'test', 'test', 'test', 'answer', 3, '2025-09-09 14:20:18'),
+(3, 'sertwert', 'qwerwqefqwef', 'qwefqwef', 'qwefqwef', 'qwefqwef', 1, '2025-09-09 15:58:09'),
+(4, 'New Question 4', '123', '651', 'ANswer', '163', 2, '2025-09-09 18:47:42');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leaderboard_team_runs`
+--
+
+CREATE TABLE `leaderboard_team_runs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `player1_name` varchar(64) NOT NULL,
+  `player2_name` varchar(64) NOT NULL,
+  `score` int(11) NOT NULL,
+  `time_left` int(11) NOT NULL DEFAULT 0,
+  `correct` int(11) NOT NULL DEFAULT 0,
+  `mistakes` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `perfect` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `section` varchar(64) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `second_qpr_attempts`
 --
 
@@ -135,10 +181,11 @@ CREATE TABLE `sections` (
 --
 
 INSERT INTO `sections` (`id`, `section_name`, `start_school_year`, `end_school_year`, `created_at`) VALUES
-(2, 'ST. ALBERT', '2025', '2026', '2025-05-17 13:37:39'),
-(5, 'ST.PAUL', '2025', '2026', '2025-05-20 19:46:36'),
+(2, 'ST. ALBERTU', '2025', '2026', '2025-05-17 13:37:39'),
 (7, 'St. Matthew', '2025', '2026', '2025-05-23 10:46:56'),
-(8, 'St. John', '2025', '2026', '2025-05-23 10:50:39');
+(8, 'St. John', '2025', '2026', '2025-05-23 10:50:39'),
+(9, 'ST.DIEGO', '2027', '2028', '2025-09-08 12:22:13'),
+(10, 'ST. ALBERTU (2025–2026)', '2025', '2026', '2025-09-08 12:49:39');
 
 -- --------------------------------------------------------
 
@@ -203,7 +250,21 @@ INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section
 (59, 'Abigail', 'Marie', 'King', 8, 'Female', '2025-05-23 10:50:41'),
 (60, 'Jackson', 'Ryan', 'Wright', 8, 'Male', '2025-05-23 10:50:41'),
 (61, 'Lily', 'Isabelle', 'Scott', 8, 'Female', '2025-05-23 10:50:41'),
-(62, 'Aiden', 'Thomas', 'Adams', 8, 'Male', '2025-05-23 10:50:41');
+(62, 'Aiden', 'Thomas', 'Adams', 8, 'Male', '2025-05-23 10:50:41'),
+(63, 'TESASDF', 'TE23D', '23DSAW', 9, 'Female', '2025-09-08 12:29:50'),
+(64, 'TEST', 'WE3TEST', 'TESTETS', 9, 'Male', '2025-09-08 12:31:17'),
+(65, 'ASD', 'ASD', 'ASD', 2, 'Male', '2025-09-08 12:49:05'),
+(66, 'Juan', 'Cruz', 'Dela', 10, 'Male', '2025-09-08 12:49:39'),
+(67, 'Maria', NULL, 'Lopez', 10, 'Female', '2025-09-08 12:49:39'),
+(68, 'Pedro', 'Santos', 'Reyes', 10, 'Male', '2025-09-08 12:49:39'),
+(69, 'Juan', 'Cruz', 'Dela', 10, 'Male', '2025-09-08 12:50:45'),
+(70, 'Maria', NULL, 'Lopez', 10, 'Female', '2025-09-08 12:50:45'),
+(71, 'Pedro', 'Santos', 'Reyes', 10, 'Male', '2025-09-08 12:50:45'),
+(72, 'AWERWASDFASDFASD', 'DSFSAE', 'SWEFE', 2, 'Female', '2025-09-08 12:53:05'),
+(73, '23423', 'DF23D23D', 'ASDFAASDF', 8, 'Female', '2025-09-08 12:55:41'),
+(74, 'Juan', 'Cruz', 'Dela', 10, 'Male', '2025-09-08 12:56:00'),
+(75, 'Maria', NULL, 'Lopez', 10, 'Female', '2025-09-08 12:56:00'),
+(76, 'Pedro', 'Santos', 'Reyes', 10, 'Male', '2025-09-08 12:56:00');
 
 -- --------------------------------------------------------
 
@@ -266,7 +327,21 @@ INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `passwor
 (59, 59, 'aking59', '$2y$10$JzgQxCsOIXXkx8zOPMxCpepoNrwBwoLLWrtLMfrjdb58tdv9RQZr2', '2025-05-23 10:50:41'),
 (60, 60, 'jwright60', '$2y$10$xzCuCS3J8nT7qx9nLXq/seDUcQNMinT0WnovRqJnAUnm57RR4zpn6', '2025-05-23 10:50:41'),
 (61, 61, 'lscott61', '$2y$10$KjhxF2cPIy0SyR9tlXTbY.88GFbCdx2plDdwBz0EAwd0AGIGWK/ie', '2025-05-23 10:50:41'),
-(62, 62, 'aadams62', '$2y$10$hw/Ubavu7dOLLCWhzIjv4.trsp3UvxAPpC2u4nzNyEBp6VkhrO5bG', '2025-05-23 10:50:41');
+(62, 62, 'aadams62', '$2y$10$hw/Ubavu7dOLLCWhzIjv4.trsp3UvxAPpC2u4nzNyEBp6VkhrO5bG', '2025-05-23 10:50:41'),
+(63, 63, 't23dsaw63', '$2y$10$NVPCSmtdUnQd0meS6zJA8OH4G/3XmQHcG85siwXsPy7vZ55aJ0Rba', '2025-09-08 12:29:50'),
+(64, 64, 'ttestets64', '$2y$10$2ch1rtgZQ4Gdk8XOXv/dB.uowYriAGQT7UJ3v/HUQKUWwGFXQdTYy', '2025-09-08 12:31:17'),
+(65, 65, 'aasd65', '$2y$10$3Zi.ZOyQICHHV3/iuOczTO7KpaXpymLufqEt0VBa2zqIaGylOLM2O', '2025-09-08 12:49:05'),
+(66, 66, 'jdela66', '$2y$10$DU0ULFFU540GZbgacHp/0ue/lvVSDNUA0Q10DZ.H063s.B2UrqRoO', '2025-09-08 12:49:39'),
+(67, 67, 'mlopez67', '$2y$10$A3WqN8QvAL/rGUUErA7Y5OHcrRrj.83F5QzKWEEqKYg5.ictJBeeC', '2025-09-08 12:49:39'),
+(68, 68, 'preyes68', '$2y$10$sX6gVIj/BaAO7l32zdyBduZUZuJ.qq5Bd0uNnSmHyEjnN4RPKttKy', '2025-09-08 12:49:40'),
+(69, 69, 'jdela69', '$2y$10$xQ/hw6KkHTMocKeWtUoHYufpvHP4o2w41BAPjSQQp0PUA3FsVMMRm', '2025-09-08 12:50:45'),
+(70, 70, 'mlopez70', '$2y$10$QvdP2t0yQE7ytGPBkTXc.uP6Yxm6jaxLNgFz4SSUjSR5.zE6F9Pgm', '2025-09-08 12:50:45'),
+(71, 71, 'preyes71', '$2y$10$pyONafLgyk2zxn0JWjE3cemkHu2zcm8ZQtuORl/Ed5HGZnUPXnC7S', '2025-09-08 12:50:45'),
+(72, 72, 'aswefe72', '$2y$10$oOgvtqUw3DQw3cpmgvauh.YgrC.ij7rBwBBqUwEmWHIWO7mg6N4Oi', '2025-09-08 12:53:05'),
+(73, 73, '2asdfaasdf73', '$2y$10$Hpf9aMqecWGTpWhn3WVbA..T23Y7xS0Wxfm2iouX9kLg/ASY4MYe.', '2025-09-08 12:55:41'),
+(74, 74, 'jdela74', '$2y$10$uIZK6bSXO3a7KJu4pjXz8.94puDZ1oEg.lfN/GhRCl8zya/7m8iKS', '2025-09-08 12:56:00'),
+(75, 75, 'mlopez75', '$2y$10$tK25.yyO2//uLJMZHKz.BuXjHDqXrD0hZMfzeSivg5s3V6b0Zi2iy', '2025-09-08 12:56:00'),
+(76, 76, 'preyes76', '$2y$10$//Ju1zvF.yDdjW9TIb0PSusEBwFVYUDwCyjeHdJ1bFDVPDd8tVjOa', '2025-09-08 12:56:00');
 
 -- --------------------------------------------------------
 
@@ -335,7 +410,21 @@ INSERT INTO `student_progress` (`id`, `student_id`, `first_qpr_status`, `first_q
 (59, 59, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:50:41'),
 (60, 60, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:50:41'),
 (61, 61, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:50:41'),
-(62, 62, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:50:41');
+(62, 62, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-05-23 10:50:41'),
+(63, 63, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:29:50'),
+(64, 64, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:31:17'),
+(65, 65, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:49:05'),
+(66, 66, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:49:39'),
+(67, 67, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:49:39'),
+(68, 68, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:49:40'),
+(69, 69, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:50:45'),
+(70, 70, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:50:45'),
+(71, 71, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:50:45'),
+(72, 72, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:53:05'),
+(73, 73, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:55:41'),
+(74, 74, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:56:00'),
+(75, 75, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:56:00'),
+(76, 76, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, 'unvisited', 0, '2025-09-08 12:56:00');
 
 -- --------------------------------------------------------
 
@@ -406,6 +495,22 @@ ALTER TABLE `fourth_qpr_attempts`
   ADD UNIQUE KEY `uq_fourth_student` (`student_id`);
 
 --
+-- Indexes for table `guard_questions`
+--
+ALTER TABLE `guard_questions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `leaderboard_team_runs`
+--
+ALTER TABLE `leaderboard_team_runs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_score_created` (`score`,`created_at`),
+  ADD KEY `idx_section_score` (`section`,`score`),
+  ADD KEY `idx_p1` (`player1_name`),
+  ADD KEY `idx_p2` (`player2_name`);
+
+--
 -- Indexes for table `second_qpr_attempts`
 --
 ALTER TABLE `second_qpr_attempts`
@@ -471,6 +576,18 @@ ALTER TABLE `fourth_qpr_attempts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `guard_questions`
+--
+ALTER TABLE `guard_questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `leaderboard_team_runs`
+--
+ALTER TABLE `leaderboard_team_runs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `second_qpr_attempts`
 --
 ALTER TABLE `second_qpr_attempts`
@@ -480,25 +597,25 @@ ALTER TABLE `second_qpr_attempts`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `student_accounts`
 --
 ALTER TABLE `student_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `student_progress`
 --
 ALTER TABLE `student_progress`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `teachers`
