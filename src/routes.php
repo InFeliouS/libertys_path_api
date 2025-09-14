@@ -75,7 +75,13 @@ switch ($route) {
         require __DIR__ . '/../public/api/v1/leaderboard/team_top_by_section.php';
         break;
 
+    case 'api/student/register':
+        require __DIR__ . '/../public/api/v1/student_register.php';
+        break;
 
+    case 'api/student/pair_login':
+        require __DIR__ . '/../public/api/v1/pair_login.php';
+        break;
 
     default:
         http_response_code(404);

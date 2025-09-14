@@ -1,140 +1,92 @@
 <?php
 // src/dashboard/student_register.php
+declare(strict_types=1);
 
-// only start session if none
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+if (session_status() === PHP_SESSION_NONE) session_start();
+header('Content-Type: application/json; charset=utf-8');
 
-// must be teacher
 if (!isset($_SESSION['teacher_id'])) {
-    http_response_code(401);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'error'   => 'Not authenticated'
-    ]);
-    exit;
+  http_response_code(401);
+  echo json_encode(['success'=>false,'error'=>'Not authenticated']);
+  exit;
 }
-
-// only POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'success' => false,
-        'error'   => 'Must POST'
-    ]);
-    exit;
-}
-
-// always return JSON
-header('Content-Type: application/json');
 
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../utils/student_helpers.php';
 
-// sanitize inputs
-$given_name  = strtoupper(trim($_POST['given_name']  ?? ''));
-$middle_name = strtoupper(trim($_POST['middle_name'] ?? ''));
-$last_name   = strtoupper(trim($_POST['last_name']   ?? ''));
-$section_id  = intval($_POST['section_id'] ?? 0);
-$birth_sex   = $_POST['birth_sex'] ?? '';
-if (!in_array($birth_sex, ['Male','Female'], true)) {
-    $birth_sex = '';
+function g(array $a, string $k): string {
+  $v = $a[$k] ?? '';
+  return is_string($v) ? trim($v) : '';
 }
 
-// validation
-if (
-    !$given_name ||
-    !$last_name ||
-    !$section_id ||
-    !$birth_sex
-) {
-    http_response_code(400);
-    echo json_encode([
-        'success' => false,
-        'error'   => 'All required fields must be filled.'
-    ]);
-    exit;
+$given  = g($_POST, 'given_name');
+$middle = g($_POST, 'middle_name');
+$last   = g($_POST, 'last_name');
+$sex    = g($_POST, 'birth_sex');
+$sectId = (int)($_POST['section_id'] ?? 0);
+
+if ($given === '' || $last === '' || $sectId <= 0) {
+  http_response_code(400);
+  echo json_encode(['success'=>false,'error'=>'Missing required fields']);
+  exit;
 }
-
-// compute the next student ID (so the JS preview matches what we’ll insert)
-$nextId = null;
-try {
-    $r = $pdo->query("SHOW TABLE STATUS LIKE 'students'")->fetch(PDO::FETCH_ASSOC);
-    $nextId = (int)$r['Auto_increment'];
-} catch (\Throwable $e) {
-    // fallback, let DB assign it
-}
-
-// generate credentials
-$uBase = strtolower(substr($given_name,0,1)) . strtolower(str_replace(' ','',$last_name));
-$username = $nextId
-    ? $uBase . $nextId
-    : $uBase;
-
-$pBase = $middle_name ?: $given_name;
-$pBase = str_replace(' ','',$pBase);
-$passwordPlain = $nextId
-    ? ucfirst(strtolower($pBase)) . $nextId
-    : ucfirst(strtolower($pBase));
-
-// hash it
-$passwordHash = password_hash($passwordPlain, PASSWORD_DEFAULT);
 
 try {
-    $pdo->beginTransaction();
-
-    // 1) students
-    $stmt = $pdo->prepare("
-        INSERT INTO students
-          (given_name, middle_name, last_name, section_id, birth_sex)
-        VALUES (?, ?, ?, ?, ?)
-    ");
-    $stmt->execute([
-        $given_name,
-        $middle_name ?: null,
-        $last_name,
-        $section_id,
-        $birth_sex
-    ]);
-    $sid = $pdo->lastInsertId();
-
-    // 2) accounts
-    $stmt = $pdo->prepare("
-        INSERT INTO student_accounts
-          (student_id, username, password)
-        VALUES (?, ?, ?)
-    ");
-    $stmt->execute([
-        $sid,
-        $username,
-        $passwordHash
-    ]);
-
-    // 3) progress (leverage DB defaults for statuses & retries)
-    $stmt = $pdo->prepare("
-        INSERT INTO student_progress (student_id)
-        VALUES (?)
-    ");
-    $stmt->execute([$sid]);
-
-    $pdo->commit();
-
-    // respond JSON
-    echo json_encode([
-        'success'  => true,
-        'username' => $username,
-        'password' => $passwordPlain
-    ]);
+  // section must exist
+  $s = $pdo->prepare("SELECT id, section_name FROM sections WHERE id = ?");
+  $s->execute([$sectId]);
+  if (!$s->fetch(PDO::FETCH_ASSOC)) {
+    http_response_code(422);
+    echo json_encode(['success'=>false,'error'=>'Section does not exist']);
     exit;
-}
-catch (\Exception $e) {
-    $pdo->rollBack();
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'error'   => 'Registration failed: ' . $e->getMessage()
-    ]);
-    exit;
+  }
+
+  // canonicalize names
+  $givenU  = mb_strtoupper($given);
+  $middleU = mb_strtoupper($middle);
+  $lastU   = mb_strtoupper($last);
+
+  // username: jmcruz / jcruz + numeric suffix if taken (NO student number)
+  $first = mb_substr($givenU, 0, 1);
+  $mid   = ($middleU !== '') ? mb_substr($middleU, 0, 1) : '';
+  $base  = strtolower($first . $mid . preg_replace('/\s+|-|\'/u', '', $lastU));
+  $uname = $base;
+  $try = 2;
+  $chk = $pdo->prepare("SELECT 1 FROM student_accounts WHERE username = ?");
+  while (true) {
+    $chk->execute([$uname]);
+    if ($chk->fetchColumn() === false) break;
+    $uname = $base . $try;
+    $try++;
+  }
+
+  // password: keep your existing flavor, but without student number -> add random 4 digits
+  $seed = $middle !== '' ? $middle : $given;
+  $seed = preg_replace('/\s+/', '', strtolower($seed));
+  $passwordPlain = ucfirst($seed) . random_int(1000, 9999);
+  $passwordHash  = password_hash($passwordPlain, PASSWORD_DEFAULT);
+
+  $pdo->beginTransaction();
+
+  $insS = $pdo->prepare("
+    INSERT INTO students (given_name, middle_name, last_name, section_id, birth_sex, created_at)
+    VALUES (?, ?, ?, ?, ?, NOW())
+  ");
+  $insS->execute([$givenU, $middleU, $lastU, $sectId, $sex !== '' ? $sex : null]);
+  $student_id = (int)$pdo->lastInsertId();
+
+  $insA = $pdo->prepare("
+    INSERT INTO student_accounts (student_id, username, password_hash, created_at)
+    VALUES (?, ?, ?, NOW())
+  ");
+  $insA->execute([$student_id, $uname, $passwordHash]);
+
+  insert_attempt_rows_if_missing($pdo, $student_id);
+
+  $pdo->commit();
+  echo json_encode(['success'=>true,'student_id'=>$student_id,'username'=>$uname,'password'=>$passwordPlain]);
+} catch (Throwable $e) {
+  if ($pdo->inTransaction()) $pdo->rollBack();
+  http_response_code(500);
+  echo json_encode(['success'=>false,'error'=>$e->getMessage()]);
 }
