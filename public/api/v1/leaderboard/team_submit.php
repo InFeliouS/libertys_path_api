@@ -1,95 +1,123 @@
 <?php
-// public/api/v1/leaderboard/team_submit.php
-header('Content-Type: application/json; charset=utf-8');
+/**
+ * POST a team run to the leaderboard.
+ *
+ * Accepts JSON or x-www-form-urlencoded:
+ * {
+ *   "player1_name": "Alice",
+ *   "player2_name": "Bob",
+ *   "section_id":  10,              // preferred (numeric)
+ *   "section":     "4A",            // fallback (string) if section_id omitted
+ *   "score":       1234,
+ *   "time_left":   87,              // seconds (int)
+ *   "correct":     6,
+ *   "mistakes":    0,               // 0 or 1
+ *   "perfect":     1                // 0 or 1
+ * }
+ *
+ * Response: { ok:true, id:<insert_id>, section:"<resolved section name>" }
+ */
+
+declare(strict_types=1);
+
+// Basic CORS for Unity editor/testing (tweak/lock down as you wish)
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit; }
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  http_response_code(405);
-  echo json_encode(['success'=>false, 'error'=>'Method not allowed']); exit;
+header('Access-Control-Allow-Headers: Content-Type, Accept');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
 }
 
-$root = dirname(__DIR__, 4); // up to project root
-require_once $root . '/vendor/autoload.php';
-
-// load env
-if (file_exists($root.'/.env')) {
-  $dotenv = Dotenv\Dotenv::createImmutable($root);
-  $dotenv->safeLoad();
-}
-
-$host = $_ENV['DB_HOST'] ?? 'localhost';
-$db   = $_ENV['DB_NAME'] ?? 'libertys_path_db';
-$user = $_ENV['DB_USER'] ?? 'root';
-$pass = $_ENV['DB_PASS'] ?? '';
-$dsn  = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+header('Content-Type: application/json');
 
 try {
-  $pdo = new PDO($dsn, $user, $pass, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-  ]);
+    require_once __DIR__ . '/../../../../src/config/db.php'; // provides $pdo (PDO)
+
+    // Parse JSON body (preferred) or fallback to POST
+    $raw = file_get_contents('php://input');
+    $isJson = false;
+    if ($raw !== false && strlen(trim($raw)) > 0) {
+        $decoded = json_decode($raw, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            $_POST = $decoded;
+            $isJson = true;
+        }
+    }
+
+    // Input helpers
+    $player1 = trim((string)($_POST['player1_name'] ?? ''));
+    $player2 = trim((string)($_POST['player2_name'] ?? ''));
+    $score   = (int)($_POST['score']      ?? 0);
+    $tleft   = (int)($_POST['time_left']  ?? 0);
+    $correct = (int)($_POST['correct']    ?? 0);
+    $mist    = (int)($_POST['mistakes']   ?? 0);
+    $perf    = (int)($_POST['perfect']    ?? 0);
+
+    $sectionId  = isset($_POST['section_id']) ? (int)$_POST['section_id'] : 0;
+    $sectionStr = trim((string)($_POST['section'] ?? ''));
+
+    // Validate basic fields
+    if ($player1 === '' && $player2 === '') {
+        http_response_code(400);
+        echo json_encode(['ok' => false, 'error' => 'Missing player names.']);
+        exit;
+    }
+
+    // Resolve section name
+    $sectionName = '';
+    if ($sectionId > 0) {
+        $s = $pdo->prepare("SELECT section_name FROM sections WHERE id = :id");
+        $s->execute([':id' => $sectionId]);
+        $sectionName = (string)$s->fetchColumn();
+        if ($sectionName === '') {
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'Section not found for section_id.']);
+            exit;
+        }
+    } else {
+        // Fallback to provided string (current schema uses text column "section")
+        if ($sectionStr === '') {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'Provide section_id or section.']);
+            exit;
+        }
+        $sectionName = $sectionStr;
+    }
+
+    // Clamp/normalize numbers
+    $score   = max(0, $score);
+    $tleft   = max(0, $tleft);
+    $correct = max(0, $correct);
+    $mist    = ($mist > 0) ? 1 : 0;
+    $perf    = ($perf > 0) ? 1 : 0;
+
+    // Insert
+    $sql = "
+        INSERT INTO leaderboard_team_runs
+        (player1_name, player2_name, score, time_left, correct, mistakes, perfect, section, created_at)
+        VALUES
+        (:p1, :p2, :score, :tleft, :correct, :mistakes, :perfect, :section, NOW())
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':p1'       => $player1,
+        ':p2'       => $player2,
+        ':score'    => $score,
+        ':tleft'    => $tleft,
+        ':correct'  => $correct,
+        ':mistakes' => $mist,
+        ':perfect'  => $perf,
+        ':section'  => $sectionName,
+    ]);
+
+    echo json_encode([
+        'ok'           => true,
+        'id'           => (int)$pdo->lastInsertId(),
+        'section'      => $sectionName,
+        'was_json'     => $isJson,
+    ], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
-  http_response_code(500);
-  echo json_encode(['success'=>false, 'error'=>'DB connection failed']); exit;
-}
-
-// Ensure table exists (safe if already created)
-$pdo->exec("
-CREATE TABLE IF NOT EXISTS leaderboard_team_runs (
-  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  player1_name VARCHAR(64) NOT NULL,
-  player2_name VARCHAR(64) NOT NULL,
-  score INT NOT NULL,
-  time_left INT NOT NULL DEFAULT 0,
-  correct INT NOT NULL DEFAULT 0,
-  mistakes TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  perfect TINYINT UNSIGNED NOT NULL DEFAULT 0,
-  section VARCHAR(64) NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  KEY idx_score (score, created_at),
-  KEY idx_section_score (section, score, created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-");
-
-// Read JSON body
-$raw = file_get_contents('php://input');
-$data = json_decode($raw, true);
-if (!is_array($data)) {
-  http_response_code(400);
-  echo json_encode(['success'=>false, 'error'=>'Invalid JSON']); exit;
-}
-
-// Basic validation + defaults
-$player1 = trim((string)($data['player1_name'] ?? ''));
-$player2 = trim((string)($data['player2_name'] ?? ''));
-$score   = (int)($data['score'] ?? 0);
-$time    = (int)($data['time_left'] ?? 0);
-$correct = (int)($data['correct'] ?? 0);
-$mist    = (int)($data['mistakes'] ?? 0);
-$perf    = (int)($data['perfect'] ?? 0);
-$section = trim((string)($data['section'] ?? ''));
-
-if ($player1 === '' || $player2 === '') {
-  http_response_code(422);
-  echo json_encode(['success'=>false, 'error'=>'Missing player names']); exit;
-}
-
-try {
-  $stmt = $pdo->prepare("
-    INSERT INTO leaderboard_team_runs
-    (player1_name, player2_name, score, time_left, correct, mistakes, perfect, section)
-    VALUES (:p1, :p2, :score, :time_left, :correct, :mistakes, :perfect, :section)
-  ");
-  $stmt->execute([
-    ':p1'=>$player1, ':p2'=>$player2,
-    ':score'=>$score, ':time_left'=>$time, ':correct'=>$correct,
-    ':mistakes'=>$mist, ':perfect'=>$perf, ':section'=>($section!==''?$section:null)
-  ]);
-  echo json_encode(['success'=>true, 'message'=>'Saved']);
-} catch (Throwable $e) {
-  http_response_code(500);
-  echo json_encode(['success'=>false, 'error'=>'Insert failed']);
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }

@@ -1,0 +1,84 @@
+/* section_leaderboard.css */
+/* Card spacing and small leaderboard tweaks so it matches your theme */
+.card + .card {
+  margin-top: 18px;
+}
+
+.lb-muted {
+  color: #79592a;
+}
+.lb-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 10px;
+}
+.lb-toolbar .spacer {
+  flex: 1;
+}
+.lb-select {
+  background: #fff;
+  color: #3b2f2f;
+  border: 1px solid #d6ae7b;
+  border-radius: 10px;
+  padding: 8px 10px;
+  outline: none;
+}
+.lb-select:focus {
+  background: #fffaf0;
+  box-shadow: 0 0 0 2px #c68b59;
+}
+.lb-checkbox {
+  appearance: auto;
+}
+.lb-check-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.lb-tablewrap {
+  overflow: auto;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+#lbTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+#lbTable thead th {
+  position: sticky;
+  top: 0;
+  background: #f0f0f0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+  text-align: left;
+}
+#lbTable td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+}
+#lbTable tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+#lbTable tbody tr:hover {
+  background: #f5f5f5;
+}
+
+.lb-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 2px 0;
+  color: #79592a;
+  font-size: 13px;
+}

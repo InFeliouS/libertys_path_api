@@ -66,13 +66,15 @@ switch ($route) {
         require __DIR__ . "/../public/html/leaderboard.html";
         break;
 
-    case "api/leaderboard/team/submit":
-        require __DIR__ . "/../public/api/v1/leaderboard/team_submit.php";
+    // --- API: Leaderboard submit + top-by-section (so Unity can call index.php?r=...) ---
+    case 'api/leaderboard/team/submit':
+        require __DIR__ . '/../public/api/v1/leaderboard/team_submit.php';
         break;
 
-    case "api/leaderboard/team/top":
-        require __DIR__ . "/../public/api/v1/leaderboard/team_top.php";
+    case 'api/leaderboard/team/top_by_section':
+        require __DIR__ . '/../public/api/v1/leaderboard/team_top_by_section.php';
         break;
+
 
 
     default:

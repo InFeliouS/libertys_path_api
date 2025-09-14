@@ -77,7 +77,7 @@
   text-align: center;
 }
 
-/* ===== In-row “Edit” Button ===== */
+/* ===== In-row “Edit” Button (if ever used) ===== */
 #studentsTable button.editBtn {
   padding: 4px 8px;
   font-size: 0.9rem;
@@ -91,6 +91,10 @@
 #studentsTable button.editBtn:hover {
   background: #2c333a;
 }
+
+/* ===== Muted message row & footer note ===== */
+.muted { text-align:center; color:#777; font-style:italic; }
+.footnote { margin-top:.5rem; font-size:12px; color:#777; }
 
 /* ===== Responsive Tweaks (optional) ===== */
 @media (max-width: 768px) {

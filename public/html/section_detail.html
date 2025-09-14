@@ -1,147 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liberty's Path | Section Detail</title>
-  <link rel="stylesheet" href="css/dashboard_view.css" />
-  <link rel="stylesheet" href="css/section_detail.css" />
+  <meta charset="utf-8">
+  <title>Section</title>
+
+  <!-- Global page look (paper/stone background, paddings, buttons) -->
+  <link rel="stylesheet" href="css/dashboard_view.css">
+  <!-- Roster table styling you like -->
+  <link rel="stylesheet" href="css/section_detail.css">
+  <!-- Existing leaderboard visuals -->
+  <link rel="stylesheet" href="css/leaderboard.css">
+  <!-- Small glue for spacing & minor tweaks just for this page -->
+  <link rel="stylesheet" href="css/section_leaderboard.css">
 </head>
 <body>
-  <header>
-    <h1>
-      <?= htmlspecialchars($section['section_name'], ENT_QUOTES, 'UTF-8') ?>
-      (<?= htmlspecialchars($section['start_school_year'], ENT_QUOTES, 'UTF-8') ?>&ndash;
-       <?= htmlspecialchars($section['end_school_year'],   ENT_QUOTES, 'UTF-8') ?>)
-    </h1>
-    <button onclick="location.href='index.php?r=dashboard'">← Back to Monitoring Board</button>
-  </header>
-
-  <main class="section-detail-container">
-    <div class="search-bar">
-      <input type="text" id="searchLastname" placeholder="Search by last name…" />
-      <button id="deleteBtn" class="action-btn">DELETE SELECTED</button>
-      <button id="downloadCsvBtn" class="action-btn">
-        Download Student CSV
-      </button>
+  <div class="page">
+    <div class="page-header">
+      <a class="btn btn-back" href="index.php?r=dashboard">&larr; Back to Monitoring Board</a>
+      <h1 id="sectionTitle">Section</h1>
     </div>
 
-    <div class="table-container">
-      <table id="studentsTable">
-        <thead>
-          <tr>
-            <th><input type="checkbox" id="selectAll" /></th>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Middle Name</th>
-            <th>Birth Sex</th>
+    <!-- Card #1: Slim Student Roster -->
+    <div class="card">
+      <div class="search-bar">
+        <input id="searchLastName" type="text" placeholder="Search by last name..." />
+        <button id="btnDeleteSelected" class="btn btn-danger">DELETE SELECTED</button>
+        <a id="btnDownloadCsv" class="btn" href="#">Download Student CSV</a>
+      </div>
 
-            <!-- QPR status & retries -->
-            <th>1st QPR Status</th><th>1st QPR Retries</th>
-            <th>2nd QPR Status</th><th>2nd QPR Retries</th>
-            <th>3rd QPR Status</th><th>3rd QPR Retries</th>
-            <th>4th QPR Status</th><th>4th QPR Retries</th>
+      <div class="table-container">
+        <table id="studentsTable">
+          <thead>
+            <tr>
+              <th style="width:40px;"><input type="checkbox" id="checkAll"></th>
+              <th>LAST NAME</th>
+              <th>FIRST NAME</th>
+              <th>MIDDLE NAME</th>
+              <th>USERNAME</th>
+            </tr>
+          </thead>
+          <tbody id="studentsTbody">
+            <tr><td colspan="5" class="muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
 
-            <!-- Wrong-attempts per question in each room -->
-            <!-- 1st room -->
-            <th>Q1-1 Wrong</th><th>Q1-2 Wrong</th>
-            <th>Q1-3 Wrong</th><th>Q1-4 Wrong</th>
-            <th>Q1-5 Wrong</th><th>Q1-6 Wrong</th>
-            <!-- 2nd room -->
-            <th>Q2-1 Wrong</th><th>Q2-2 Wrong</th>
-            <th>Q2-3 Wrong</th><th>Q2-4 Wrong</th>
-            <th>Q2-5 Wrong</th><th>Q2-6 Wrong</th>
-            <!-- 3rd room -->
-            <th>Q3-1 Wrong</th><th>Q3-2 Wrong</th>
-            <th>Q3-3 Wrong</th><th>Q3-4 Wrong</th>
-            <th>Q3-5 Wrong</th><th>Q3-6 Wrong</th>
-            <!-- 4th room -->
-            <th>Q4-1 Wrong</th><th>Q4-2 Wrong</th>
-            <th>Q4-3 Wrong</th><th>Q4-4 Wrong</th>
-            <th>Q4-5 Wrong</th><th>Q4-6 Wrong</th>
-
-            <th>Edit</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($students as $stu): ?>
-          <tr>
-            <td>
-              <input type="checkbox" class="student-checkbox"
-                     value="<?= (int)$stu['student_id'] ?>" />
-            </td>
-            <td><?= htmlspecialchars($stu['last_name'], ENT_QUOTES) ?></td>
-            <td><?= htmlspecialchars($stu['given_name'], ENT_QUOTES) ?></td>
-            <td><?= htmlspecialchars($stu['middle_name'], ENT_QUOTES) ?></td>
-            <td><?= htmlspecialchars($stu['birth_sex'], ENT_QUOTES) ?></td>
-
-            <!-- Status & retries -->
-            <td><?= htmlspecialchars($stu['first_qpr_status_text'], ENT_QUOTES) ?></td>
-            <td><?= (int)$stu['first_qpr_retries'] ?></td>
-            <td><?= htmlspecialchars($stu['second_qpr_status_text'], ENT_QUOTES) ?></td>
-            <td><?= (int)$stu['second_qpr_retries'] ?></td>
-            <td><?= htmlspecialchars($stu['third_qpr_status_text'], ENT_QUOTES) ?></td>
-            <td><?= (int)$stu['third_qpr_retries'] ?></td>
-            <td><?= htmlspecialchars($stu['fourth_qpr_status_text'], ENT_QUOTES) ?></td>
-            <td><?= (int)$stu['fourth_qpr_retries'] ?></td>
-
-            <!-- 1st-room wrongs -->
-            <td><?= (int)$stu['first_q1_attempts'] ?></td>
-            <td><?= (int)$stu['first_q2_attempts'] ?></td>
-            <td><?= (int)$stu['first_q3_attempts'] ?></td>
-            <td><?= (int)$stu['first_q4_attempts'] ?></td>
-            <td><?= (int)$stu['first_q5_attempts'] ?></td>
-            <td><?= (int)$stu['first_q6_attempts'] ?></td>
-
-            <!-- 2nd-room wrongs -->
-            <td><?= (int)$stu['second_q1_attempts'] ?></td>
-            <td><?= (int)$stu['second_q2_attempts'] ?></td>
-            <td><?= (int)$stu['second_q3_attempts'] ?></td>
-            <td><?= (int)$stu['second_q4_attempts'] ?></td>
-            <td><?= (int)$stu['second_q5_attempts'] ?></td>
-            <td><?= (int)$stu['second_q6_attempts'] ?></td>
-
-            <!-- 3rd-room wrongs -->
-            <td><?= (int)$stu['third_q1_attempts'] ?></td>
-            <td><?= (int)$stu['third_q2_attempts'] ?></td>
-            <td><?= (int)$stu['third_q3_attempts'] ?></td>
-            <td><?= (int)$stu['third_q4_attempts'] ?></td>
-            <td><?= (int)$stu['third_q5_attempts'] ?></td>
-            <td><?= (int)$stu['third_q6_attempts'] ?></td>
-
-            <!-- 4th-room wrongs -->
-            <td><?= (int)$stu['fourth_q1_attempts'] ?></td>
-            <td><?= (int)$stu['fourth_q2_attempts'] ?></td>
-            <td><?= (int)$stu['fourth_q3_attempts'] ?></td>
-            <td><?= (int)$stu['fourth_q4_attempts'] ?></td>
-            <td><?= (int)$stu['fourth_q5_attempts'] ?></td>
-            <td><?= (int)$stu['fourth_q6_attempts'] ?></td>
-
-            <td>
-              <button class="editBtn" data-id="<?= (int)$stu['student_id'] ?>">
-                Edit
-              </button>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        </tbody>
-      </table>
+      <div class="footnote" id="lastUpdated"></div>
     </div>
 
-    <!-- Edit Modal… (unchanged) -->
-    <div id="editModal" class="modal">
-      <div class="modal-content">
-        <span id="closeModal" class="modal-close">&times;</span>
-        <h2>Edit Student</h2>
-        <form id="editForm">
-          <input type="hidden" name="student_id" id="editStudentId" />
-          <!-- …same fields as before… -->
-          <button type="submit">Save Changes</button>
-        </form>
+    <!-- Card #2: Per-Section Leaderboard -->
+    <div class="card" id="leaderboardCard">
+      <h2 style="margin:0;">Leaderboard</h2>
+      <div class="lb-muted" id="lbSubtitle">Top results for this section</div>
+
+      <div class="lb-toolbar">
+        <label for="lbLimit">Limit</label>
+        <select id="lbLimit" class="lb-select">
+          <option value="10">Top 10</option>
+          <option value="25">Top 25</option>
+          <option value="50" selected>Top 50</option>
+          <option value="100">Top 100</option>
+        </select>
+
+        <label class="lb-check-wrap">
+          <input type="checkbox" id="lbPerfectOnly" class="lb-checkbox"> Perfect only
+        </label>
+
+        <label class="lb-check-wrap">
+          <input type="checkbox" id="lbAutoRefresh" class="lb-checkbox"> Auto refresh (30s)
+        </label>
+
+        <div class="spacer"></div>
+        <button class="btn" id="lbRefreshBtn">Refresh</button>
+      </div>
+
+      <div class="lb-tablewrap">
+        <table id="lbTable">
+          <thead>
+            <tr>
+              <th style="width:64px;">#</th>
+              <th>Players</th>
+              <th>Score</th>
+              <th>Time Left</th>
+              <th>Correct</th>
+              <th>Notes</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="lbBody">
+            <tr><td colspan="7" class="lb-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="lb-meta">
+        <div id="lbUpdated" class="lb-muted"></div>
+        <div id="lbRows" class="lb-muted"></div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <script src="js/section_detail.js"></script>
+  <script src="js/section_detail.js" defer></script>
 </body>
 </html>
