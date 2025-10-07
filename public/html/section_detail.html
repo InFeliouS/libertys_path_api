@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Section</title>
 
-  <!-- Global page look (paper/stone background, paddings, buttons) -->
-  <link rel="stylesheet" href="css/dashboard_view.css">
-  <!-- Roster table styling you like -->
-  <link rel="stylesheet" href="css/section_detail.css">
+  <!-- Base look & feel -->
+  <link rel="stylesheet" href="css/dashboard_view.css" />
+  <!-- This page’s overrides/fixes -->
+  <link rel="stylesheet" href="css/section_detail.css" />
   <!-- Existing leaderboard visuals -->
-  <link rel="stylesheet" href="css/leaderboard.css">
-  <!-- Small glue for spacing & minor tweaks just for this page -->
-  <link rel="stylesheet" href="css/section_leaderboard.css">
+  <link rel="stylesheet" href="css/leaderboard.css" />
 </head>
 <body>
   <div class="page">
@@ -20,19 +18,28 @@
       <h1 id="sectionTitle">Section</h1>
     </div>
 
-    <!-- Card #1: Slim Student Roster -->
+    <!-- ===== Card: Students ===== -->
     <div class="card">
       <div class="search-bar">
         <input id="searchLastName" type="text" placeholder="Search by last name..." />
         <button id="btnDeleteSelected" class="btn btn-danger">DELETE SELECTED</button>
         <a id="btnDownloadCsv" class="btn" href="#">Download Student CSV</a>
+
+        <div class="spacer"></div>
+        <label class="lb-muted" for="studentsPageSize">Rows per page</label>
+        <select id="studentsPageSize" class="lb-select">
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
       </div>
 
       <div class="table-container">
         <table id="studentsTable">
           <thead>
             <tr>
-              <th style="width:40px;"><input type="checkbox" id="checkAll"></th>
+              <th style="width:40px;"><input type="checkbox" id="checkAll" /></th>
               <th>LAST NAME</th>
               <th>FIRST NAME</th>
               <th>MIDDLE NAME</th>
@@ -45,29 +52,38 @@
         </table>
       </div>
 
+      <!-- Students pagination -->
+      <div class="pager" id="studentsPager">
+        <button class="btn" id="studPrevBtn">&larr; Prev</button>
+        <span id="studPageInfo" class="lb-muted">Page 1 of 1</span>
+        <button class="btn" id="studNextBtn">Next &rarr;</button>
+      </div>
+
       <div class="footnote" id="lastUpdated"></div>
     </div>
 
-    <!-- Card #2: Per-Section Leaderboard -->
+    <!-- ===== Card: Leaderboard ===== -->
     <div class="card" id="leaderboardCard">
       <h2 style="margin:0;">Leaderboard</h2>
       <div class="lb-muted" id="lbSubtitle">Top results for this section</div>
 
       <div class="lb-toolbar">
-        <label for="lbLimit">Limit</label>
-        <select id="lbLimit" class="lb-select">
-          <option value="10">Top 10</option>
-          <option value="25">Top 25</option>
-          <option value="50" selected>Top 50</option>
-          <option value="100">Top 100</option>
+        <label class="lb-muted" for="lbPageSize">Rows per page</label>
+        <select id="lbPageSize" class="lb-select">
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50" selected>50</option>
+          <option value="100">100</option>
         </select>
 
         <label class="lb-check-wrap">
-          <input type="checkbox" id="lbPerfectOnly" class="lb-checkbox"> Perfect only
+          <input type="checkbox" id="lbPerfectOnly" class="lb-checkbox" />
+          Perfect only
         </label>
 
         <label class="lb-check-wrap">
-          <input type="checkbox" id="lbAutoRefresh" class="lb-checkbox"> Auto refresh (30s)
+          <input type="checkbox" id="lbAutoRefresh" class="lb-checkbox" />
+          Auto refresh (30s)
         </label>
 
         <div class="spacer"></div>
@@ -82,15 +98,21 @@
               <th>Players</th>
               <th>Score</th>
               <th>Time Left</th>
-              <th>Correct</th>
-              <th>Notes</th>
+              <th>Run</th>
               <th>Date</th>
             </tr>
           </thead>
           <tbody id="lbBody">
-            <tr><td colspan="7" class="lb-muted">Loading…</td></tr>
+            <tr><td colspan="6" class="lb-muted">Loading…</td></tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Leaderboard pagination -->
+      <div class="pager" id="lbPager">
+        <button class="btn" id="lbPrevBtn">&larr; Prev</button>
+        <span id="lbPageInfo" class="lb-muted">Page 1 of 1</span>
+        <button class="btn" id="lbNextBtn">Next &rarr;</button>
       </div>
 
       <div class="lb-meta">

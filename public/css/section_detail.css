@@ -1,49 +1,76 @@
-/* section_detail.css */
+/* section_detail.css — page-specific fixes + light styling
+   Keeps dashboard_view look but restores scrolling and adds pagination styles. */
 
-/* ===== Search Bar ===== */
-.search-bar {
+/* ==== Undo dashboard_view's no-scroll for this page ==== */
+html,
+body {
+  height: auto !important;
+  min-height: 100%;
+  overflow-y: auto !important;
+}
+
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0 16px;
+}
+.btn.btn-back {
+  background: transparent;
+  color: #333;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Cards (match dashboard) */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin: 16px 0;
+}
+
+/* Search bar / toolbar */
+.search-bar,
+.lb-toolbar {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin: 20px 0;
+  flex-wrap: wrap;
+  margin: 8px 0 12px;
 }
-.search-bar input[type="text"] {
+.spacer {
   flex: 1;
-  min-width: 200px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
 }
-.search-bar button {
-  background-color: #b66203;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.lb-select {
+  padding: 6px 8px;
 }
-.search-bar button:hover {
-  background-color: #944b02;
+.lb-checkbox {
+  transform: translateY(1px);
+}
+.lb-muted {
+  color: #666;
+  font-size: 0.9rem;
 }
 
-/* ===== Table Wrapper (horizontal scroll on small) ===== */
+/* Students table */
 .table-container {
   width: 100%;
   overflow-x: auto;
 }
-
-/* ===== Base Table Styling ===== */
 #studentsTable {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-
-/* ===== Header Row ===== */
 #studentsTable thead th {
   position: sticky;
   top: 0;
@@ -54,83 +81,94 @@
   padding: 10px;
   border-bottom: 2px solid #ddd;
 }
-
-/* ===== Body Cells ===== */
 #studentsTable tbody td {
   padding: 8px 10px;
   border-bottom: 1px solid #eee;
   color: #444;
 }
-
-/* ===== Zebra Striping & Hover ===== */
 #studentsTable tbody tr:nth-child(even) {
   background: #fafafa;
 }
 #studentsTable tbody tr:hover {
-  background: #f5f5f5;
+  background: #f7f7f7;
 }
-
-/* ===== Checkbox Column ===== */
-#studentsTable thead th:first-child,
-#studentsTable tbody td:first-child {
-  width: 40px;
+.muted {
   text-align: center;
+  color: #777;
+  font-style: italic;
 }
 
-/* ===== In-row “Edit” Button (if ever used) ===== */
-#studentsTable button.editBtn {
-  padding: 4px 8px;
-  font-size: 0.9rem;
-  background: #374045;
+/* Leaderboard table wrapper (let it scroll horizontally on tiny screens) */
+.lb-tablewrap {
+  width: 100%;
+  overflow-x: auto;
+}
+#lbTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+#lbTable thead th {
+  position: sticky;
+  top: 0;
+  background: #f0f0f0;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 10px;
+  border-bottom: 2px solid #ddd;
+}
+#lbTable tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #eee;
+  color: #444;
+}
+#lbTable tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+#lbTable tbody tr:hover {
+  background: #f7f7f7;
+}
+.mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Pagination */
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  margin: 10px 0 0;
+}
+.pager .btn {
+  background-color: #b66203;
   color: #fff;
   border: none;
+  padding: 6px 12px;
   border-radius: 4px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
-#studentsTable button.editBtn:hover {
-  background: #2c333a;
+.pager .btn:hover {
+  background-color: #944b02;
 }
 
-/* ===== Muted message row & footer note ===== */
-.muted { text-align:center; color:#777; font-style:italic; }
-.footnote { margin-top:.5rem; font-size:12px; color:#777; }
+/* Footers */
+.footnote {
+  margin-top: 0.5rem;
+  font-size: 12px;
+  color: #777;
+}
 
-/* ===== Responsive Tweaks (optional) ===== */
+/* Responsive tweak: stack toolbars on narrow screens */
 @media (max-width: 768px) {
-  .search-bar {
+  .search-bar,
+  .lb-toolbar {
     flex-direction: column;
     align-items: stretch;
   }
-  .search-bar input,
-  .search-bar button {
-    width: 100%;
-  }
-  /* Turn table into stacked cards */
-  #studentsTable thead {
-    display: none;
-  }
-  #studentsTable,
-  #studentsTable tbody,
-  #studentsTable tr,
-  #studentsTable td {
-    display: block;
-    width: 100%;
-  }
-  #studentsTable tr {
-    margin-bottom: 15px;
-  }
-  #studentsTable td {
-    position: relative;
-    padding-left: 50%;
-    text-align: right;
-  }
-  #studentsTable td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    width: calc(50% - 20px);
-    font-weight: bold;
-    text-align: left;
+  .pager {
+    justify-content: center;
   }
 }
