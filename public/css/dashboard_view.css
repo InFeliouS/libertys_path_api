@@ -34,6 +34,18 @@ header {
   position: relative;
 }
 
+header .page-subtitle {
+  margin: 6px 0 10px;                 /* space under the H1 */
+  font-size: 18px;                    /* bigger */
+  line-height: 1.3;
+  font-weight: 600;                   /* bolder but not shouting */
+  color: rgba(255, 255, 255, .95);    /* bright for dark header */
+  letter-spacing: .3px;
+  display: block;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .25); /* subtle lift on textured bg */
+}
+
+
 .header-left-logos {
   display: flex;
   align-items: center;
@@ -339,4 +351,5 @@ main {
 .logout-modal-buttons .cancel-btn:hover {
   background-color: #bdbdbd;
 }
+
 
