@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Guard Question Bank</title>
@@ -17,58 +18,71 @@
   <!--Create / Update Form -->
   <div class="card">
     <h2 id="formTitle">Add New Question</h2>
-    <form id="qForm" autocomplete="off">
-      <input type="hidden" id="qId" />
+    <form id="qForm" class="q-form">
+      <input type="hidden" id="qId">
+
       <label for="question_text">Question</label>
-      <textarea id="question_text" required></textarea>
+      <textarea id="question_text" rows="3" placeholder="Type the question here…" required></textarea>
 
-      <div class="grid2">
+      <div class="grid-2">
         <div>
-          <label for="choice1">Choice 0</label>
-          <input type="text" id="choice1" required />
+          <label for="choice1">Choice A</label>
+          <input id="choice1" type="text" placeholder="Choice A" required>
         </div>
         <div>
-          <label for="choice2">Choice 1</label>
-          <input type="text" id="choice2" required />
+          <label for="choice2">Choice B</label>
+          <input id="choice2" type="text" placeholder="Choice B" required>
         </div>
         <div>
-          <label for="choice3">Choice 2</label>
-          <input type="text" id="choice3" required />
+          <label for="choice3">Choice C</label>
+          <input id="choice3" type="text" placeholder="Choice C" required>
         </div>
         <div>
-          <label for="choice4">Choice 3</label>
-          <input type="text" id="choice4" required />
+          <label for="choice4">Choice D</label>
+          <input id="choice4" type="text" placeholder="Choice D" required>
         </div>
       </div>
 
-      <label for="correct_index">Correct Index (0–3)</label>
-      <input type="number" id="correct_index" min="0" max="3" required />
+      <label for="correct_index">Correct Answer</label>
+      <select id="correct_index" required>
+        <option value="" disabled selected>Select the correct choice…</option>
+        <option value="0">A</option>
+        <option value="1">B</option>
+        <option value="2">C</option>
+        <option value="3">D</option>
+      </select>
 
-      <div style="margin-top:10px">
-        <button type="submit" class="btn-primary" id="submitBtn">Create</button>
-        <button type="button" class="btn-ghost hidden" id="cancelEditBtn">Cancel Edit</button>
+      <div class="form-actions">
+        <button id="submitBtn" type="submit">Create</button>
+        <button id="cancelEditBtn" type="button" class="hidden">Cancel</button>
+        <span id="formMsg" class="form-msg"></span>
       </div>
-      <div id="formMsg" class="muted" style="margin-top:6px"></div>
     </form>
+
 
     <!-- Table -->
     <div class="card">
       <h2>Existing Questions</h2>
-      <table>
+      <table class="q-table">
         <thead>
           <tr>
-            <th style="width:60px;">ID</th>
             <th>Question</th>
             <th>Choices</th>
-            <th style="width:110px;">Correct</th>
-            <th style="width:160px;">Actions</th>
+            <th>Correct</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="qTbody"></tbody>
+        <tbody id="qTbody">
+          <tr>
+            <td colspan="4">Loading…</td>
+          </tr>
+        </tbody>
       </table>
+
     </div>
   </div>
 
   <script src="js/questions_manage.js"></script>
 </body>
+
 </html>

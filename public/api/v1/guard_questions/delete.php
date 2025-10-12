@@ -1,26 +1,42 @@
 <?php
-header('Content-Type: application/json');
+$ROOT = dirname(__DIR__, 4);
+require_once $ROOT . '/src/auth/auth_guard.php';
+require_once $ROOT . '/src/config/db.php';
+start_session_once();
+require_auth();
 
-require_once __DIR__ . '/../../../../src/config/db.php';
+// ... (rest of file unchanged)
 
-$input = $_POST;
-if (empty($input)) {
-    $raw = file_get_contents('php://input');
-    if ($raw) $input = json_decode($raw, true) ?? [];
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+    http_response_code(405); header('Allow: POST');
+    header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Use POST']); exit;
 }
 
-$id = isset($input['id']) ? (int)$input['id'] : 0;
-if ($id <= 0) {
-    http_response_code(422);
-    echo json_encode(['success'=>false,'error'=>'Missing id']);
-    exit;
-}
+$id   = (int)($_POST['id'] ?? 0);
+$meId = (int)($_SESSION['teacher_id'] ?? 0);
+$role = $_SESSION['role'] ?? 'TEACHER';
+
+if ($id <= 0) { http_response_code(400); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Missing id']); exit; }
 
 try {
-    $stmt = $pdo->prepare("DELETE FROM guard_questions WHERE id=:id");
-    $ok = $stmt->execute([':id' => $id]);
-    echo json_encode(['success'=>$ok]);
+    /** @var PDO $pdo */
+    $s = $pdo->prepare("SELECT created_by FROM guard_questions WHERE id = ?");
+    $s->execute([$id]);
+    $ownerId = (int)$s->fetchColumn();
+    if ($ownerId <= 0) { http_response_code(404); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Question not found']); exit; }
+
+    if ($role !== 'ADMIN' && $ownerId !== $meId) {
+        http_response_code(403); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Forbidden']); exit;
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM guard_questions WHERE id = ?");
+    $stmt->execute([$id]);
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok'=>true,'id'=>$id]);
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['success'=>false,'error'=>'DB error']);
+    header('Content-Type: application/json');
+    echo json_encode(['ok'=>false,'error'=>'Delete failed','detail'=>$e->getMessage()]);
 }

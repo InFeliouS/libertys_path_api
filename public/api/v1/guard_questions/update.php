@@ -1,53 +1,50 @@
 <?php
-header('Content-Type: application/json');
+$ROOT = dirname(__DIR__, 4);
+require_once $ROOT . '/src/auth/auth_guard.php';
+require_once $ROOT . '/src/config/db.php';
+start_session_once();
+require_auth();
 
-require_once __DIR__ . '/../../../../src/config/db.php';
+// ... (rest of file unchanged)
 
-$input = $_POST;
-if (empty($input)) {
-    $raw = file_get_contents('php://input');
-    if ($raw) $input = json_decode($raw, true) ?? [];
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+    http_response_code(405); header('Allow: POST');
+    header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Use POST']); exit;
 }
 
-$id = isset($input['id']) ? (int)$input['id'] : 0;
-if ($id <= 0) {
-    http_response_code(422);
-    echo json_encode(['success'=>false,'error'=>'Missing id']);
-    exit;
-}
-
-$required = ['question_text','choice1','choice2','choice3','choice4','correct_index'];
-foreach ($required as $k) {
-    if (!isset($input[$k]) || $input[$k] === '') {
-        http_response_code(422);
-        echo json_encode(['success'=>false,'error'=>"Missing $k"]);
-        exit;
-    }
-}
-
-$ci = (int)$input['correct_index'];
-if ($ci < 0 || $ci > 3) {
-    http_response_code(422);
-    echo json_encode(['success'=>false,'error'=>'correct_index must be 0..3']);
-    exit;
-}
+$id   = (int)($_POST['id'] ?? 0);
+$meId = (int)($_SESSION['teacher_id'] ?? 0);
+$role = $_SESSION['role'] ?? 'TEACHER';
+if ($id <= 0) { http_response_code(400); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Missing id']); exit; }
 
 try {
-    $sql = "UPDATE guard_questions SET
-            question_text=:qt, choice1=:c1, choice2=:c2, choice3=:c3, choice4=:c4, correct_index=:ci
-            WHERE id=:id";
+    /** @var PDO $pdo */
+    $s = $pdo->prepare("SELECT created_by FROM guard_questions WHERE id = ?");
+    $s->execute([$id]);
+    $ownerId = (int)$s->fetchColumn();
+    if ($ownerId <= 0) { http_response_code(404); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Question not found']); exit; }
+
+    if ($role !== 'ADMIN' && $ownerId !== $meId) {
+        http_response_code(403); header('Content-Type: application/json'); echo json_encode(['ok'=>false,'error'=>'Forbidden']); exit;
+    }
+
+    $fields = ['question_text','choice1','choice2','choice3','choice4','correct_index'];
+    $set = []; $vals = [];
+    foreach ($fields as $f) {
+        if (array_key_exists($f, $_POST)) { $set[] = "$f = ?"; $vals[] = $_POST[$f]; }
+    }
+    if (!$set) { header('Content-Type: application/json'); echo json_encode(['ok'=>true]); exit; }
+
+    $vals[] = $id;
+    $sql = "UPDATE guard_questions SET ".implode(', ', $set)." WHERE id = ?";
     $stmt = $pdo->prepare($sql);
-    $ok = $stmt->execute([
-        ':qt' => $input['question_text'],
-        ':c1' => $input['choice1'],
-        ':c2' => $input['choice2'],
-        ':c3' => $input['choice3'],
-        ':c4' => $input['choice4'],
-        ':ci' => $ci,
-        ':id' => $id
-    ]);
-    echo json_encode(['success'=>$ok]);
+    $stmt->execute($vals);
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['ok'=>true,'id'=>$id]);
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['success'=>false,'error'=>'DB error']);
+    header('Content-Type: application/json');
+    echo json_encode(['ok'=>false,'error'=>'Update failed','detail'=>$e->getMessage()]);
 }

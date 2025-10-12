@@ -1,130 +1,203 @@
-(function () {
-  const API_BASE = 'api/v1/guard_questions';
+(() => {
+  const tbody = document.getElementById("qTbody");
+  const form = document.getElementById("qForm");
+  const formTitle = document.getElementById("formTitle");
+  const submitBtn = document.getElementById("submitBtn");
+  const cancelEditBtn = document.getElementById("cancelEditBtn");
+  const formMsg = document.getElementById("formMsg");
 
-  const els = {
-    qId: document.getElementById('qId'),
-    question_text: document.getElementById('question_text'),
-    c1: document.getElementById('choice1'),
-    c2: document.getElementById('choice2'),
-    c3: document.getElementById('choice3'),
-    c4: document.getElementById('choice4'),
-    correct_index: document.getElementById('correct_index'),
-    form: document.getElementById('qForm'),
-    formMsg: document.getElementById('formMsg'),
-    formTitle: document.getElementById('formTitle'),
-    submitBtn: document.getElementById('submitBtn'),
-    cancelEditBtn: document.getElementById('cancelEditBtn'),
-    tbody: document.getElementById('qTbody')
+  const f = {
+    id: document.getElementById("qId"),
+    question_text: document.getElementById("question_text"),
+    choice1: document.getElementById("choice1"), // A
+    choice2: document.getElementById("choice2"), // B
+    choice3: document.getElementById("choice3"), // C
+    choice4: document.getElementById("choice4"), // D
+    correct_index: document.getElementById("correct_index"),
   };
 
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const API_BASE = "api/v1/guard_questions";
+  const letters = ["A", "B", "C", "D"];
+  const idxToLetter = (i) => letters[i] ?? "";
+  const html = (s) =>
+    String(s ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  function fmtChoices(row) {
+    const arr = [row.choice1, row.choice2, row.choice3, row.choice4];
+    return arr.map((c, i) => `<div><b>${idxToLetter(i)}</b>: ${html(c)}</div>`).join("");
   }
 
-  async function listQuestions() {
-    const res = await fetch(`${API_BASE}/list.php`);
-    const json = await res.json();
-    if (!json.success) { els.tbody.innerHTML = `<tr><td colspan="5">Failed to load.</td></tr>`; return; }
-    els.tbody.innerHTML = '';
-    json.data.forEach(q => {
-      const tr = document.createElement('tr');
-      const choices = [
-        `0: ${escapeHtml(q.choice1)}`,
-        `1: ${escapeHtml(q.choice2)}`,
-        `2: ${escapeHtml(q.choice3)}`,
-        `3: ${escapeHtml(q.choice4)}`
-      ].join('<br>');
-      tr.innerHTML = `
-        <td>${q.id}</td>
-        <td>${escapeHtml(q.question_text)}</td>
-        <td>${choices}</td>
-        <td>${q.correct_index}</td>
-        <td class="row-actions">
-          <button data-id="${q.id}" class="btn-ghost edit">Edit</button>
-          <button data-id="${q.id}" class="btn-ghost delete">Delete</button>
-        </td>`;
-      els.tbody.appendChild(tr);
+  function correctDisplay(row) {
+    const i = Number(row.correct_index);
+    if (!Number.isInteger(i) || i < 0 || i > 3) return "";
+    const text = [row.choice1, row.choice2, row.choice3, row.choice4][i] ?? "";
+    return `${idxToLetter(i)}: ${html(text)}`;
+  }
+
+  async function loadQuestions() {
+    tbody.innerHTML = `<tr><td colspan="4">Loading…</td></tr>`;
+    try {
+      const res = await fetch(`${API_BASE}/list.php`, { credentials: "same-origin" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data?.ok !== true || !Array.isArray(data.items)) {
+        throw new Error(data?.error || "Failed to load.");
+      }
+
+      if (data.items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4">No questions found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = data.items
+        .map((row) => {
+          return `
+            <tr data-id="${row.id}">
+              <td>${html(row.question_text)}</td>
+              <td>${fmtChoices(row)}</td>
+              <td>${correctDisplay(row)}</td>
+              <td class="row-actions">
+                <button data-action="edit" data-id="${row.id}">Edit</button>
+                <button data-action="delete" data-id="${row.id}" class="btn-ghost">Delete</button>
+              </td>
+            </tr>
+          `;
+        })
+        .join("");
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML = `<tr><td colspan="4">Failed to load.</td></tr>`;
+    }
+  }
+
+  function clearForm() {
+    f.id.value = "";
+    f.question_text.value = "";
+    f.choice1.value = "";
+    f.choice2.value = "";
+    f.choice3.value = "";
+    f.choice4.value = "";
+    f.correct_index.value = "";
+    formTitle.textContent = "Add New Question";
+    submitBtn.textContent = "Create";
+    cancelEditBtn.classList.add("hidden");
+    formMsg.textContent = "";
+  }
+
+  function fillForm(row) {
+    f.id.value = row.id;
+    f.question_text.value = row.question_text ?? "";
+    f.choice1.value = row.choice1 ?? "";
+    f.choice2.value = row.choice2 ?? "";
+    f.choice3.value = row.choice3 ?? "";
+    f.choice4.value = row.choice4 ?? "";
+    f.correct_index.value = String(row.correct_index ?? "");
+    formTitle.textContent = "Edit Question";
+    submitBtn.textContent = "Save";
+    cancelEditBtn.classList.remove("hidden");
+    formMsg.textContent = "";
+  }
+
+  async function createQuestion(payload) {
+    const res = await fetch(`${API_BASE}/create.php`, {
+      method: "POST",
+      body: payload,
+      credentials: "same-origin",
     });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok !== true) throw new Error(data?.error || "Create failed");
+    return data;
   }
 
-  function readForm() {
-    return {
-      id: els.qId.value ? parseInt(els.qId.value, 10) : null,
-      question_text: els.question_text.value.trim(),
-      choice1: els.c1.value.trim(),
-      choice2: els.c2.value.trim(),
-      choice3: els.c3.value.trim(),
-      choice4: els.c4.value.trim(),
-      correct_index: parseInt(els.correct_index.value, 10)
-    };
+  async function updateQuestion(payload) {
+    const res = await fetch(`${API_BASE}/update.php`, {
+      method: "POST",
+      body: payload,
+      credentials: "same-origin",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok !== true) throw new Error(data?.error || "Update failed");
+    return data;
   }
 
-  function resetForm() {
-    els.qId.value = '';
-    els.question_text.value = '';
-    els.c1.value = els.c2.value = els.c3.value = els.c4.value = '';
-    els.correct_index.value = '';
-    els.formTitle.textContent = 'Add New Question';
-    els.submitBtn.textContent = 'Create';
-    els.cancelEditBtn.classList.add('hidden');
-    els.formMsg.textContent = '';
+  async function deleteQuestion(id) {
+    const fd = new FormData();
+    fd.set("id", String(id));
+    const res = await fetch(`${API_BASE}/delete.php`, {
+      method: "POST",
+      body: fd,
+      credentials: "same-origin",
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok !== true) throw new Error(data?.error || "Delete failed");
+    return data;
   }
 
-  els.form.addEventListener('submit', async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const data = readForm();
-    els.formMsg.textContent = 'Saving...';
-    const isEdit = !!data.id;
-    const url = isEdit ? `${API_BASE}/update.php` : `${API_BASE}/create.php`;
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
-    });
-    const json = await res.json();
-    if (json.success) {
-      resetForm();
-      await listQuestions();
-      els.formMsg.textContent = isEdit ? 'Updated.' : 'Created.';
-    } else {
-      els.formMsg.textContent = json.error || 'Something went wrong.';
+    formMsg.textContent = "";
+
+    const id = f.id.value.trim();
+    const fd = new FormData();
+    if (id) fd.set("id", id);
+    fd.set("question_text", f.question_text.value.trim());
+    fd.set("choice1", f.choice1.value.trim());
+    fd.set("choice2", f.choice2.value.trim());
+    fd.set("choice3", f.choice3.value.trim());
+    fd.set("choice4", f.choice4.value.trim());
+    fd.set("correct_index", String(f.correct_index.value));
+
+    try {
+      submitBtn.disabled = true;
+      if (id) { await updateQuestion(fd); formMsg.textContent = "Saved."; }
+      else    { await createQuestion(fd); formMsg.textContent = "Created."; }
+      clearForm();
+      await loadQuestions();
+    } catch (err) {
+      console.error(err);
+      formMsg.textContent = err?.message || "Error.";
+    } finally {
+      submitBtn.disabled = false;
     }
   });
 
-  els.cancelEditBtn.addEventListener('click', resetForm);
+  cancelEditBtn.addEventListener("click", () => clearForm());
 
-  els.tbody.addEventListener('click', async (e) => {
-    const btn = e.target.closest('button');
+  tbody.addEventListener("click", async (e) => {
+    const btn = e.target.closest("button");
     if (!btn) return;
-    const id = parseInt(btn.dataset.id, 10);
+    const action = btn.getAttribute("data-action");
+    const id = btn.getAttribute("data-id");
+    if (!action || !id) return;
 
-    if (btn.classList.contains('edit')) {
-      // read values from row (no extra API)
-      const row = btn.closest('tr').children;
-      els.qId.value = id;
-      els.question_text.value = row[1].textContent;
-      const lines = row[2].innerHTML.split('<br>');
-      els.c1.value = lines[0].slice(3);
-      els.c2.value = lines[1].slice(3);
-      els.c3.value = lines[2].slice(3);
-      els.c4.value = lines[3].slice(3);
-      els.correct_index.value = row[3].textContent.trim();
-      els.formTitle.textContent = 'Edit Question';
-      els.submitBtn.textContent = 'Save Changes';
-      els.cancelEditBtn.classList.remove('hidden');
+    if (action === "edit") {
+      try {
+        const res = await fetch(`${API_BASE}/list.php`, { credentials: "same-origin" });
+        const data = await res.json().catch(() => ({}));
+        const row = (data.items || []).find((r) => String(r.id) === String(id));
+        if (row) fillForm(row);
+      } catch (_) {}
     }
 
-    if (btn.classList.contains('delete')) {
-      if (!confirm('Delete this question?')) return;
-      const res = await fetch(`${API_BASE}/delete.php`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ id })
-      });
-      const json = await res.json();
-      if (json.success) { listQuestions(); }
+    if (action === "delete") {
+      if (!confirm("Delete this question?")) return;
+      try {
+        btn.disabled = true;
+        await deleteQuestion(id);
+        await loadQuestions();
+      } catch (err) {
+        console.error(err);
+        alert(err?.message || "Delete failed");
+      } finally {
+        btn.disabled = false;
+      }
     }
   });
 
-  listQuestions();
+  clearForm();
+  loadQuestions();
 })();

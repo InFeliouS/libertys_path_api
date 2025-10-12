@@ -1,13 +1,39 @@
 <?php
-header('Content-Type: application/json');
+$ROOT = dirname(__DIR__, 4);
+require_once $ROOT . '/src/auth/auth_guard.php';
+require_once $ROOT . '/src/config/db.php';
+start_session_once();
+require_auth();
 
-require_once __DIR__ . '/../../../../src/config/db.php'; // provides $pdo (PDO)
+header('Content-Type: application/json; charset=utf-8');
+
+$meId = (int)($_SESSION['teacher_id'] ?? 0);
+$role = $_SESSION['role'] ?? 'TEACHER';
+$filterTeacherId = (int)($_GET['teacher_id'] ?? 0);
+if ($role !== 'ADMIN') { $filterTeacherId = $meId; }
 
 try {
-    $stmt = $pdo->query("SELECT * FROM guard_questions ORDER BY id DESC");
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode(['success' => true, 'data' => $rows]);
+    /** @var PDO $pdo */
+    if ($filterTeacherId > 0) {
+        $stmt = $pdo->prepare("
+            SELECT id, question_text, choice1, choice2, choice3, choice4, correct_index,
+                   created_by, created_at
+            FROM guard_questions
+            WHERE created_by = ?
+            ORDER BY id DESC
+        ");
+        $stmt->execute([$filterTeacherId]);
+    } else {
+        $stmt = $pdo->query("
+            SELECT id, question_text, choice1, choice2, choice3, choice4, correct_index,
+                   created_by, created_at
+            FROM guard_questions
+            ORDER BY id DESC
+        ");
+    }
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    echo json_encode(['ok' => true, 'items' => $rows], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'error' => 'DB error']);
+    echo json_encode(['ok' => false, 'error' => 'DB error', 'detail' => $e->getMessage()]);
 }
