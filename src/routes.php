@@ -6,17 +6,33 @@ if (session_status() === PHP_SESSION_NONE) {
 
 /* --- tiny guard helpers (if present) --- */
 $__guard = __DIR__ . "/auth/auth_guard.php";
-if (is_file($__guard)) { require_once $__guard; }
-if (!function_exists('require_auth')) { function require_auth() {} }
-if (!function_exists('enforce_section_scope')) { function enforce_section_scope($id) {} }
-if (!function_exists('is_admin')) { function is_admin() { return false; } }
+if (is_file($__guard)) {
+    require_once $__guard;
+}
+if (!function_exists('require_auth')) {
+    function require_auth()
+    {
+    }
+}
+if (!function_exists('enforce_section_scope')) {
+    function enforce_section_scope($id)
+    {
+    }
+}
+if (!function_exists('is_admin')) {
+    function is_admin()
+    {
+        return false;
+    }
+}
 
 /* --- resolve route (unchanged) --- */
 $route = isset($_GET['r']) ? trim($_GET['r'], "/") : "";
 if ($route === "" && (isset($_GET['route']) && $_GET['route'] !== "")) {
     $route = trim($_GET['route'], "/");
 }
-if ($route === "") $route = "login";
+if ($route === "")
+    $route = "login";
 
 switch ($route) {
     case "login":
@@ -32,38 +48,93 @@ switch ($route) {
         break;
 
     case "dashboard":
+        // 🔒 protected
         require_auth();
         require __DIR__ . "/dashboard/dashboard.php";
         break;
 
-    case "sections/create":
+    /* =========================
+       ADMIN: TEACHERS (NEW)
+       ========================= */
+    case "teachers/create":
         require_auth();
-        if (!is_admin()) { http_response_code(403); exit('Admins only'); }
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . "/../public/html/teachers_create.html";
+        break;
+
+    case "teachers/store":
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . "/dashboard/teachers_store.php";
+        break;
+
+
+    /* =========================
+       ADMIN: SECTIONS (existing)
+       ========================= */
+    case "sections/create":
+        // 🔒 protected + admin-only
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
         require __DIR__ . "/dashboard/create_section.php";
         break;
 
     case "sections/detail":
+        // 🔒 protected + section-scoped
         require_auth();
-        $sectionId = (int)($_GET['id'] ?? $_GET['section_id'] ?? 0);
-        if ($sectionId > 0) { enforce_section_scope($sectionId); }
+        $sectionId = (int) ($_GET['id'] ?? $_GET['section_id'] ?? 0);
+        if ($sectionId > 0) {
+            enforce_section_scope($sectionId);
+        }
         require __DIR__ . "/dashboard/section_detail.php";
         break;
 
     case "sections/update":
+        // 🔒 protected + admin-only
         require_auth();
-        if (!is_admin()) { http_response_code(403); exit('Admins only'); }
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
         require __DIR__ . "/dashboard/update_section.php";
         break;
 
     case "sections/deleteSection":
+        // 🔒 protected + admin-only
         require_auth();
-        if (!is_admin()) { http_response_code(403); exit('Admins only'); }
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
         require __DIR__ . "/dashboard/delete_section.php";
         break;
 
     case "sections/download_csv":
+        // 🔒 protected (per-section checks happen inside PHP)
         require_auth();
         require __DIR__ . "/dashboard/download_section_students_csv.php";
+        break;
+
+    /* =========================
+       (Website student register was removed in UI; leaving routes is harmless)
+       ========================= */
+    case "register":
+        require_auth();
+        require __DIR__ . "/../public/html/register_student.html";
+        break;
+
+    case "register/process":
+        require_auth();
+        require __DIR__ . "/dashboard/student_register.php";
         break;
 
     case "batch_upload":
@@ -76,8 +147,10 @@ switch ($route) {
         require __DIR__ . "/../public/html/questions_manage.html";
         break;
 
+    /* =========================
+       PUBLIC API (Unity)
+       ========================= */
     case "api/guard_questions/unity":
-        // Unity-ready JSON endpoint (public)
         require __DIR__ . "/../public/api/v1/guard_questions/unity_list.php";
         break;
 
@@ -95,7 +168,6 @@ switch ($route) {
         require __DIR__ . '/../public/api/v1/leaderboard/team_top_by_section.php';
         break;
 
-    // --- Unity student registration APIs (keep) ---
     case 'api/student/register':
         require __DIR__ . '/../public/api/v1/student_register.php';
         break;
@@ -107,5 +179,9 @@ switch ($route) {
     default:
         http_response_code(404);
         $p = __DIR__ . "/../public/html/errors/404.html";
-        if (file_exists($p)) { require $p; } else { echo "404"; }
+        if (file_exists($p)) {
+            require $p;
+        } else {
+            echo "404";
+        }
 }

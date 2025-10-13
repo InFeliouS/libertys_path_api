@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,95 +8,104 @@
   <link rel="stylesheet" href="css/dashboard_view.css" />
 </head>
 
-<header>
-  <div class="header-titles">
-    <h1>TEACHER ADMIN MONITORING BOARD</h1>
-    <p class="page-subtitle">
-      Hello
-      <?= htmlspecialchars($_SESSION['teacher_username'] ?? 'Teacher', ENT_QUOTES, 'UTF-8') ?>
-    </p>
-  </div>
-
-  <div class="header-left-logos">
-    <img src="assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="header-logo" />
-    <img src="assets/libertys-path-logo-2d-transparent.png" alt="Liberty's Path Logo" class="header-logo" />
-  </div>
-</header>
-
-
-<main class="div_parent_main">
-  <div class="div_sidebar_left">
-    <div class="controls">
-      <button class="top-control" onclick="location.href='index.php?r=register'">
-        ADD STUDENT ACCOUNT
-      </button>
-
-      <button class="top-control second" onclick="location.href='index.php?r=sections/create'">
-        ADD NEW SECTION
-      </button>
-
-      <!-- NEW BUTTON ADDED SAFELY -->
-      <button class="top-control third" onclick="location.href='index.php?r=questions/manage'">
-        MANAGE GUARD QUESTIONS
-      </button>
-
-      <button onclick="showLogoutConfirmation()" class="logout-baba">
-        LOG OUT
-      </button>
+<body>
+  <header>
+    <div class="header-titles">
+      <h1>TEACHER ADMIN MONITORING BOARD</h1>
+      <p class="page-subtitle">
+        Hello <?= htmlspecialchars($_SESSION['teacher_username'] ?? 'Teacher', ENT_QUOTES, 'UTF-8') ?>
+      </p>
     </div>
 
+    <div class="header-left-logos">
+      <img src="assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="header-logo" />
+      <img src="assets/libertys-path-logo-2d-transparent.png" alt="Liberty's Path Logo" class="header-logo" />
+    </div>
+  </header>
+
+  <main class="div_parent_main">
+    <div class="div_sidebar_left">
+      <div class="controls">
+        <?php if (function_exists('is_admin') && is_admin()): ?>
+          <button class="top-control" onclick="location.href='index.php?r=teachers/create'">
+            ADD TEACHER ACCOUNT
+          </button>
+
+          <button class="top-control second" onclick="location.href='index.php?r=sections/create'">
+            ADD NEW SECTION
+          </button>
+        <?php endif; ?>
+
+        <button class="top-control third" onclick="location.href='index.php?r=questions/manage'">
+          MANAGE GUARD QUESTIONS
+        </button>
+
+        <button onclick="showLogoutConfirmation()" class="logout-baba">
+          LOG OUT
+        </button>
+      </div>
+
+      <!-- Compress the position of the 3rd button when not admin (keeps fixed layout tidy) -->
+      <script>
+        (function () {
+          var isAdmin = <?= (function_exists('is_admin') && is_admin()) ? 'true' : 'false' ?>;
+          if (!isAdmin) {
+            var third = document.querySelector('.top-control.third');
+            if (third) third.style.top = '160px';
+          }
+        })();
+      </script>
+    </div>
+
+    <div class="div_sidebar_right">
+      <div class="section-divider">
+        <h2>GRADE 8 SECTIONS & SCHOOL YEARS</h2>
+        <div id="sectionCards" class="cards-container">
+          <p>Loading sections . . .</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit-Section Modal -->
+  <div id="editSectionModal" class="modal">
+    <div class="modal-content">
+      <span id="closeEditSectionModal" class="modal-close">&times;</span>
+      <h2>EDIT SECTION</h2>
+      <form id="editSectionForm">
+        <input type="hidden" id="editSectionId" />
+
+        <label for="editSectionName">SECTION NAME</label>
+        <input type="text" id="editSectionName" name="section_name" placeholder="ST. DIEGO" required />
+
+        <label for="editStartYear">START OF SCHOOL YEAR</label>
+        <select id="editStartYear" name="start_school_year" required>
+          <option value="">--Select Year--</option>
+        </select>
+
+        <label for="editEndYear">END OF SCHOOL YEAR</label>
+        <select id="editEndYear" name="end_school_year" required>
+          <option value="">--Select Year--</option>
+        </select>
+
+        <button type="submit" class="btn-primary">SAVE CHANGES</button>
+      </form>
+    </div>
   </div>
-  <div class="div_sidebar_right">
-    <div class="section-divider">
-      <h2>GRADE 8 SECTIONS & SCHOOL YEARS</h2>
-      <div id="sectionCards" class="cards-container">
-        <p>Loading sections . . .</p>
+
+  <div class="logout-modal">
+    <div class="logout-modal-content">
+      <h3>CONFIRM LOGOUT</h3>
+      <p>Are you sure you want to log out?</p>
+      <div class="logout-modal-buttons">
+        <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
       </div>
     </div>
   </div>
-</main>
 
-<!-- Edit-Section Modal -->
-<div id="editSectionModal" class="modal">
-  <div class="modal-content">
-    <span id="closeEditSectionModal" class="modal-close">&times;</span>
-    <h2>EDIT SECTION</h2>
-    <form id="editSectionForm">
-      <input type="hidden" id="editSectionId" />
-
-      <label for="editSectionName">SECTION NAME</label>
-      <input type="text" id="editSectionName" name="section_name" placeholder="ST. DIEGO" required />
-
-      <label for="editStartYear">START OF SCHOOL YEAR</label>
-      <select id="editStartYear" name="start_school_year" required>
-        <option value="">--Select Year--</option>
-      </select>
-
-      <label for="editEndYear">END OF SCHOOL YEAR</label>
-      <select id="editEndYear" name="end_school_year" required>
-        <option value="">--Select Year--</option>
-      </select>
-
-      <button type="submit" class="btn-primary">SAVE CHANGES</button>
-    </form>
-  </div>
-</div>
-
-<div class="logout-modal">
-  <div class="logout-modal-content">
-    <h3>CONFIRM LOGOUT</h3>
-    <p>Are you sure you want to log out?</p>
-    <div class="logout-modal-buttons">
-      <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
-      <button class="confirm-btn" onclick="confirmLogout()">YES</button>
-    </div>
-  </div>
-</div>
-
-<script src="js/dashboard_view.js?v=20250908"></script>
-<script src="js/dashboard_cards.js?v=20250908"></script>
-
-<script src="js/router_shim.js?v=20250908"></script>
+  <script src="js/dashboard_view.js?v=20250908"></script>
+  <script src="js/dashboard_cards.js?v=20250908"></script>
+  <script src="js/router_shim.js?v=20250908"></script>
 </body>
-
 </html>
