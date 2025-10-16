@@ -20,6 +20,17 @@
     </div>
   </header>
 
+  <!-- Back button pinned to the left edge under the header -->
+  <!-- If your route name is dashboard_view, change the href accordingly -->
+  <nav class="tc-pageback">
+      <a class="tc-btn tc-btn-primary tc-btn-back" href="index.php?r=dashboard">
+      <svg class="tc-back-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="M15.5 19.5L8 12l7.5-7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Back to Dashboard</span>
+    </a>
+  </nav>
+
   <main class="tc-container">
     <form class="tc-form" method="post" action="index.php?r=teachers/store" autocomplete="off" novalidate>
       <h2 class="tc-title">Create Teacher</h2>

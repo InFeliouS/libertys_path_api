@@ -1,56 +1,95 @@
 /* Fix global no-scroll issue coming from dashboard_view.css
    Allow the page to scroll when content exceeds the viewport. */
 html, body {
-  height: auto !important;      /* override any fixed 100vh */
+  height: auto !important;
   min-height: 100vh;
-  overflow-y: auto !important;  /* bring back vertical scrolling */
-  overflow-x: hidden;           /* optional: avoid horizontal scrollbars */
+  overflow-y: auto !important;
+  overflow-x: hidden;
 }
 
-/* ---- Styles moved from the original inline <style> ---- */
+/* ---- Page base ---- */
 body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
 h1 { margin-bottom: 10px; }
 
 .card {
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 14px;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  padding: 16px;
   margin-bottom: 16px;
-  background: #fff;
 }
 
-label { font-weight: 600; display: block; margin: 8px 0 6px; }
-
-input[type=text], textarea, input[type=number] {
+/* Form */
+.q-form label { display: block; font-weight: 700; margin: 10px 0 6px; }
+.q-form textarea,
+.q-form input[type="text"],
+.q-form select {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  border: 1px solid #dcdcdc;
   border-radius: 6px;
+  background: #fff;
+  outline: none;
+}
+.q-form textarea:focus,
+.q-form input[type="text"]:focus,
+.q-form select:focus {
+  border-color: #b66203;
+  box-shadow: 0 0 0 3px rgba(182,98,3,.15);
 }
 
-textarea { min-height: 80px; }
-
-button { padding: 8px 12px; border: 0; border-radius: 8px; cursor: pointer; }
-
-.btn-primary { background: #2563eb; color: white; }
-
-.btn-ghost { background: #f3f4f6; }
-
+.form-actions { margin-top: 12px; display: flex; align-items: center; gap: 8px; }
+.form-actions button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+#submitBtn { background: #b66203; color: #fff; }
+#submitBtn:hover { background: #944b02; }
+#cancelEditBtn { background: #e5e7eb; }
+#cancelEditBtn:hover { background: #d9d9d9; }
+.form-msg { font-size: 13px; color: #555; }
 .hidden { display: none; }
 
-table { width: 100%; border-collapse: collapse; }
-
+/* Table */
+.q-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+}
 th, td {
   border: 1px solid #e5e7eb;
   padding: 8px;
   text-align: left;
   vertical-align: top;
 }
-
 th { background: #f9fafb; }
-
 .row-actions button { margin-right: 6px; }
-
 .muted { color: #6b7280; font-size: 12px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
-.grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+/* ---- Top bar (title + back button) ---- */
+.page-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+/* Back button look (brand color same as other primary buttons) */
+.btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px;
+      font-weight:700; text-decoration:none; border:0; cursor:pointer; }
+.btn-brand{ background:#b66203; color:#fff; }
+.btn-brand:hover{ background:#944b02; }
+.back-icon{ color:currentColor; }
+
+/* Stack title and button on narrow screens */
+@media (max-width:640px){
+  .page-top{ flex-direction:column; align-items:flex-start; gap:8px; }
+}
