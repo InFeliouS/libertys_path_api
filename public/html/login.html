@@ -14,10 +14,6 @@
     </div>
     <div class="right-panel">
       <form class="login-form" action="index.php?r=login/process" method="POST">
-        <div class="logo-wrapper">
-          <img src="assets/SDPS-LOGO-transparent.png" alt="SDPS Logo" class="school-logo" />
-        </div>
-
         <label for="username">USERNAME</label>
         <input type="text" id="username" name="username" placeholder="Enter username here" required />
 
@@ -26,6 +22,8 @@
           <input type="password" id="password" name="password" placeholder="Enter password here" required />
           <span id="togglePassword">Show</span>
         </div>
+              <!-- ADDED: in-page alert (stays on this page) -->
+      <div id="loginAlert" class="alert" aria-live="polite"></div>
 
         <button type="submit">LOG IN</button>
       </form>

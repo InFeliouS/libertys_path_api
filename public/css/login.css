@@ -144,3 +144,25 @@ button[type="submit"]:hover {
   width: 100%;
   height: auto;
 }
+
+/* === Alert (added) === */
+.alert {
+  display: none;
+  margin: 0 0 16px 0;
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.alert--error {
+  display: block;
+  background: #fee2e2;        /* light red */
+  color: #991b1b;              /* dark red text */
+  border: 1px solid #fecaca;   /* red border */
+}
+.alert--success {
+  display: block;
+  background: #dcfce7;         /* light green */
+  color: #065f46;              /* dark green text */
+  border: 1px solid #bbf7d0;   /* green border */
+}

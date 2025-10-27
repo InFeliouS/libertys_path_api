@@ -1,122 +1,167 @@
-/* Container */
-.tc-container {
-  max-width: 760px;
-  margin: 24px auto;
-  padding: 0 16px;
-}
-
-/* Card/Form */
-.tc-form {
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+/* Right content spacing similar to dashboard right pane */
+.content-pane{
+  flex: 1;
   padding: 24px;
 }
 
-.tc-title { margin: 0 0 8px; }
+/* Do NOT override the sidebar button styles.
+   Dashboard CSS already styles .top-control / .btn-icon exactly.
+   (No rules here targeting .div_sidebar_left or .top-control) */
 
-/* Inputs */
-.tc-row { margin: 12px 0; }
-.tc-label { display: block; font-weight: 700; margin-bottom: 6px; }
-.tc-req { color: #b00020; }
-.tc-hint { font-size: 13px; opacity: .8; margin-top: 4px; }
+/* Form scale / typography */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-.tc-input {
+html { font-size: 18px; }          /* accessible base */
+body {
+  font-family: 'Karla', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: #172028;
+  background-color: #f7eece;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-repeat: repeat;
+  line-height: 1.6;
+  overflow: auto;                   /* natural scroll */
+}
+.tc-title  { margin: 0 0 12px; font-size: 1.15rem; font-weight: 800; }
+.tc-label  { font-size: .98rem; }
+.tc-hint   { font-size: .85rem; opacity: .85; }
+.tc-req    { color: #b00020; }
+
+/* Wider, comfortable form (no outer white board) */
+.tc-form{
+  max-width: auto;
+  margin: 12px auto 28px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  padding: 28px;
+}
+
+/* Rows & inputs */
+.tc-row{
+  margin: 14px 0;
+  position: relative;
+  min-height: 48px;
+}
+.tc-input{
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
+  font-size: 1rem;
   border: 1px solid #dcdcdc;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #fff;
   outline: none;
+  transition: box-shadow .15s, border-color .15s;
 }
-.tc-input:focus {
+.tc-input:focus{
   border-color: #b66203;
   box-shadow: 0 0 0 3px rgba(182,98,3,.15);
 }
+.tc-input.tc-invalid{
+  border-color: #b00020;
+  box-shadow: 0 0 0 3px rgba(176,0,32,.12);
+}
 
-/* 2-column for password fields on wider screens */
-.tc-grid {
+/* Floating error badge (right) */
+.tc-error{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b00020;
+  font-size: .8rem;
+  line-height: 1;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.04);
+  pointer-events: none;
+  max-width: 45%;
+  text-align: right;
+  display: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* 2-column groups */
+.tc-grid{
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 14px;
 }
-@media (min-width: 640px) {
-  .tc-grid { grid-template-columns: 1fr 1fr; }
+@media (min-width: 640px){
+  .tc-grid{ grid-template-columns: 1fr 1fr; }
 }
 
 /* Sections list */
-.tc-sections {
+.tc-sections{
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 8px;
-  max-height: 240px;
+  gap: 10px;
+  max-height: 260px;
   overflow: auto;
   border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 10px;
+  padding: 12px;
   background: #fafafa;
 }
-
-.tc-section-item {
+.tc-section-item{
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 14px;
+  font-size: .95rem;
+  line-height: 1.35;
 }
+.tc-section-item span{ word-break: break-word; }
 
 /* Actions */
-.tc-actions {
+.tc-actions{
   display: flex;
-  gap: 10px;
-  margin-top: 16px;
+  gap: 12px;
+  margin-top: 18px;
 }
-
-.tc-btn {
+.tc-btn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
-  border-radius: 6px;
+  padding: 12px 18px;
+  border-radius: 8px;
   font-weight: 700;
+  font-size: .98rem;
   cursor: pointer;
   text-decoration: none;
   border: 0;
 }
-
-.tc-btn-primary { background: #b66203; color: #fff; }
-.tc-btn-primary:hover { background: #944b02; }
-
-.tc-btn-ghost { background: #b66203; color: #fff;  }
-.tc-btn-ghost:hover { background: #d9d9d9; }
-
-/* === Clean left alignment for Back button === */
-:root { --page-gutter: 32px; }          /* tweak if you want 24/40, etc. */
-
-  
-.tc-pageback{
-  display:flex;
-  justify-content:flex-start;
-  padding-left: var(--page-gutter);
-  margin: 20px 0 12px;   /* ↑ top gap | right-left | bottom */
+.tc-btn-primary{ background: #b66203; color: #fff; }
+.tc-btn-primary:hover{ background: #944b02; }
+.tc-btn-ghost{
+  background: #f4f4f4;
+  color: #333;
+  border: 1px solid #e6e6e6;
 }
+.tc-btn-ghost:hover{ background: #e9e9e9; }
 
-
-@media (max-width: 640px){
-  :root { --page-gutter: 16px; }        /* tighter on mobile */
+/* Password checklist (JS-controlled) */
+.pw-checklist{
+  margin: 10px 0 0;
+  padding-left: 0;
+  list-style: none;
+  font-weight: 700;
+  display: none;
 }
-
-/* Button look & spacing */
-.tc-btn-back{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:10px 14px;
-  border-radius:10px;
-  line-height:1;
-  box-shadow:0 1px 0 rgba(0,0,0,.06), 0 2px 6px rgba(0,0,0,.06);
+.pw-checklist.show{ display: block; }
+.pw-item{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .95rem;
+  margin: 4px 0;
 }
-
-/* Keep icon/text white on the primary button */
-.tc-btn-primary.tc-btn-back{ color:#fff; }
-.tc-btn-primary.tc-btn-back .tc-back-icon{ color:inherit; }
-.tc-back-icon{ display:inline-block; vertical-align:middle; }
+.pw-item::before{ content: "✕"; font-weight: 900; }
+.pw-item.bad{ color:#d73737; }
+.pw-item.ok{ color:#148f2e; }
+.pw-item.ok::before{ content: "✓"; }
