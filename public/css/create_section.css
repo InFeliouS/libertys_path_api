@@ -13,7 +13,15 @@ body {
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
   background-blend-mode: overlay;
 }
-
+.div_sidebar_left_section {
+  width: 260px;
+  flex: 0 0 260px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
 /* ----- Topbar (ADMIN BOARD on top) ----- */
 #topbar {
   position: sticky;
@@ -37,26 +45,24 @@ body {
 
 /* ----- Main fills the page height (not the button) ----- */
 #main-container {
-  min-height: calc(100vh - var(--topbar-h)); /* page fill happens here */
   max-width: 760px;
   margin: 0 auto;
-  padding: 28px 20px;
+  padding: 12px 20px;
 }
 
 /* ----- Card ----- */
 #form-container {
   width: 100%;
   background: rgb(255, 255, 255);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.5);
-  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
   padding: 34px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.10);
 }
 
 #form-title {
   text-align: center;
-  font-size: 1.9rem;
+  font-size: 3rem;
   letter-spacing: .5px;
   margin-bottom: 22px;
   font-weight: 700;
@@ -66,7 +72,7 @@ body {
 form label {
   display: block;
   margin: 12px 0 8px;
-  font-size: .98rem;
+  font-size: 2rem;
   font-weight: 700;
 }
 input[type="text"], select {
@@ -95,15 +101,16 @@ button[type="submit"] {
   padding: 12px 18px;
   background-color: #a86c3d;
   color: #fff;
-  border: 0;
+  border: none;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,.8);
   transition: background-color .25s ease, transform .02s ease;
   /* no width:100% — stays compact */
 }
-button[type="submit"]:hover { background-color: #8e5a31; }
+button[type="submit"]:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 8px 18px rgba(0,0,0,.8); }
 button[type="submit"]:active { transform: translateY(1px); }
 
 /* Responsive */

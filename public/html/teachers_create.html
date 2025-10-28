@@ -50,7 +50,7 @@
   <!-- ===== Two-pane layout ===== -->
   <div class="div_parent_main">
     <!-- ===== Sidebar: EXACT dashboard button UI, one item only ===== -->
-    <aside class="div_sidebar_left">
+    <aside class="div_sidebar_left_teacher">
       <div class="controls">
         <button class="top-control" onclick="location.href='index.php?r=dashboard'">
           <!-- left chevron icon (same weight as dashboard icons) -->
@@ -96,11 +96,11 @@
 
             <!-- JS can toggle .show on this list -->
             <ul id="pwChecklist" class="pw-checklist">
-              <li class="pw-item bad" data-rule="len">8 characters minimum</li>
-              <li class="pw-item bad" data-rule="upper">One uppercase letter</li>
-              <li class="pw-item bad" data-rule="lower">One lowercase letter</li>
-              <li class="pw-item bad" data-rule="digit">One number</li>
-              <li class="pw-item bad" data-rule="special">One special character</li>
+              <li class="pw-item bad" data-rule="len">8 CHARACTERS MINIMUM</li>
+              <li class="pw-item bad" data-rule="upper">ONE UPPERCASE LETTER</li>
+              <li class="pw-item bad" data-rule="lower">ONE LOWERCASE LETTER</li>
+              <li class="pw-item bad" data-rule="digit">ONE NUMBER</li>
+              <li class="pw-item bad" data-rule="special">ONE SPECIAL CHARACTER</li>
             </ul>
           </div>
 
@@ -112,15 +112,16 @@
         </div>
 
         <div class="tc-row">
-          <label class="tc-label">Assign Sections (optional)</label>
+          <label class="tc-label">Assign Sections <span class="tc-req">*</span></label>
           <div id="tcSections" class="tc-sections">
             <div class="tc-hint">No unassigned sections found.</div>
           </div>
+          <!-- Error badge for sections (used by the JS validation) -->
+          <span class="tc-error" data-error-for="sections"></span>
         </div>
 
         <div class="tc-actions">
           <button class="tc-btn tc-btn-primary" type="submit">Create Teacher</button>
-          <a class="tc-btn tc-btn-ghost" href="index.php?r=dashboard">Cancel</a>
         </div>
       </form>
     </main>

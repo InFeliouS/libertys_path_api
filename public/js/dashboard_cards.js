@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
 
-  // --- ROLE DETECTION (no HTML changes needed) ---
+  // --- Role detection
   const IS_ADMIN = !!document.querySelector('.div_sidebar_left .top-control');
 
-  // --- OPTIONAL SAFETY NET: if Teacher, strip Edit/Delete by label, now and on future renders
+  // --- If Teacher, strip Edit/Delete
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 1) Force uppercase on Section Name in modal
+  // Force uppercase section name
   if (editSectionName) {
     editSectionName.style.textTransform = "uppercase";
     editSectionName.addEventListener("input", () => {
@@ -43,14 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 2) Populate year dropdowns
+  // Populate dropdowns
   if (editStartYear && editEndYear) {
     const thisYear = new Date().getFullYear();
     for (let y = thisYear - 1; y <= thisYear + 5; y++) {
       editStartYear.add(new Option(y, y));
       editEndYear.add(new Option(y, y));
     }
-    // 3) Auto-advance end year when start changes
     editStartYear.addEventListener("change", () => {
       const start = parseInt(editStartYear.value, 10);
       const target = (start + 1).toString();
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 4) Modal open/close handlers
+  // Edit modal close logic
   if (closeEditBtn && editModal) {
     closeEditBtn.onclick = () => editModal.style.display = "none";
     window.addEventListener("click", e => {
@@ -68,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 5) Handle edit form submission (admin-only usage; safe to keep defined)
+  // Edit form submit
   if (editForm) {
     editForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -87,7 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(r => r.json())
       .then(json => {
         if (!json.success) throw new Error(json.error || "Update failed");
-        // reflect changes on the card
         const card = document.querySelector(`.section-card[data-id="${payload.section_id}"]`);
         if (card) {
           const titleEl = card.querySelector("h2");
@@ -101,89 +99,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Small utilities for teacher name formatting
-  const titleCase = (s) => {
-    if (!s) return "";
-    return String(s)
-      .toLowerCase()
-      .replace(/\b([a-z])/g, (m, c) => c.toUpperCase());
-  };
+  // Utility functions
+  const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
   const resolveTeacherName = (sec) => {
-    // Try common field patterns coming from typical APIs
-    const fn =
-      sec.teacher_first_name ??
-      sec.first_name ??
-      sec.adviser_first_name ??
-      sec.handler_first_name ??
-      sec.teacherFname ??
-      sec.adviserFname ??
-      null;
-
-    const ln =
-      sec.teacher_last_name ??
-      sec.last_name ??
-      sec.adviser_last_name ??
-      sec.handler_last_name ??
-      sec.teacherLname ??
-      sec.adviserLname ??
-      null;
-
-    if (fn || ln) {
-      return `${titleCase(fn || "")} ${titleCase(ln || "")}`.trim();
-    }
-
-    // Single combined name fallbacks
-    const combined =
-      sec.teacher_name ??
-      sec.adviser_name ??
-      sec.assigned_teacher ??
-      sec.handler_name ??
-      null;
-
+    const fn = sec.teacher_first_name ?? sec.first_name ?? sec.adviser_first_name ?? sec.handler_first_name ?? sec.teacherFname ?? sec.adviserFname ?? null;
+    const ln = sec.teacher_last_name ?? sec.last_name ?? sec.adviser_last_name ?? sec.handler_last_name ?? sec.teacherLname ?? sec.adviserLname ?? null;
+    if (fn || ln) return `${titleCase(fn || "")} ${titleCase(ln || "")}`.trim();
+    const combined = sec.teacher_name ?? sec.adviser_name ?? sec.assigned_teacher ?? sec.handler_name ?? null;
     return combined ? titleCase(combined) : null;
   };
 
-  // 6) Fetch & render all section cards
-  fetch("api/v1/sections.php", { headers: { "Accept":"application/json" } })
+  // Fetch and render all section cards
+  fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } })
     .then(r => r.json())
     .then(data => {
       if (!data.success) throw new Error(data.message || "Load failed");
       if (!container) return;
 
-      container.innerHTML = ""; // clear “Loading…”
+      container.innerHTML = "";
       data.sections.forEach(sec => {
         const card = document.createElement("div");
         card.className = "section-card";
         card.dataset.id = sec.id;
 
-        // Title
         const h2 = document.createElement("h2");
         h2.textContent = (sec.section_name || "").toUpperCase();
         card.appendChild(h2);
 
-        // Years
         const years = document.createElement("p");
         years.className = "section-years";
         years.textContent = `${sec.start_school_year} – ${sec.end_school_year}`;
         card.appendChild(years);
 
-        // TEACHER INDICATOR (FirstName + LastName)
         const teacherName = resolveTeacherName(sec);
         const t = document.createElement("p");
         t.className = "section-teacher";
-        t.textContent = teacherName ? `Handled by: ${teacherName}` : "Handled by: (No assigned teacher)";
+        t.textContent = teacherName ? `TEACHER: ${teacherName}` : "TEACHER: N/A";
         card.appendChild(t);
 
-        // View (visible to all)
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
         const viewBtn = document.createElement("button");
         viewBtn.textContent = "View Students";
-        viewBtn.onclick = () =>
-          location.href = `index.php?r=sections/detail&section_id=${sec.id}`;
-        card.appendChild(viewBtn);
+        viewBtn.className = "btn-view";
+        viewBtn.onclick = () => location.href = `index.php?r=sections/detail&section_id=${sec.id}`;
+        actions.appendChild(viewBtn);
 
-        // Admin-only buttons
         if (IS_ADMIN) {
-          // Edit
           const editBtn = document.createElement("button");
           editBtn.textContent = "Edit";
           editBtn.className = "btn-edit";
@@ -195,32 +158,16 @@ document.addEventListener("DOMContentLoaded", () => {
             editEndYear.value        = sec.end_school_year;
             editModal.style.display  = "flex";
           };
-          card.appendChild(editBtn);
+          actions.appendChild(editBtn);
 
-          // Delete
           const delBtn = document.createElement("button");
           delBtn.textContent = "Delete";
           delBtn.className = "btn-delete";
-          delBtn.onclick = () => {
-            if (!confirm(
-              `Delete section "${sec.section_name}"?\nAll students in it will be removed.`
-            )) return;
-
-            fetch("index.php?r=sections/deleteSection", {
-              method: "POST",
-              headers: { "Content-Type":"application/json" },
-              body: JSON.stringify({ section_id: sec.id })
-            })
-            .then(r => r.json())
-            .then(json => {
-              if (!json.success) throw new Error(json.error || "Deletion failed");
-              card.remove();
-            })
-            .catch(err => alert(err.message));
-          };
-          card.appendChild(delBtn);
+          delBtn.onclick = () => showDeleteModal(sec.id, sec.section_name, card);
+          actions.appendChild(delBtn);
         }
 
+        card.appendChild(actions);
         container.appendChild(card);
       });
     })
@@ -228,5 +175,43 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
       if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
     });
-});
 
+  // ===== Delete Modal Logic =====
+  const deleteModal = document.getElementById("deleteSectionModal");
+  let deleteTargetId = null;
+  let deleteCardRef = null;
+
+  window.showDeleteModal = (id, name, cardRef) => {
+    deleteTargetId = id;
+    deleteCardRef = cardRef;
+    const modal = deleteModal;
+    if (!modal) return;
+    modal.style.display = "block";
+    modal.querySelector("p").textContent = `Are you sure you want to delete section "${name}"?`;
+  };
+
+  window.closeDeleteModal = () => {
+    if (deleteModal) deleteModal.style.display = "none";
+    deleteTargetId = null;
+    deleteCardRef = null;
+  };
+
+  window.confirmDeleteSection = () => {
+    if (!deleteTargetId) return;
+    fetch("index.php?r=sections/deleteSection", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ section_id: deleteTargetId })
+    })
+    .then(r => r.json())
+    .then(json => {
+      if (!json.success) throw new Error(json.error || "Deletion failed");
+      if (deleteCardRef) deleteCardRef.remove();
+      closeDeleteModal();
+    })
+    .catch(err => {
+      alert(err.message);
+      closeDeleteModal();
+    });
+  };
+});

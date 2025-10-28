@@ -21,3 +21,4 @@ function confirmLogout() {
   function confirmLogout() {
     window.location.href = "index.php?r=logout";
   }
+  

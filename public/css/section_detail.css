@@ -19,7 +19,6 @@ body {
 /* Page container */
 .page {
   max-width: auto;
-  margin: 0 auto;
   padding: 24px;
 }
 
@@ -38,10 +37,10 @@ body {
 /* Header title */
 .page-header h1,
 #sectionTitle {
-  font-size: 2rem;
-  font-weight: 1000;
+  font-size: 3.5rem;
+  font-weight: 900;
   margin: 0;
-  color: #222;
+  color: #000000;
   display: flex;
   align-items: center;
 
@@ -60,26 +59,27 @@ body {
   background: #b66203;
   color: #fff;
   font-weight: 700;
+  font-size: 1.8rem;
   letter-spacing: .3px;
   text-decoration: none;
-  font-weight: 700;
   border: none;
   cursor: pointer;
   transition: transform .14s ease, background .12s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
 }
 .btn.btn-back:hover {
   transform: translateY(-1px);
   filter: brightness(1.04);
-  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);
 }
 
 
 /* General card treatment — match question page */
 .card {
   background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  box-shadow: 0 16px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
   padding: 22px;
   margin: 18px 0;
   opacity: 0;
@@ -88,8 +88,8 @@ body {
 }
 
 /* Card headings */
-.card h2 { margin: 0 0 6px; font-size: 2rem; font-weight: 700; color: #333; }
-.lb-muted { color: #666; font-size: .95rem; }
+.card h2 { margin: 0 0 6px; font-size: 2.5rem; font-weight: 700; color: #333; }
+.lb-muted { color: #666; font-size: 1.5rem; }
 
 /* Toolbar / Search bar */
 .search-bar,
@@ -132,7 +132,8 @@ body {
   border: none;
   text-decoration: none;
   transition: transform .12s ease, background .12s ease;
-  font-size: 16px;
+  font-size: 1.5rem;
+   box-shadow: 0 4px 12px rgba(0,0,0,.8);
 }
 
 .btn-csv {
@@ -148,15 +149,21 @@ body {
   transition: transform .12s ease, background .12s ease;
 }
 
-.btn:hover { background: #944b02; transform: translateY(-2px); }
-.btn-csv:hover { color:#0900ab; transform: translateY(-2px); }
+.btn:hover { background: #944b02; transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8); }
+.btn-csv:hover { color:#0900ab; transform: translateY(-1px); }
 /* Danger button style kept but made consistent */
 .btn-danger {
   font-size: 14px;
   background: #d23b3b;
   color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
 }
-.btn-danger:hover { background: #b83232; transform: translateY(-2px); }
+.btn-danger:hover { background: #b83232;
+   transform: translateY(-1px);
+  filter: brightness(1.04);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);}
 
 /* Spacer keeps toolbar balanced */
 .spacer { flex: 1; min-width: 8px; }
@@ -187,15 +194,15 @@ body {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  font-size: 0.95rem;
+  font-size: 2rem;
 }
 
 #studentsTable thead th,
 #lbTable thead th {
-  position: sticky;
+  position: sticky; 
   top: 0;
-  background: #f9fafb;
-  color: #333;
+  background: #944b02;
+  color: #ffffff;
   text-transform: uppercase;
   font-weight: 700;
   padding: 12px;
@@ -207,6 +214,7 @@ body {
   padding: 12px;
   border-bottom: 1px solid #faf7f3;
   color: #333;
+  text-align: center;
 }
 
 #studentsTable tbody tr:nth-child(even),
@@ -239,9 +247,9 @@ body {
 /* Footers & metadata */
 .footnote,
 .lb-meta .lb-muted {
-  margin-top: 0.5rem;
-  font-size: 13px;
-  color: #777;
+  margin-top: 1.5rem;
+  font-size: 16px;
+  color: #4b4a4a;
 }
 
 /* Leaderboard toolbar actions */

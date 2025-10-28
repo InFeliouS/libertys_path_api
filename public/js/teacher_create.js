@@ -70,27 +70,23 @@
     const el = document.querySelector(`.tc-error[data-error-for="${key}"]`);
     if (el) errors[key] = el;
   });
+  // sections error badge
+  const sectionsErrorEl = document.querySelector('.tc-error[data-error-for="sections"]');
+  if (sectionsErrorEl) {
+    errors['sections'] = sectionsErrorEl;
+  }
 
   // Password rules + aliases
   const pwRules = {
-    // length
     len    : (v) => v.length >= 8,
     length : (v) => v.length >= 8,
     min8   : (v) => v.length >= 8,
-
-    // uppercase
     upper     : (v) => /[A-Z]/.test(v),
     uppercase : (v) => /[A-Z]/.test(v),
-
-    // lowercase
     lower     : (v) => /[a-z]/.test(v),
     lowercase : (v) => /[a-z]/.test(v),
-
-    // digit / number
     digit  : (v) => /\d/.test(v),
     number : (v) => /\d/.test(v),
-
-    // special / symbol (spaces count as special; tweak if you want to exclude)
     special : (v) => /[^A-Za-z0-9]/.test(v),
     symbol  : (v) => /[^A-Za-z0-9]/.test(v),
   };
@@ -109,7 +105,6 @@
     ruleEls.forEach(li => {
       const rule = li.getAttribute('data-rule');
       const fn = pwRules[rule];
-      // Unknown rule names = treat as failed (❌)
       const ok = typeof fn === 'function' ? fn(val) : false;
       li.classList.toggle('ok', ok);
       li.classList.toggle('bad', !ok);
@@ -119,15 +114,18 @@
   function setError(key, message) {
     const input = fields[key];
     const badge = errors[key];
-    if (!input || !badge) return;
     if (message) {
-      input.classList.add('tc-invalid');
-      badge.textContent = message;
-      badge.style.display = 'inline-block';
+      if (input) input.classList.add('tc-invalid');
+      if (badge) {
+        badge.textContent = message;
+        badge.style.display = 'inline-block';
+      }
     } else {
-      input.classList.remove('tc-invalid');
-      badge.textContent = '';
-      badge.style.display = 'none';
+      if (input) input.classList.remove('tc-invalid');
+      if (badge) {
+        badge.textContent = '';
+        badge.style.display = 'none';
+      }
     }
   }
 
@@ -161,6 +159,38 @@
     return true;
   }
 
+  // ------- Sections validation (REQUIRED even when none rendered) -------
+  function validateSections() {
+    const boxes = form.querySelectorAll('input[name="section_ids[]"]');
+
+    // If there are checkboxes rendered, require at least one checked
+    if (boxes && boxes.length > 0) {
+      const checked = form.querySelectorAll('input[name="section_ids[]"]:checked');
+      if (!checked || checked.length === 0) {
+        if (errors['sections']) {
+          errors['sections'].textContent = 'Select at least one section';
+          errors['sections'].style.display = 'inline-block';
+        }
+        boxes[0].focus();
+        return false;
+      }
+      // clear error
+      if (errors['sections']) { errors['sections'].textContent = ''; errors['sections'].style.display = 'none'; }
+      return true;
+    }
+
+    // No checkboxes rendered -> still treat as invalid (required)
+    if (errors['sections']) {
+      errors['sections'].textContent = 'No available sections — create at least one before assigning.';
+      errors['sections'].style.display = 'inline-block';
+    } else {
+      console.warn('No error badge for sections found (.tc-error[data-error-for="sections"])');
+    }
+    // focus the sections container for keyboard users
+    if (container) container.focus();
+    return false;
+  }
+
   // Live validation on blur & input
   Object.keys(fields).forEach(key => {
     const input = fields[key];
@@ -184,6 +214,16 @@
     });
   });
 
+  // delegated change handler for section checkboxes (clears/validates error live)
+  if (container) {
+    container.addEventListener('change', (ev) => {
+      if (!ev.target) return;
+      if (ev.target.matches && ev.target.matches('input[name="section_ids[]"]')) {
+        validateSections();
+      }
+    });
+  }
+
   // Block submit if anything invalid
   form.addEventListener('submit', (e) => {
     let ok = true;
@@ -193,10 +233,15 @@
     ok = validateField('password')   && ok;
     ok = validateField('confirm')    && ok;
 
+    // sections are REQUIRED (even if none exist)
+    ok = validateSections() && ok;
+
     if (!ok) {
       e.preventDefault();
+
+      // focus first invalid input (falls back to sections focus inside validateSections)
       for (const key of ['first_name','last_name','username','password','confirm']) {
-        if (fields[key].classList.contains('tc-invalid')) {
+        if (fields[key] && fields[key].classList.contains('tc-invalid')) {
           fields[key].focus();
           break;
         }

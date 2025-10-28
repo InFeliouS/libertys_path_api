@@ -30,9 +30,9 @@ body {
 }
 
 h1 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #222;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #000000;
   letter-spacing: -0.5px;
   margin: 0;
 }
@@ -42,7 +42,8 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 16px;
+  font-size: 1.5rem;
   font-weight: 600;
   border-radius: 10px;
   text-decoration: none;
@@ -55,19 +56,21 @@ h1 {
 .btn-brand {
   background: #b66203;
   color: #fff;
-  box-shadow: 0 6px 14px rgba(182,98,3,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
 }
 
 .btn-brand:hover {
-  background: #944b02;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);
 }
 
 /* Card container */
 .card {
   background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 16px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
   padding: 28px;
   margin-bottom: 24px;
   opacity: 0;
@@ -77,9 +80,9 @@ h1 {
 
 /* Section titles */
 .card h2 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #944b02;
   margin: 0 0 18px 0;
 }
 
@@ -92,10 +95,10 @@ h1 {
 /* labels & inputs */
 .q-form label {
   display: block;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 6px;
-  color: #333;
-  font-size: .96rem;
+  color: #000000;
+  font-size: 2rem;
 }
 
 .q-form textarea,
@@ -105,7 +108,7 @@ h1 {
   padding: 12px 14px;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 1.5rem;
   transition: border-color .18s ease, box-shadow .18s ease, transform .12s ease;
   background: #fff;
   box-shadow: 0 1px 0 rgba(0,0,0,0.01) inset;
@@ -142,16 +145,18 @@ h1 {
   background: #b66203;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 10px 16px;
-  font-size: 18px;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: background .12s ease, transform .12s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
 }
 
 #submitBtn:hover {
-  background: #944b02;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  filter: brightness(1.0);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);
 }
 
 #cancelEditBtn {
@@ -161,17 +166,21 @@ h1 {
   border-radius: 8px;
   padding: 10px 16px;
   font-weight: 600;
+  font-size: 1.5rem;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
   transition: background .12s ease, transform .12s ease;
 }
 
 #cancelEditBtn:hover {
   background: #e5e5e5;
   transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);
 }
 
 .form-msg {
-  font-size: 13px;
+  font-size: 1.5rem;
   color: #555;
   margin-left: 6px;
 }
@@ -183,14 +192,14 @@ h1 {
   margin-top: 12px;
   border-radius: 8px;
   overflow: hidden;
-  font-size: 0.95rem;
+  font-size: 2rem;
   background: #fff;
   box-shadow: none;
 }
 
 .q-table th {
-  background: #f9fafb;
-  color: #333;
+  background: #944b02;
+  color: #ffffff;
   text-align: left;
   padding: 12px 14px;
   font-weight: 700;
@@ -201,6 +210,7 @@ h1 {
   padding: 12px 14px;
   border-bottom: 1px solid #faf7f3;
   vertical-align: top;
+  font-size: 1.8rem;
   color: #333;
 }
 
@@ -213,22 +223,32 @@ h1 {
 .row-actions button {
   background: none;
   border: none;
-  color: #b66203;
+  font-size: 1.8rem;
   font-weight: 700;
   cursor: pointer;
   padding: 6px 8px;
-  border-radius: 6px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   transition: background .12s ease;
 }
-
+.row-actions button.edit {
+  background: #13d81a;
+  color: #fff;
+}
+.row-actions button.btn-ghost {
+  background: #ff0000;
+  color: #fff;
+}
 .row-actions button:hover {
-  background: rgba(182, 98, 3, 0.08);
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
 }
 
 /* muted helper text */
 .muted {
   color: #777;
-  font-size: 0.85rem;
+  font-size: 1.5rem;
 }
 
 .hidden { display: none; }

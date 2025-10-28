@@ -61,8 +61,8 @@
               <td>${fmtChoices(row)}</td>
               <td>${correctDisplay(row)}</td>
               <td class="row-actions">
-                <button data-action="edit" data-id="${row.id}">Edit</button>
-                <button data-action="delete" data-id="${row.id}" class="btn-ghost">Delete</button>
+                <button data-action="edit" class="edit" data-id="${row.id}">EDIT</button>
+                <button data-action="delete" data-id="${row.id}" class="btn-ghost">DELETE</button>
               </td>
             </tr>
           `;

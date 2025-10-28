@@ -1,18 +1,14 @@
-/* ============================================================
-   Liberty's Path • DASHBOARD VIEW (Modern-Minimalist, Clean)
-   - Keep existing nav/header styling
-   - Right pane fills page beside sidebar
-   - White .section-divider board with soft shadow
-   - Sidebar buttons are contained (no fixed bars)
-   - Larger, readable typography
-   ============================================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
 
-/* -------------------- Base -------------------- */
+/* ============================================================
+   Liberty's Path • DASHBOARD VIEW (Final Fixed + Restored Design)
+   ============================================================ */
+
 *,
 *::before,
-*::after { box-sizing: border-box; }
+*::after {
+  box-sizing: border-box;
+}
 
 html, body {
   height: 100%;
@@ -20,18 +16,21 @@ html, body {
   padding: 0;
 }
 
-html { font-size: 18px; }          /* accessible base */
+/* Body Layout */
 body {
-  font-family: 'Karla', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Karla', system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: #172028;
   background-color: #f7eece;
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
   background-repeat: repeat;
   line-height: 1.6;
-  overflow: auto;                   /* natural scroll */
+  overflow-x: hidden;
 }
 
-/* -------------------- Header (kept) -------------------- */
+/* -------------------- Header -------------------- */
 header {
   background-color: #374045;
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
@@ -47,183 +46,242 @@ header {
 
 .header-titles h1 {
   margin: 0;
-  font-size: 2rem;
-  letter-spacing: .2px;
+  font-weight: 1000;
+  font-size: 3.5rem;
+  letter-spacing: 0.2px;
 }
 
 header .page-subtitle {
   margin: 6px 0 0;
-  font-size: 1rem;
+  font-size: 2.5rem;
   line-height: 1.3;
-  font-weight: 600;
-  color: rgba(255,255,255,.95);
-  letter-spacing: .3px;
-  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
-.header-left-logos { display: flex; align-items: center; gap: 10px; }
-.header-logo { height: 100px; width: auto; object-fit: contain; }
-
-/* -------------------- Layout -------------------- */
-.div_parent_main{
+.header-left-logos {
   display: flex;
-  align-items: stretch;
-  min-height: calc(100vh - 84px); /* header height approx */
+  align-items: center;
+  gap: 10px;
 }
 
-/* Left Sidebar */
-.div_sidebar_left{
+.header-logo {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* -------------------- Main Layout -------------------- */
+main.div_parent_main {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* -------------------- Sidebar -------------------- */
+.div_sidebar_left {
   width: 260px;
   flex: 0 0 260px;
   padding: 12px;
-  position: relative;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: calc(100vh - 84px);
+  min-height: 0;
 }
 
-.controls { display: flex; flex-direction: column; gap: 10px; }
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+}
 
-/* Sidebar buttons (contained, not fixed) */
+/* Sidebar Buttons */
 .top-control,
-.btn.btn-side{
+.btn.btn-side {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 16px;
   border: none;
   border-radius: 10px;
   background: #b66203;
   color: #fff;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .3px;
+  font-size: 16px;
   cursor: pointer;
-  transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  transition: transform 0.06s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
-
-.logout-baba{
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 10px;
-  background: #724a00;
-  color: #fff;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: .3px;
-  cursor: pointer;
-  transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,.08);
-}
-.top-control.second { background: #b66203; }
-.btn.btn-side       { background: #b66203; }
 
 .top-control:hover,
 .btn.btn-side:hover,
-.logout-baba:hover{
+.logout-baba:hover {
   transform: translateY(-1px);
-  filter: brightness(1.04);
-  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
 }
 
-/* Keep logout button at the bottom of the sidebar */
-.logout-baba{ margin-top: auto; }
+/* Logout Button at Bottom */
+/* --- Fixed Logout Button (Bottom Left Corner of Page) --- */
+.logout-baba {
+  position: fixed;         /* stays in place even when scrolling */
+  bottom: 20px;            /* distance from bottom */
+  left: 20px;              /* distance from left edge */
+  z-index: 100;            /* always above content */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #ff0000;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: .3px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+}
 
-.btn-icon{ width: 18px; height: 18px; flex: 0 0 18px; }
+.logout-baba:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 10px 24px rgba(0,0,0,.8);
+}
 
-/* Right content pane fills remaining space */
-.div_sidebar_right{
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+/* -------------------- Right Content -------------------- */
+.div_sidebar_right {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 24px;
-  overflow: visible;
+  padding: 12px;
+  overflow: auto;
 }
 
-/* -------------------- Board (white background) -------------------- */
-.section-divider{
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,.06);
+/* -------------------- Board Section -------------------- */
+.section-divider {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
   padding: 28px 30px;
   margin: 0 auto;
   width: 100%;
-  max-width: 1920px; /* set to none for full-bleed inside right pane */
+  max-width: 1920px;
 }
 
-.section-divider h2{
+.section-divider h2 {
   margin: 0 0 20px;
   text-align: center;
-  letter-spacing: .6px;
-  font-size: 1.35rem;
+  letter-spacing: 0.6px;
+  font-size: 3rem;
+  font-weight: 900;
 }
 
-/* -------------------- Cards Grid -------------------- */
+/* -------------------- Cards -------------------- */
 .cards-container,
-#sectionCards{
+#sectionCards {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
-/* -------------------- Section Card (minimalist) -------------------- */
-.section-card{
+/* Section Card (Restored design) */
+.section-card {
   background: #fff;
   border: 1px solid #ececec;
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   padding: 18px 16px;
   text-align: center;
+  transition: transform 0.2s ease;
 }
 
-.section-card h2{
+.section-card:hover {
+  transform: translateY(-3px);
+}
+
+.section-card h2 {
   margin: 0 0 4px;
-  font-size: 0.95rem;            /* clearer small heading */
-  letter-spacing: .8px;
-  color: #6b7680;
-  font-weight: 800;
+  font-size: 2.2rem;
+  letter-spacing: 0.8px;
+  color: #724a00;
+  font-weight: 900;
 }
 
-.section-card .sy{
-  margin: 8px 0 6px;
-  font-weight: 800;
-  font-size: 1.15rem;
-}
-
-.section-card .handler{
-  margin: 8px 0 14px;
-  color: #5f6a70;
-  font-size: 1rem;
-}
 
 /* Buttons inside cards */
-.section-card button{
-  display: inline-flex;
+.section-card .card-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 11px 14px;
-  margin: 6px 0 0;
-  border: 1px solid #e6e6e6;
-  border-radius: 10px;
-  background: #b66203;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+  margin-top: 14px;
+  flex-wrap: nowrap;
 }
-.section-card button:hover{
+
+.section-card .card-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  min-width: 120px;
+  max-width: 220px;
+  white-space: nowrap;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 2rem;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  transition: transform 0.06s ease, filter 0.12s ease;
+  width: auto;
+}
+.section-card .section-years{
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 8px;
+}
+.section-card .section-teacher{
+  font-size: 2rem;
+  color: #000000;
+  margin-bottom: 8px;
+}
+.section-card .card-actions button:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 8px 18px rgba(0,0,0,.10);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+}
+
+/* Button colors */
+.card-actions .btn-view {
+  background: linear-gradient(90deg, #7b4f07 0%, #b66203 100%);
+  color: #fff;
+}
+
+.card-actions .btn-edit {
+  background: #13d81a;
+  color: #fff;
+}
+
+.card-actions .btn-delete {
+  background: #ff0000;
+  color: #fff;
 }
 
 /* -------------------- Modal -------------------- */
@@ -246,6 +304,7 @@ header .page-subtitle {
   border: 1px solid rgba(0,0,0,.06);
   box-shadow: 0 16px 40px rgba(0,0,0,.14);
   position: relative;
+  animation: fadeInModal 0.2s ease-in-out;
 }
 
 .modal-close{
@@ -254,24 +313,113 @@ header .page-subtitle {
   cursor: pointer;
 }
 
-.modal-content h2{ margin: 0 0 14px; text-align: center; letter-spacing: .6px; font-size: 1.25rem; }
+.modal-content h2{ margin: 0 0 14px; text-align: center; letter-spacing: .6px; font-size: 3rem; font-weight: 900; }
 
 .modal-content label{
   display: block; margin: 10px 0 6px;
-  font-weight: 800; font-size: 0.9rem; letter-spacing: .6px;
+  font-weight: 600; font-size: 2rem; letter-spacing: .6px;
 }
 .modal-content input,
 .modal-content select{
   width: 100%; padding: 12px 14px;
   border: 1px solid #dcdcdc; border-radius: 10px; outline: none;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 .modal-content .btn-primary{
   margin-top: 14px; width: 100%; padding: 12px 14px;
   border: none; border-radius: 10px;
-  background: #b66203; color: #fff; font-weight: 800; cursor: pointer;
-  font-size: 1rem;
+  background: #13d81a; color: #fff; font-weight: 800; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  font-size: 1.5rem;
 }
+
+.modal-content .btn-primary:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(0,0,0,.8);
+}
+
+/* DELETE SECTION MODAL */
+.delete-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.delete-modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 30px 40px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeInModal 0.2s ease-in-out;
+}
+
+.delete-modal-content h3 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  color: #ff0000;
+  font-weight: 900;
+}
+
+.delete-modal-content p {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.delete-modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.delete-modal-buttons .confirm-btn,
+.delete-modal-buttons .cancel-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,.8);
+  transition: all 0.15s ease-in-out;
+}
+
+.delete-modal-buttons .confirm-btn {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.delete-modal-buttons .confirm-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(0,0,0,.8);
+}
+
+.delete-modal-buttons .cancel-btn {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.delete-modal-buttons .cancel-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 
 /* -------------------- Logout modal -------------------- */
 .logout-modal{
@@ -287,9 +435,18 @@ header .page-subtitle {
   width: 100%; max-width: 360px;
   padding: 22px;
   border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.06);
-  box-shadow: 0 16px 40px rgba(0,0,0,.14);
+  font-size: 2rem;
+  border: none;
+  box-shadow: 0 16px 40px rgba(0,0,0.8);
   text-align: center;
+  animation: fadeInModal 0.2s ease-in-out;
+}
+.logout-modal-content h3{
+  margin: 0 0 12px;
+  font-size: 3rem;
+  color: #724a00;
+  font-weight: 900;
+  letter-spacing: .6px;
 }
 .logout-modal-buttons{
   display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
@@ -298,11 +455,13 @@ header .page-subtitle {
 .logout-modal-buttons .cancel-btn{
   padding: 12px 14px;
   border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,8);
 }
-.logout-modal-buttons .confirm-btn{ background: #b66203; color: #fff; }
-.logout-modal-buttons .confirm-btn:hover{ filter: brightness(1.06); }
+.logout-modal-buttons .confirm-btn{ background: #ff0000; color: #fff; }
+.logout-modal-buttons .confirm-btn:hover{transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 8px 18px rgba(0,0,0,8); }
 .logout-modal-buttons .cancel-btn{ background: #eef1f4; color: #333; }
+.logout-modal-buttons .cancel-btn:hover{transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 8px 18px rgba(0,0,0,8);  }
 
 /* -------------------- Utilities -------------------- */
 .center{ text-align: center; }
@@ -317,19 +476,40 @@ select:focus{
 }
 
 /* -------------------- Responsive -------------------- */
-@media (max-width: 980px){
-  .div_sidebar_left { width: 220px; flex-basis: 220px; }
-  .div_sidebar_right { padding: 16px; }
-  .section-divider { padding: 22px; max-width: 100%; }
+@media (max-width: 980px) {
+  .div_sidebar_left {
+    width: 220px;
+  }
+  .div_sidebar_right {
+    padding: 16px;
+  }
+  .section-divider {
+    padding: 22px;
+    max-width: 100%;
+  }
 }
 
-@media (max-width: 760px){
-  .div_parent_main { flex-direction: column; }
-  .div_sidebar_left {
-    width: auto; flex-basis: auto; position: static;
-    padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,.06);
-    background: rgba(255,255,255,.45);
+@media (max-width: 760px) {
+  main.div_parent_main {
+    flex-direction: column;
+    height: auto;
   }
-  /* Stack buttons normally on mobile */
-  .logout-baba { margin-top: 10px; }
+
+  .div_sidebar_left {
+    width: auto;
+    flex-basis: auto;
+    position: static;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .controls {
+    flex: 0 0 auto;
+  }
+
+  .logout-baba {
+    margin-top: 10px;
+    width: 100%;
+  }
 }
