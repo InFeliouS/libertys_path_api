@@ -86,6 +86,243 @@ h1 {
   margin: 0 0 18px 0;
 }
 
+.question-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.difficulty-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.difficulty-group span {
+  color: #000;
+  font-weight: 800;
+}
+
+.difficulty-group label {
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+/* Enhanced Meta Inputs (Rooms + Enemies) */
+.meta-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+}
+
+.meta-input label {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000;
+  margin: 0;
+}
+
+.meta-input input {
+  width: 80px;
+  padding: 10px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 2px solid #b66203;
+  background: #fff;
+  text-align: center;
+  color: #111;
+  transition: 0.18s ease;
+  outline: none;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* Hover feedback */
+.meta-input input:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  filter: brightness(1.05);
+}
+
+/* Focus active state */
+.meta-input input:focus {
+  box-shadow: 0 0 0 4px rgba(182, 98, 3, 0.25);
+  border-color: #944b02;
+}
+
+/* Spinner fixes for Chrome */
+.meta-input input::-webkit-inner-spin-button,
+.meta-input input::-webkit-outer-spin-button {
+  opacity: 1;
+  height: 26px;
+}
+/* Container for inputs with icons */
+.icon-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-input .icon {
+  position: absolute;
+  left: 10px;
+  font-size: 1.6rem;
+  pointer-events: none;
+}
+
+.icon-input input {
+  width: 90px;
+  padding: 10px 10px 10px 32px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  border-radius: 12px;
+  border: 2px solid #b66203;
+  background: #fff;
+  text-align: center;
+  color: #111;
+  outline: none;
+  transition: 0.22s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+/* Hover & focus */
+.icon-input:hover input {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.28);
+}
+
+.icon-input:hover .icon {
+  filter: brightness(1.05);
+}
+
+.icon-input input:focus {
+  box-shadow: 0 0 0 4px rgba(182, 98, 3, 0.32);
+  border-color: #944b02;
+}
+
+/* Value change bounce */
+.icon-input input.value-bounce {
+  animation: bounceValue 0.22s ease-out;
+}
+
+@keyframes bounceValue {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+/* Chrome, Edge */
+.icon-input input::-webkit-inner-spin-button {
+  transform: scale(1.5);   /* Adjust size */
+  color:#000000;
+  opacity: 1;
+}
+.icon-input .icon {
+  transition: 0.22s ease;
+}
+
+/* Firefox */
+.icon-input input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Difficulty changing border color */
+input[name="difficulty"][value="easy"]:checked ~ .icon-input input,
+.easy-active .icon-input input {
+  border-color: #22b455;
+}
+
+input[name="difficulty"][value="medium"]:checked ~ .icon-input input,
+.medium-active .icon-input input {
+  border-color: #ff8c00;
+}
+
+input[name="difficulty"][value="hard"]:checked ~ .icon-input input,
+.hard-active .icon-input input {
+  border-color: #e63946;
+}
+
+/* Difficulty radio colors */
+.difficulty-group label input[value="easy"] + span {
+  color: #22b455;
+  font-weight: 800;
+}
+
+.difficulty-group label input[value="medium"] + span {
+  color: #ff8c00;
+  font-weight: 800;
+}
+
+.difficulty-group label input[value="hard"] + span {
+  color: #e63946;
+  font-weight: 800;
+}
+/* Better styled radio inputs */
+.difficulty-group input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+/* Hover animation */
+.difficulty-group input[type="radio"]:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 6px rgba(0,0,0,0.35);
+}
+
+/* Selected base style */
+.difficulty-group input[type="radio"]:checked {
+  transform: scale(1.15);
+  border-color: #000;
+}
+
+/* Difficulty colors */
+input[value="easy"]:checked {
+  background: #22b455;
+  border-color: #22b455;
+  box-shadow: 0 0 6px rgba(34, 180, 85, 0.6);
+}
+
+input[value="medium"]:checked {
+  background: #ff8c00;
+  border-color: #ff8c00;
+  box-shadow: 0 0 6px rgba(255, 140, 0, 0.6);
+}
+
+input[value="hard"]:checked {
+  background: #e63946;
+  border-color: #e63946;
+  box-shadow: 0 0 6px rgba(230, 57, 70, 0.6);
+}
+
+/* Click effect */
+.difficulty-group input[type="radio"]:active {
+  transform: scale(0.95);
+}
+
+
+/* Improve spacing & clickable labels */
+.difficulty-group input[type="radio"] {
+  margin-right: 4px;
+}
+.difficulty-group label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
 /* Form styles */
 .q-form {
   display: block;

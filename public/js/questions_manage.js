@@ -201,3 +201,24 @@
   clearForm();
   loadQuestions();
 })();
+
+// Bounce animation when number changes
+["roomCount", "enemyCount"].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener("input", () => {
+    el.classList.remove("value-bounce");
+    void el.offsetWidth; // trigger reflow
+    el.classList.add("value-bounce");
+  });
+});
+
+// Change border color based on difficulty
+const radios = document.querySelectorAll('input[name="difficulty"]');
+const formCard = document.querySelector(".card");
+
+radios.forEach(radio => {
+  radio.addEventListener("change", () => {
+    formCard.classList.remove("easy-active", "medium-active", "hard-active");
+    formCard.classList.add(radio.value + "-active");
+  });
+});

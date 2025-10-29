@@ -27,6 +27,40 @@
   <!--Create / Update Form -->
   <div class="card">
     <h2 id="formTitle">Add New Question</h2>
+    <div class="question-meta-row">
+      <div class="difficulty-group">
+        <span>Difficulty:</span>
+        <label>
+          <input type="radio" name="difficulty" value="easy" checked>
+          <span>EASY</span>
+        </label>
+        <label>
+          <input type="radio" name="difficulty" value="medium">
+          <span>MEDIUM</span>
+        </label>
+        <label>
+          <input type="radio" name="difficulty" value="hard">
+          <span>HARD</span>
+        </label>
+      </div>
+
+      <div class="meta-input">
+        <label>Rooms:</label>
+        <div class="icon-input">
+          <span class="icon">🏠</span>
+          <input id="roomCount" type="number" min="1" max="99" value="1">
+        </div>
+      </div>
+
+      <div class="meta-input">
+        <label>Enemies:</label>
+        <div class="icon-input">
+          <span class="icon">👾</span>
+          <input id="enemyCount" type="number" min="1" max="99" value="1">
+        </div>
+      </div>
+    </div>
+
     <form id="qForm" class="q-form">
       <input type="hidden" id="qId">
 
