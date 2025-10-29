@@ -197,7 +197,15 @@ main.div_parent_main {
   display: grid;
   gap: 18px;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  align-items: start;        /* Keeps items aligned at the top */
+  justify-items: center;     /* Centers cards horizontally */
+  width: 100%;               /* Full width of parent */
+  height: auto;              /* Let the height grow naturally */
+  grid-auto-rows: auto;      /* Adjusts row height to fit content */
+  overflow: visible;         /* Prevents cutting off content */
+  box-sizing: border-box;    /* Ensures padding doesn’t affect layout */
 }
+
 
 /* Section Card (Restored design) */
 .section-card {
@@ -208,6 +216,7 @@ main.div_parent_main {
   padding: 18px 16px;
   text-align: center;
   transition: transform 0.2s ease;
+  width: fit-content;
 }
 
 .section-card:hover {
@@ -241,7 +250,6 @@ main.div_parent_main {
   padding: 10px 18px;
   min-width: 120px;
   max-width: 220px;
-  white-space: nowrap;
   border-radius: 10px;
   font-weight: 700;
   font-size: 2rem;
@@ -249,8 +257,12 @@ main.div_parent_main {
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   transition: transform 0.06s ease, filter 0.12s ease;
-  width: auto;
+  width: fit-content;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: center;
 }
+
 .section-card .section-years{
   font-size: 1.5rem;
   font-weight: 600;
@@ -272,16 +284,19 @@ main.div_parent_main {
 .card-actions .btn-view {
   background: linear-gradient(90deg, #7b4f07 0%, #b66203 100%);
   color: #fff;
+  width: auto;
 }
 
 .card-actions .btn-edit {
   background: #13d81a;
   color: #fff;
+  width: auto;
 }
 
 .card-actions .btn-delete {
   background: #ff0000;
   color: #fff;
+  width: auto;
 }
 
 /* -------------------- Modal -------------------- */
