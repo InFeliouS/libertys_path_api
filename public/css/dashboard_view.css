@@ -163,6 +163,43 @@ main.div_parent_main {
   flex: 0 0 18px;
 }
 
+/* -------------------- Search Bar -------------------- */
+.search-wrapper {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+#sectionSearch {
+  width: 80%;
+  max-width: 600px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 2px solid #b66203;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  background: #fff;
+  color: #333;
+}
+
+#sectionSearch:focus {
+  border-color: #724a00;
+  box-shadow: 0 0 8px rgba(114, 74, 0, 0.6);
+  outline: none;
+}
+/* Message when no search results */
+#sectionCards .no-results {
+  padding: 24px;
+  text-align: center;
+  color: #6b7280; /* soft gray */
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: italic;
+  background: transparent;
+}
+
+
 /* -------------------- Right Content -------------------- */
 .div_sidebar_right {
   flex: 1 1 auto;
@@ -196,7 +233,7 @@ main.div_parent_main {
 #sectionCards {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   align-items: start;        /* Keeps items aligned at the top */
   justify-items: center;     /* Centers cards horizontally */
   width: 100%;               /* Full width of parent */
@@ -216,7 +253,7 @@ main.div_parent_main {
   padding: 18px 16px;
   text-align: center;
   transition: transform 0.2s ease;
-  width: fit-content;
+  width: 100%;
 }
 
 .section-card:hover {
@@ -491,6 +528,13 @@ select:focus{
 }
 
 /* -------------------- Responsive -------------------- */
+
+@media (max-width: 1200px) {
+ .section-card {
+    width: fit-content;
+  }
+}
+
 @media (max-width: 980px) {
   .div_sidebar_left {
     width: 220px;

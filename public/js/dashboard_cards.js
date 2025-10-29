@@ -1,6 +1,10 @@
 // public/js/dashboard_cards.js
+// Full updated script: search (name/teacher/year/range), debounced input, admin-strip, edit/delete modals,
+// year dropdown population, "No search found" message, and safer container sizing.
+
 document.addEventListener("DOMContentLoaded", () => {
   const container         = document.getElementById("sectionCards");
+  const searchInput       = document.getElementById("sectionSearch"); // matches HTML
   const editModal         = document.getElementById("editSectionModal");
   const closeEditBtn      = document.getElementById("closeEditSectionModal");
   const editForm          = document.getElementById("editSectionForm");
@@ -9,25 +13,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
 
-  // --- Role detection
+  // --- Role detection (safer)
   const IS_ADMIN = !!document.querySelector('.div_sidebar_left .top-control');
 
-  // --- If Teacher, strip Edit/Delete
+  // --- If Teacher/non-admin, strip Edit/Delete after cards render (and when new nodes added)
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;
-      const candidates = scope.querySelectorAll('#sectionCards button, #sectionCards a, #sectionCards .btn, #sectionCards .button');
+      // target only edit/delete buttons inside cards
+      const candidates = scope.querySelectorAll('.section-card .btn-edit, .section-card .btn-delete, .section-card button');
       candidates.forEach((el) => {
         const label = (el.textContent || '').trim().toLowerCase();
         if (label === 'edit' || label === 'delete') el.remove();
       });
     };
+    // initial attempt (in case cards already there)
     stripAdminActions();
+    // watch for new cards
     if (container) {
       new MutationObserver((muts) => {
         for (const m of muts) {
           if (m.addedNodes && m.addedNodes.length) {
-            stripAdminActions();
+            stripAdminActions(m.target || container);
             break;
           }
         }
@@ -35,26 +42,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Force uppercase section name
+  // Force uppercase section name in the edit modal (keep the UX)
   if (editSectionName) {
     editSectionName.style.textTransform = "uppercase";
     editSectionName.addEventListener("input", () => {
-      editSectionName.value = editSectionName.value.toUpperCase();
+      const val = editSectionName.value || "";
+      const up = val.toUpperCase();
+      if (val !== up) editSectionName.value = up;
     });
   }
 
-  // Populate dropdowns
+  // Populate dropdowns for years (if present)
   if (editStartYear && editEndYear) {
     const thisYear = new Date().getFullYear();
+    // Clear any existing options first (defensive)
+    editStartYear.innerHTML = '<option value="">--Select Year--</option>';
+    editEndYear.innerHTML   = '<option value="">--Select Year--</option>';
     for (let y = thisYear - 1; y <= thisYear + 5; y++) {
       editStartYear.add(new Option(y, y));
       editEndYear.add(new Option(y, y));
     }
     editStartYear.addEventListener("change", () => {
       const start = parseInt(editStartYear.value, 10);
-      const target = (start + 1).toString();
-      if ([...editEndYear.options].some(o => o.value === target)) {
-        editEndYear.value = target;
+      if (!isNaN(start)) {
+        const target = (start + 1).toString();
+        if ([...editEndYear.options].some(o => o.value === target)) {
+          editEndYear.value = target;
+        }
       }
     });
   }
@@ -73,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const payload = {
         section_id:        parseInt(editSectionId.value, 10),
-        section_name:      editSectionName.value.trim(),
+        section_name:      (editSectionName.value || "").trim(),
         start_school_year: editStartYear.value,
         end_school_year:   editEndYear.value
       };
@@ -90,91 +104,129 @@ document.addEventListener("DOMContentLoaded", () => {
         if (card) {
           const titleEl = card.querySelector("h2");
           const yearsEl = card.querySelector("p.section-years");
-          if (titleEl) titleEl.textContent = payload.section_name.toUpperCase();
+          if (titleEl) titleEl.textContent = (payload.section_name || "").toUpperCase();
           if (yearsEl) yearsEl.textContent = `${payload.start_school_year} – ${payload.end_school_year}`;
         }
         if (editModal) editModal.style.display = "none";
       })
-      .catch(err => alert(err.message));
+      .catch(err => {
+        alert(err.message || "Could not save changes");
+      });
     });
   }
 
   // Utility functions
   const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
   const resolveTeacherName = (sec) => {
-    const fn = sec.teacher_first_name ?? sec.first_name ?? sec.adviser_first_name ?? sec.handler_first_name ?? sec.teacherFname ?? sec.adviserFname ?? null;
-    const ln = sec.teacher_last_name ?? sec.last_name ?? sec.adviser_last_name ?? sec.handler_last_name ?? sec.teacherLname ?? sec.adviserLname ?? null;
-    if (fn || ln) return `${titleCase(fn || "")} ${titleCase(ln || "")}`.trim();
-    const combined = sec.teacher_name ?? sec.adviser_name ?? sec.assigned_teacher ?? sec.handler_name ?? null;
-    return combined ? titleCase(combined) : null;
+    // safe access to many possible keys — avoid "null" strings
+    const fn = sec?.teacher_first_name || sec?.first_name || sec?.adviser_first_name || sec?.handler_first_name || sec?.teacherFname || sec?.adviserFname || "";
+    const ln = sec?.teacher_last_name  || sec?.last_name  || sec?.adviser_last_name  || sec?.handler_last_name  || sec?.teacherLname || sec?.adviserLname || "";
+    const fnClean = (fn || "").trim();
+    const lnClean = (ln || "").trim();
+    if (fnClean || lnClean) return `${titleCase(fnClean)} ${titleCase(lnClean)}`.trim();
+    const combined = sec?.teacher_name || sec?.adviser_name || sec?.assigned_teacher || sec?.handler_name || "";
+    return combined ? titleCase(String(combined).trim()) : null;
   };
+
+  let allSections = []; // keep all loaded sections for searching/filtering
 
   // Fetch and render all section cards
   fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } })
     .then(r => r.json())
     .then(data => {
-      if (!data.success) throw new Error(data.message || "Load failed");
+      if (!data || !data.success) throw new Error(data?.message || "Load failed");
       if (!container) return;
-
-      container.innerHTML = "";
-      data.sections.forEach(sec => {
-        const card = document.createElement("div");
-        card.className = "section-card";
-        card.dataset.id = sec.id;
-
-        const h2 = document.createElement("h2");
-        h2.textContent = (sec.section_name || "").toUpperCase();
-        card.appendChild(h2);
-
-        const years = document.createElement("p");
-        years.className = "section-years";
-        years.textContent = `${sec.start_school_year} – ${sec.end_school_year}`;
-        card.appendChild(years);
-
-        const teacherName = resolveTeacherName(sec);
-        const t = document.createElement("p");
-        t.className = "section-teacher";
-        t.textContent = teacherName ? `TEACHER: ${teacherName}` : "TEACHER: N/A";
-        card.appendChild(t);
-
-        const actions = document.createElement("div");
-        actions.className = "card-actions";
-
-        const viewBtn = document.createElement("button");
-        viewBtn.textContent = "View Students";
-        viewBtn.className = "btn-view";
-        viewBtn.onclick = () => location.href = `index.php?r=sections/detail&section_id=${sec.id}`;
-        actions.appendChild(viewBtn);
-
-        if (IS_ADMIN) {
-          const editBtn = document.createElement("button");
-          editBtn.textContent = "Edit";
-          editBtn.className = "btn-edit";
-          editBtn.onclick = () => {
-            if (!editModal) return;
-            editSectionId.value      = sec.id;
-            editSectionName.value    = sec.section_name;
-            editStartYear.value      = sec.start_school_year;
-            editEndYear.value        = sec.end_school_year;
-            editModal.style.display  = "flex";
-          };
-          actions.appendChild(editBtn);
-
-          const delBtn = document.createElement("button");
-          delBtn.textContent = "Delete";
-          delBtn.className = "btn-delete";
-          delBtn.onclick = () => showDeleteModal(sec.id, sec.section_name, card);
-          actions.appendChild(delBtn);
-        }
-
-        card.appendChild(actions);
-        container.appendChild(card);
-      });
+      allSections = Array.isArray(data.sections) ? data.sections : [];
+      renderSections(allSections);
     })
     .catch(err => {
       console.error(err);
       if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
     });
+
+  // Render function with "No search found" behavior
+  function renderSections(list) {
+    if (!container) return;
+    container.innerHTML = "";
+
+    // If no items to render, show a "no search found" message
+    if (!Array.isArray(list) || list.length === 0) {
+      const msg = document.createElement("p");
+      msg.className = "no-results";
+      msg.textContent = "No search found";
+      container.appendChild(msg);
+      return;
+    }
+
+    list.forEach(sec => {
+      const card = document.createElement("div");
+      card.className = "section-card";
+      card.dataset.id = String(sec.id ?? "");
+
+      const h2 = document.createElement("h2");
+      h2.textContent = (sec.section_name || "").toUpperCase();
+      card.appendChild(h2);
+
+      const years = document.createElement("p");
+      years.className = "section-years";
+      years.textContent = `${sec.start_school_year || ""} – ${sec.end_school_year || ""}`;
+      card.appendChild(years);
+
+      const teacherName = resolveTeacherName(sec);
+      const t = document.createElement("p");
+      t.className = "section-teacher";
+      t.textContent = teacherName ? `TEACHER: ${teacherName}` : "TEACHER: N/A";
+      card.appendChild(t);
+
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+
+      const viewBtn = document.createElement("button");
+      viewBtn.textContent = "View";
+      viewBtn.className = "btn-view";
+      viewBtn.onclick = () => {
+        location.href = `index.php?r=sections/detail&section_id=${encodeURIComponent(sec.id)}`;
+      };
+      actions.appendChild(viewBtn);
+
+      if (IS_ADMIN) {
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.className = "btn-edit";
+        editBtn.onclick = () => {
+          if (!editModal) return;
+          editSectionId.value      = sec.id ?? "";
+          editSectionName.value    = sec.section_name ?? "";
+          editStartYear.value      = sec.start_school_year ?? "";
+          editEndYear.value        = sec.end_school_year ?? "";
+          editModal.style.display  = "flex";
+        };
+        actions.appendChild(editBtn);
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.className = "btn-delete";
+        delBtn.onclick = () => showDeleteModal(sec.id, sec.section_name, card);
+        actions.appendChild(delBtn);
+      }
+
+      card.appendChild(actions);
+      container.appendChild(card);
+    });
+
+    adjustContainerHeight();
+
+    if (!IS_ADMIN) {
+      const stripOnce = () => {
+        const candidates = container.querySelectorAll('.section-card button');
+        candidates.forEach((el) => {
+          const label = (el.textContent || '').trim().toLowerCase();
+          if (label === 'edit' || label === 'delete') el.remove();
+        });
+      };
+      stripOnce();
+    }
+  }
 
   // ===== Delete Modal Logic =====
   const deleteModal = document.getElementById("deleteSectionModal");
@@ -187,7 +239,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = deleteModal;
     if (!modal) return;
     modal.style.display = "block";
-    modal.querySelector("p").textContent = `Are you sure you want to delete section "${name}"?`;
+    const p = modal.querySelector("p");
+    if (p) p.textContent = `Are you sure you want to delete section "${name}"?`;
   };
 
   window.closeDeleteModal = () => {
@@ -206,12 +259,61 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(r => r.json())
     .then(json => {
       if (!json.success) throw new Error(json.error || "Deletion failed");
-      if (deleteCardRef) deleteCardRef.remove();
+      if (deleteCardRef && deleteCardRef.remove) deleteCardRef.remove();
       closeDeleteModal();
+      adjustContainerHeight();
     })
     .catch(err => {
-      alert(err.message);
+      alert(err.message || "Could not delete section");
       closeDeleteModal();
     });
   };
+
+  // 🧩 Dynamic container adjustment (do not set fixed pixel height)
+  function adjustContainerHeight() {
+    if (!container) return;
+    container.style.height = "auto";
+  }
+
+  window.addEventListener("resize", adjustContainerHeight);
+
+  // ===== 🔍 SEARCH BAR FUNCTIONALITY (debounced) =====
+  function debounce(fn, delay = 200) {
+    let t = null;
+    return function (...args) {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  if (searchInput) {
+    const doSearch = () => {
+      const raw = (searchInput.value || "").trim().toLowerCase();
+      if (!raw) {
+        renderSections(allSections);
+        return;
+      }
+      const query = raw.replace(/\s+/g, " "); // normalize spaces
+      const filtered = allSections.filter(sec => {
+        const teacher = (resolveTeacherName(sec) || "").toLowerCase();
+        const name = (sec.section_name || "").toLowerCase();
+        const startYear = String(sec.start_school_year || "").toLowerCase();
+        const endYear = String(sec.end_school_year || "").toLowerCase();
+        // normalize hyphen/dash variants to a single form for comparison
+        const combinedYears = `${startYear} – ${endYear}`.toLowerCase(); // "2024 – 2025"
+        const altCombined = `${startYear}-${endYear}`.toLowerCase(); // "2024-2025"
+        // check name, teacher, start year, end year, combined range (both dash variants)
+        return (
+          name.includes(query) ||
+          teacher.includes(query) ||
+          startYear.includes(query) ||
+          endYear.includes(query) ||
+          combinedYears.includes(query) ||
+          altCombined.includes(query)
+        );
+      });
+      renderSections(filtered);
+    };
+    searchInput.addEventListener("input", debounce(doSearch, 180));
+  }
 });
