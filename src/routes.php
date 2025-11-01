@@ -124,24 +124,6 @@ switch ($route) {
         require __DIR__ . "/dashboard/download_section_students_csv.php";
         break;
 
-    /* =========================
-       (Website student register was removed in UI; leaving routes is harmless)
-       ========================= */
-    case "register":
-        require_auth();
-        require __DIR__ . "/../public/html/register_student.html";
-        break;
-
-    case "register/process":
-        require_auth();
-        require __DIR__ . "/dashboard/student_register.php";
-        break;
-
-    case "batch_upload":
-        require_auth();
-        require __DIR__ . "/dashboard/batch_upload.php";
-        break;
-
     case "questions/manage":
         require_auth();
         require __DIR__ . "/../public/html/questions_manage.html";
@@ -172,9 +154,28 @@ switch ($route) {
         require __DIR__ . '/../public/api/v1/student_register.php';
         break;
 
+    case "api/register_student_sections":
+        require __DIR__ . '/../public/api/v1/register_student_sections.php';
+        break;
+
+
     case 'api/student/pair_login':
         require __DIR__ . '/../public/api/v1/pair_login.php';
         break;
+
+    case 'api/v1/teacher_config':
+        require __DIR__ . '/../public/api/v1/teacher_config.php';
+        break;
+
+    case 'api/v1/unity_run_config':
+        require __DIR__ . '/../public/api/v1/unity_run_config.php';
+        break;
+
+    case 'api/v1/unity_run_difficulty':
+        require __DIR__ . '/../public/api/v1/unity_run_difficulty.php';
+        break;
+
+
 
     default:
         http_response_code(404);
