@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2025 at 06:50 AM
+-- Generation Time: Nov 01, 2025 at 04:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,6 +55,35 @@ INSERT INTO `guard_questions` (`id`, `question_text`, `choice1`, `choice2`, `cho
 (9, '2*2', '1', '2', '3', '4', 3, 6, '2025-10-31 12:19:41'),
 (10, 'Hit and ______', 'Search', 'Collect', 'Run', 'Walk', 2, 6, '2025-10-31 12:20:32'),
 (11, '100-10', '90', '80', '70', '60', 0, 6, '2025-10-31 12:21:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `guard_questions_backup`
+--
+
+CREATE TABLE `guard_questions_backup` (
+  `id` int(11) NOT NULL DEFAULT 0,
+  `question_text` text NOT NULL,
+  `choice1` varchar(255) NOT NULL,
+  `choice2` varchar(255) NOT NULL,
+  `choice3` varchar(255) NOT NULL,
+  `choice4` varchar(255) NOT NULL,
+  `correct_index` tinyint(4) NOT NULL CHECK (`correct_index` between 0 and 3),
+  `section_id` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `guard_questions_backup`
+--
+
+INSERT INTO `guard_questions_backup` (`id`, `question_text`, `choice1`, `choice2`, `choice3`, `choice4`, `correct_index`, `section_id`, `created_by`, `created_at`) VALUES
+(1, 'this is a test question', 'Answer', 'test', 'test', 'test', 0, NULL, NULL, '2025-09-09 14:19:58'),
+(2, 'this is the 2nd test question', 'test', 'test', 'test', 'answer', 3, NULL, NULL, '2025-09-09 14:20:18'),
+(3, 'sertwert', 'qwerwqefqwef', 'qwefqwef', 'qwefqwef', 'qwefqwef', 1, NULL, NULL, '2025-09-09 15:58:09'),
+(4, 'New Question 4', '123', '651', 'ANswer', '163', 2, NULL, NULL, '2025-09-09 18:47:42');
 
 -- --------------------------------------------------------
 
@@ -133,6 +162,24 @@ INSERT INTO `leaderboard_team_runs` (`id`, `player1_name`, `player2_name`, `scor
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `leaderboard_team_runs_v2`
+-- (See below for the actual view)
+--
+CREATE TABLE `leaderboard_team_runs_v2` (
+`id` bigint(20) unsigned
+,`player1_name` varchar(64)
+,`player2_name` varchar(64)
+,`score` int(11)
+,`time_left` int(11)
+,`life_used` tinyint(1)
+,`run_status` varchar(32)
+,`section` varchar(64)
+,`created_at` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sections`
 --
 
@@ -180,8 +227,7 @@ INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section
 (1, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 11, '2025-09-14 15:12:11'),
 (2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36'),
 (3, 'JON MIKE', '123', 'LESTER', 11, '2025-10-26 04:41:20'),
-(4, 'TEST', '', 'TEST', 12, '2025-10-26 04:42:40'),
-(5, 'JUAN', 'DELA', 'CRUZ', 12, '2025-11-01 05:09:44');
+(4, 'TEST', '', 'TEST', 12, '2025-10-26 04:42:40');
 
 -- --------------------------------------------------------
 
@@ -204,8 +250,7 @@ INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created
 (1, 1, 'jogarcia', '2025-09-14 15:12:11'),
 (2, 2, 'kperalta', '2025-09-14 15:12:36'),
 (3, 3, 'j1lester', '2025-10-26 04:41:20'),
-(4, 4, 'ttest', '2025-10-26 04:42:40'),
-(5, 5, 'jdcruz', '2025-11-01 05:09:44');
+(4, 4, 'ttest', '2025-10-26 04:42:40');
 
 -- --------------------------------------------------------
 
@@ -256,7 +301,7 @@ CREATE TABLE `teacher_configs` (
 
 INSERT INTO `teacher_configs` (`id`, `teacher_id`, `room_count`, `enemy_count`, `difficulty`, `created_at`, `updated_at`) VALUES
 (1, 2, 1, 1, 0, '2025-10-31 10:59:29', '2025-10-31 11:15:12'),
-(2, 6, 1, 1, 0, '2025-10-31 12:21:26', '2025-11-01 05:37:44');
+(2, 6, 1, 1, 2, '2025-10-31 12:21:26', '2025-11-01 03:09:36');
 
 -- --------------------------------------------------------
 
@@ -281,6 +326,15 @@ INSERT INTO `teacher_sections` (`id`, `teacher_id`, `section_id`) VALUES
 (4, 4, 7),
 (5, 5, 12),
 (6, 6, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `leaderboard_team_runs_v2`
+--
+DROP TABLE IF EXISTS `leaderboard_team_runs_v2`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `leaderboard_team_runs_v2`  AS SELECT `leaderboard_team_runs`.`id` AS `id`, `leaderboard_team_runs`.`player1_name` AS `player1_name`, `leaderboard_team_runs`.`player2_name` AS `player2_name`, `leaderboard_team_runs`.`score` AS `score`, `leaderboard_team_runs`.`time_left` AS `time_left`, `leaderboard_team_runs`.`life_used` AS `life_used`, coalesce(`leaderboard_team_runs`.`run_status`,case when `leaderboard_team_runs`.`life_used` = 0 then 'PERFECT RUN' else 'ONE LIFE USED' end) AS `run_status`, `leaderboard_team_runs`.`section` AS `section`, `leaderboard_team_runs`.`created_at` AS `created_at` FROM `leaderboard_team_runs` ;
 
 --
 -- Indexes for dumped tables
@@ -375,13 +429,13 @@ ALTER TABLE `sections`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `student_accounts`
 --
 ALTER TABLE `student_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `teachers`
