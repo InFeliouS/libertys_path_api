@@ -97,7 +97,7 @@
 
 
       <!-- Compress the position of the 3rd button when not admin (keeps fixed layout tidy) -->
-      <!--<script>
+      <!--test<script>
         (function () {
           var isAdmin = <?= (function_exists('is_admin') && is_admin()) ? 'true' : 'false' ?>;
           if (!isAdmin) {
@@ -114,11 +114,11 @@
         <input
           type="text"
           id="sectionSearch"
-          placeholder="Search..."
+          placeholder="Search: Section Name, Academic Year, or Teacher Name . . ."
         />
       </div>
       <div id="sectionCards" class="cards-container">
-        <p>Loading sections . . .</p>
+        <p>Please wait for the meantime . . .</p>
       </div>
     </div>
   </div>
@@ -156,7 +156,7 @@
       <h3>CONFIRM DELETE</h3>
       <p>Are you sure you want to delete this section?</p>
       <div class="delete-modal-buttons">
-        <button class="confirm-btn" onclick="confirmDeleteSection()">YES, DELETE</button>
+        <button class="confirm-btn" onclick="confirmDeleteSection()">YES</button>
         <button class="cancel-btn" onclick="closeDeleteModal()">CANCEL</button>
       </div>
     </div>
