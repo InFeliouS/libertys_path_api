@@ -1,6 +1,6 @@
 // public/js/dashboard_cards.js
 // Full updated script: search (name/teacher/year/range), debounced input, admin-strip, edit/delete modals,
-// year dropdown population, "No search found" message, and safer container sizing.
+// year dropdown population, "Sorry, no search found." message, and safer container sizing.
 
 document.addEventListener("DOMContentLoaded", () => {
   const container         = document.getElementById("sectionCards");
@@ -144,16 +144,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
     });
 
-  // Render function with "No search found" behavior
   function renderSections(list) {
     if (!container) return;
     container.innerHTML = "";
 
-    // If no items to render, show a "no search found" message
     if (!Array.isArray(list) || list.length === 0) {
       const msg = document.createElement("p");
       msg.className = "no-results";
-      msg.textContent = "No search found";
+      msg.textContent = "Sorry, no search found.";
       container.appendChild(msg);
       return;
     }

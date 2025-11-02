@@ -114,7 +114,7 @@
         <input
           type="text"
           id="sectionSearch"
-          placeholder="Search: Section Name, Academic Year, or Teacher Name . . ."
+          placeholder="Search: class section, academic year, or teacher name . . ."
         />
       </div>
       <div id="sectionCards" class="cards-container">
@@ -128,19 +128,19 @@
   <div id="editSectionModal" class="modal">
     <div class="modal-content">
       <span id="closeEditSectionModal" class="modal-close">&times;</span>
-      <h2>EDIT SECTION</h2>
+      <h2>EDIT THE SECTION</h2>
       <form id="editSectionForm">
         <input type="hidden" id="editSectionId" />
 
         <label for="editSectionName">SECTION NAME</label>
         <input type="text" id="editSectionName" name="section_name" placeholder="ST. DIEGO" required />
 
-        <label for="editStartYear">START OF SCHOOL YEAR</label>
+        <label for="editStartYear">START OF ACADEMIC YEAR</label>
         <select id="editStartYear" name="start_school_year" required>
           <option value="">--Select Year--</option>
         </select>
 
-        <label for="editEndYear">END OF SCHOOL YEAR</label>
+        <label for="editEndYear">END OF ACADEMIC YEAR</label>
         <select id="editEndYear" name="end_school_year" required>
           <option value="">--Select Year--</option>
         </select>
