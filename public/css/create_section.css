@@ -4,15 +4,24 @@
   --topbar-h: 56px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html, body { 
+  height: 100%; 
+}
+
 body {
-  font-family: 'Karla', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Karla';
   color: #2c1b0c;
   background: linear-gradient(135deg, #faf6f3, #cac8c1);
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
   background-blend-mode: overlay;
 }
+
 .div_sidebar_left_section {
   width: 260px;
   flex: 0 0 260px;
@@ -22,7 +31,7 @@ body {
   gap: 10px;
   min-height: 0;
 }
-/* ----- Topbar (ADMIN BOARD on top) ----- */
+
 #topbar {
   position: sticky;
   top: 0;
@@ -35,22 +44,24 @@ body {
   border-bottom: 1px solid rgba(0,0,0,0.06);
   z-index: 10;
 }
+
 #dashboard-link {
   text-decoration: none;
   font-weight: 700;
   color: #2c1b0c;
   letter-spacing: 0.2px;
 }
-#dashboard-link:hover { opacity: .75; }
 
-/* ----- Main fills the page height (not the button) ----- */
+#dashboard-link:hover { 
+  opacity: .75; 
+}
+
 #main-container {
   max-width: 760px;
   margin: 0 auto;
   padding: 12px 20px;
 }
 
-/* ----- Card ----- */
 #form-container {
   width: 100%;
   background: rgb(255, 255, 255);
@@ -62,13 +73,12 @@ body {
 
 #form-title {
   text-align: center;
-  font-size: 3rem;
+  font-size: 1.5rem;
   letter-spacing: .5px;
   margin-bottom: 22px;
   font-weight: 700;
 }
 
-/* Inputs */
 form label {
   display: block;
   margin: 12px 0 8px;
@@ -85,18 +95,22 @@ input[type="text"], select {
   background: rgba(255,255,255,0.95);
   outline: none;
 }
-select { margin-bottom: 16px; }
+
+select {
+  margin-bottom: 16px; 
+}
+
 input[type="text"]:focus, select:focus {
   background: #fffaf0;
   box-shadow: 0 0 0 2px #c68b59;
 }
 
-/* Actions: button is compact; page fill is NOT from this */
 .form-actions {
   display: flex;
   justify-content: center;
   margin-top: 16px;
 }
+
 button[type="submit"] {
   padding: 12px 18px;
   background-color: #a86c3d;
@@ -108,8 +122,8 @@ button[type="submit"] {
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(0,0,0,.8);
   transition: background-color .25s ease, transform .02s ease;
-  /* no width:100% — stays compact */
 }
+
 button[type="submit"]:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 8px 18px rgba(0,0,0,.8); }
 button[type="submit"]:active { transform: translateY(1px); }
 

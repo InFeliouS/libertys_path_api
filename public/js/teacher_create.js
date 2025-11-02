@@ -3,7 +3,7 @@
   if (container) {
     function renderSections(items) {
       if (!Array.isArray(items) || items.length === 0) {
-        container.innerHTML = '<div class="tc-hint">Sorry, no unassigned class sections found.</div>';
+        container.innerHTML = '<div class="tc-hint">Sorry, no unassigned class section(s) found.</div>';
         return;
       }
       container.innerHTML = items.map(s => {
@@ -135,18 +135,18 @@
       updatePwChecklist(v);
       if (!v) { setError(key, 'Required'); return false; }
       if (!pwRegex.test(v)) {
-        setError(key, 'Min 8 + upper/lower/number/special');
+        setError(key, '');
         return false;
       }
       setError(key, '');
-      validateField('confirm'); // re-check confirm when password changes
+      validateField('confirm');
       return true;
     }
 
     if (key === 'confirm') {
       const p = (fields.password.value || '').trim();
       if (!v) { setError(key, 'Required'); return false; }
-      if (v !== p) { setError(key, 'Passwords do not match'); return false; }
+      if (v !== p) { setError(key, 'Passwords don’t match.'); return false; }
       setError(key, ''); return true;
     }
 
@@ -175,7 +175,7 @@
 
     // No checkboxes rendered -> still treat as invalid (required)
     if (errors['sections']) {
-      errors['sections'].textContent = 'No available sections — create at least one before assigning.';
+      errors['sections'].textContent = 'No available section(s) — create at least one before assigning.';
       errors['sections'].style.display = 'inline-block';
     } else {
       console.warn('No error badge for sections found (.tc-error[data-error-for="sections"])');

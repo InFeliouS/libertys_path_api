@@ -44,13 +44,10 @@
     </div>
   </header>
 
-  <!-- ===== Two-pane layout ===== -->
   <div class="div_parent_main">
-    <!-- ===== Sidebar: EXACT dashboard button UI, one item only ===== -->
     <aside class="div_sidebar_left_teacher">
       <div class="controls">
         <button class="top-control" onclick="location.href='index.php?r=dashboard'">
-          <!-- left chevron icon (same weight as dashboard icons) -->
           <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M15 4L7 12l8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -59,28 +56,27 @@
       </div>
     </aside>
 
-    <!-- ===== Right content: form only (no white board wrapper) ===== -->
     <main class="content-pane">
       <form class="tc-form" method="post" action="index.php?r=teachers/store" autocomplete="off" id="tcForm" novalidate>
-        <h3 class="tc-title">Create Grade 8 AP Teacher Account</h3>
+        <h3 class="tc-title">Create Grade 8 AP Teacher Account:</h3>
 
         <div class="tc-grid">
           <div class="tc-row">
             <label for="first_name" class="tc-label">GIVEN NAME<span class="tc-req">*</span></label>
-            <input id="first_name" name="first_name" type="text" class="tc-input" placeholder="e.g., Juan Benito" />
+            <input id="first_name" name="first_name" type="text" class="tc-input" placeholder="e.g., Juan Benito"/>
             <span class="tc-error" data-error-for="first_name"></span>
           </div>
 
           <div class="tc-row">
             <label for="last_name" class="tc-label">LAST NAME<span class="tc-req">*</span></label>
-            <input id="last_name" name="last_name" type="text" class="tc-input" placeholder="e.g., Dela Cruz" />
+            <input id="last_name" name="last_name" type="text" class="tc-input" placeholder="e.g., Dela Cruz"/>
             <span class="tc-error" data-error-for="last_name"></span>
           </div>
         </div>
 
         <div class="tc-row">
           <label for="username" class="tc-label">USERNAME<span class="tc-req">*</span></label>
-          <input id="username" name="username" type="text" class="tc-input" />
+          <input id="username" name="username" type="text" class="tc-input" placeholder="e.g., jbdc_25"/>
           <span class="tc-error" data-error-for="username"></span>
           <div class="tc-hint">Important Note: It must be unique.</div>
         </div>
@@ -88,32 +84,29 @@
         <div class="tc-grid">
           <div class="tc-row">
             <label for="password" class="tc-label">PASSWORD<span class="tc-req">*</span></label>
-            <input id="password" name="password" type="password" class="tc-input" />
+            <input id="password" name="password" type="password" class="tc-input"/>
             <span class="tc-error" data-error-for="password"></span>
-
-            <!-- JS can toggle .show on this list -->
             <ul id="pwChecklist" class="pw-checklist">
               <li class="pw-item bad" data-rule="len">8 CHARACTERS MINIMUM</li>
-              <li class="pw-item bad" data-rule="upper">ONE UPPERCASE LETTER</li>
-              <li class="pw-item bad" data-rule="lower">ONE LOWERCASE LETTER</li>
-              <li class="pw-item bad" data-rule="digit">ONE NUMBER</li>
-              <li class="pw-item bad" data-rule="special">ONE SPECIAL CHARACTER</li>
+              <li class="pw-item bad" data-rule="upper">1 UPPERCASE LETTER (e.g., A B C D E)</li>
+              <li class="pw-item bad" data-rule="lower">1 LOWERCASE LETTER (e.g., a b c d e)</li>
+              <li class="pw-item bad" data-rule="digit">1 NUMBER (e.g., 0 1 2 3 4 5 6 7 8 9)</li>
+              <li class="pw-item bad" data-rule="special">1 SPECIAL CHARACTER (e.g., ! @ # $ % ^ & *)</li>
             </ul>
           </div>
 
           <div class="tc-row">
             <label for="confirm" class="tc-label">CONFIRM PASSWORD<span class="tc-req">*</span></label>
-            <input id="confirm" name="confirm" type="password" class="tc-input" />
+            <input id="confirm" name="confirm" type="password" class="tc-input"/>
             <span class="tc-error" data-error-for="confirm"></span>
           </div>
         </div>
 
         <div class="tc-row">
-          <label class="tc-label">ASSIGN CLASS SECTION/S<span class="tc-req">*</span></label>
+          <label class="tc-label">ASSIGN CLASS SECTION(S)<span class="tc-req">*</span></label>
           <div id="tcSections" class="tc-sections">
-            <div class="tc-hint">Sorry, no unassigned class sections found.</div>
+            <div class="tc-hint">Sorry, no unassigned class section(s) found.</div>
           </div>
-          <!-- Error badge for sections (used by the JS validation) -->
           <span class="tc-error" data-error-for="sections"></span>
         </div>
 
