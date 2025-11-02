@@ -1,10 +1,6 @@
-// public/js/dashboard_cards.js
-// Full updated script: search (name/teacher/year/range), debounced input, admin-strip, edit/delete modals,
-// year dropdown population, "Sorry, no search found." message, and safer container sizing.
-
 document.addEventListener("DOMContentLoaded", () => {
   const container         = document.getElementById("sectionCards");
-  const searchInput       = document.getElementById("sectionSearch"); // matches HTML
+  const searchInput       = document.getElementById("sectionSearch"); 
   const editModal         = document.getElementById("editSectionModal");
   const closeEditBtn      = document.getElementById("closeEditSectionModal");
   const editForm          = document.getElementById("editSectionForm");
@@ -13,23 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
 
-  // --- Role detection (safer)
   const IS_ADMIN = !!document.querySelector('.div_sidebar_left .top-control');
 
-  // --- If Teacher/non-admin, strip Edit/Delete after cards render (and when new nodes added)
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;
-      // target only edit/delete buttons inside cards
       const candidates = scope.querySelectorAll('.section-card .btn-edit, .section-card .btn-delete, .section-card button');
       candidates.forEach((el) => {
         const label = (el.textContent || '').trim().toLowerCase();
         if (label === 'edit' || label === 'delete') el.remove();
       });
     };
-    // initial attempt (in case cards already there)
+
     stripAdminActions();
-    // watch for new cards
     if (container) {
       new MutationObserver((muts) => {
         for (const m of muts) {
@@ -42,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Force uppercase section name in the edit modal (keep the UX)
   if (editSectionName) {
     editSectionName.style.textTransform = "uppercase";
     editSectionName.addEventListener("input", () => {
@@ -52,10 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Populate dropdowns for years (if present)
   if (editStartYear && editEndYear) {
     const thisYear = new Date().getFullYear();
-    // Clear any existing options first (defensive)
     editStartYear.innerHTML = '<option value="">--Select Year--</option>';
     editEndYear.innerHTML   = '<option value="">--Select Year--</option>';
     for (let y = thisYear - 1; y <= thisYear + 5; y++) {
@@ -73,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Edit modal close logic
   if (closeEditBtn && editModal) {
     closeEditBtn.onclick = () => editModal.style.display = "none";
     window.addEventListener("click", e => {
@@ -81,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Edit form submit
   if (editForm) {
     editForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -115,10 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Utility functions
   const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
   const resolveTeacherName = (sec) => {
-    // safe access to many possible keys — avoid "null" strings
     const fn = sec?.teacher_first_name || sec?.first_name || sec?.adviser_first_name || sec?.handler_first_name || sec?.teacherFname || sec?.adviserFname || "";
     const ln = sec?.teacher_last_name  || sec?.last_name  || sec?.adviser_last_name  || sec?.handler_last_name  || sec?.teacherLname || sec?.adviserLname || "";
     const fnClean = (fn || "").trim();
@@ -128,9 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return combined ? titleCase(String(combined).trim()) : null;
   };
 
-  let allSections = []; // keep all loaded sections for searching/filtering
-
-  // Fetch and render all section cards
+  let allSections = []; 
   fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } })
     .then(r => r.json())
     .then(data => {
@@ -226,7 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ===== Delete Modal Logic =====
   const deleteModal = document.getElementById("deleteSectionModal");
   let deleteTargetId = null;
   let deleteCardRef = null;
@@ -238,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!modal) return;
     modal.style.display = "block";
     const p = modal.querySelector("p");
-    if (p) p.textContent = `Are you sure you want to delete section "${name}"?`;
+    if (p) p.textContent = `Are you sure you want to delete class section "${name}"?`;
   };
 
   window.closeDeleteModal = () => {
@@ -267,15 +249,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // 🧩 Dynamic container adjustment (do not set fixed pixel height)
   function adjustContainerHeight() {
     if (!container) return;
     container.style.height = "auto";
   }
 
   window.addEventListener("resize", adjustContainerHeight);
-
-  // ===== 🔍 SEARCH BAR FUNCTIONALITY (debounced) =====
   function debounce(fn, delay = 200) {
     let t = null;
     return function (...args) {
@@ -291,16 +270,14 @@ document.addEventListener("DOMContentLoaded", () => {
         renderSections(allSections);
         return;
       }
-      const query = raw.replace(/\s+/g, " "); // normalize spaces
+      const query = raw.replace(/\s+/g, " "); 
       const filtered = allSections.filter(sec => {
         const teacher = (resolveTeacherName(sec) || "").toLowerCase();
         const name = (sec.section_name || "").toLowerCase();
         const startYear = String(sec.start_school_year || "").toLowerCase();
         const endYear = String(sec.end_school_year || "").toLowerCase();
-        // normalize hyphen/dash variants to a single form for comparison
-        const combinedYears = `${startYear} – ${endYear}`.toLowerCase(); // "2024 – 2025"
-        const altCombined = `${startYear}-${endYear}`.toLowerCase(); // "2024-2025"
-        // check name, teacher, start year, end year, combined range (both dash variants)
+        const combinedYears = `${startYear} – ${endYear}`.toLowerCase(); 
+        const altCombined = `${startYear}-${endYear}`.toLowerCase();
         return (
           name.includes(query) ||
           teacher.includes(query) ||

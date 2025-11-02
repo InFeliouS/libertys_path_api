@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
 
-/* ============================================================
-   Liberty's Path • DASHBOARD VIEW (Final Fixed + Restored Design)
-   ============================================================ */
-
 *,
 *::before,
 *::after {
@@ -16,7 +12,6 @@ html, body {
   padding: 0;
 }
 
-/* Body Layout */
 body {
   display: flex;
   flex-direction: column;
@@ -30,7 +25,6 @@ body {
   overflow-x: hidden;
 }
 
-/* -------------------- Header -------------------- */
 header {
   background-color: #374045;
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
@@ -73,7 +67,6 @@ header .page-subtitle {
   object-fit: contain;
 }
 
-/* -------------------- Main Layout -------------------- */
 main.div_parent_main {
   display: flex;
   flex: 1 1 auto;
@@ -81,7 +74,6 @@ main.div_parent_main {
   min-height: 0;
 }
 
-/* -------------------- Sidebar -------------------- */
 .div_sidebar_left {
   width: 260px;
   flex: 0 0 260px;
@@ -100,7 +92,6 @@ main.div_parent_main {
   flex: 1 1 auto;
 }
 
-/* Sidebar Buttons */
 .top-control,
 .btn.btn-side {
   display: flex;
@@ -127,13 +118,11 @@ main.div_parent_main {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
 }
 
-/* Logout Button at Bottom */
-/* --- Fixed Logout Button (Bottom Left Corner of Page) --- */
 .logout-baba {
-  position: fixed;         /* stays in place even when scrolling */
-  bottom: 20px;            /* distance from bottom */
-  left: 20px;              /* distance from left edge */
-  z-index: 100;            /* always above content */
+  position: fixed;      
+  bottom: 20px;           
+  left: 20px;           
+  z-index: 100;      
   display: flex;
   align-items: center;
   gap: 10px;
@@ -156,26 +145,25 @@ main.div_parent_main {
   box-shadow: 0 10px 24px rgba(0,0,0,.8);
 }
 
-
 .btn-icon {
   width: 18px;
   height: 18px;
   flex: 0 0 18px;
 }
 
-/* -------------------- Search Bar -------------------- */
 .search-wrapper {
   text-align: center;
   margin-bottom: 24px;
 }
 
 #sectionSearch {
+  font-family: 'Karla';
   width: 80%;
   max-width: 600px;
   padding: 14px 18px;
   border-radius: 10px;
   border: 2px solid #b66203;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.5px;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
@@ -188,19 +176,17 @@ main.div_parent_main {
   box-shadow: 0 0 8px rgba(114, 74, 0, 0.6);
   outline: none;
 }
-/* Message when no search results */
+
 #sectionCards .no-results {
   padding: 24px;
   text-align: center;
-  color: #6b7280; /* soft gray */
+  color: #6b7280; 
   font-size: 5rem;
   font-weight: 900;
   font-style: italic;
   background: transparent;
 }
 
-
-/* -------------------- Right Content -------------------- */
 .div_sidebar_right {
   flex: 1 1 auto;
   min-width: 0;
@@ -208,12 +194,11 @@ main.div_parent_main {
   overflow: auto;
 }
 
-/* -------------------- Board Section -------------------- */
 .section-divider {
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 28px 30px;
   margin: 0 auto;
   width: 100%;
@@ -228,28 +213,25 @@ main.div_parent_main {
   font-weight: 900;
 }
 
-/* -------------------- Cards -------------------- */
 .cards-container,
 #sectionCards {
   display: grid;
   gap: 18px;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  align-items: start;        /* Keeps items aligned at the top */
-  justify-items: center;     /* Centers cards horizontally */
-  width: 100%;               /* Full width of parent */
-  height: auto;              /* Let the height grow naturally */
-  grid-auto-rows: auto;      /* Adjusts row height to fit content */
-  overflow: visible;         /* Prevents cutting off content */
-  box-sizing: border-box;    /* Ensures padding doesn’t affect layout */
+  align-items: start;      
+  justify-items: center;     
+  width: 100%;               
+  height: auto;              
+  grid-auto-rows: auto;      
+  overflow: visible;         
+  box-sizing: border-box;   
 }
 
-
-/* Section Card (Restored design) */
 .section-card {
   background: #fff;
   border: 1px solid #ececec;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   padding: 18px 16px;
   text-align: center;
   transition: transform 0.2s ease;
@@ -261,15 +243,14 @@ main.div_parent_main {
 }
 
 .section-card h2 {
+  font-family: 'Karla';
   margin: 0 0 4px;
-  font-size: 2.2rem;
+  font-size: 1.7rem;
   letter-spacing: 0.8px;
   color: #724a00;
   font-weight: 900;
 }
 
-
-/* Buttons inside cards */
 .section-card .card-actions {
   display: flex;
   flex-direction: row;
@@ -284,7 +265,7 @@ main.div_parent_main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 5px;
+  padding: 8px;
   min-width: 120px;
   max-width: 220px;
   border-radius: 5px;
@@ -292,7 +273,7 @@ main.div_parent_main {
   font-size: 1rem;
   cursor: pointer;
   border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.06s ease, filter 0.12s ease;
   width: fit-content;
   white-space: normal;
@@ -301,42 +282,46 @@ main.div_parent_main {
 }
 
 .section-card .section-years{
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #000000;
   margin-bottom: 8px;
 }
+
 .section-card .section-teacher{
-  font-size: 2rem;
+  font-family: 'Karla';
+  font-size: 1.2rem;
   color: #000000;
   margin-bottom: 8px;
 }
+
 .section-card .card-actions button:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
-/* Button colors */
 .card-actions .btn-view {
-  background: #b66203;
+  font-family: 'Karla';
+  background: #9b5302;
   color: #fff;
   width: auto;
 }
 
 .card-actions .btn-edit {
+  font-family: 'Karla';
   background: #009705;
   color: #fff;
   width: auto;
 }
 
 .card-actions .btn-delete {
+  font-family: 'Karla';       
   background: #a00000;
   color: #fff;
   width: auto;
 }
 
-/* -------------------- Modal -------------------- */
 .modal{
   display: none;
   position: fixed; inset: 0;
@@ -371,16 +356,24 @@ main.div_parent_main {
   display: block; margin: 10px 0 6px;
   font-weight: 600; font-size: 2rem; letter-spacing: .6px;
 }
+
 .modal-content input,
 .modal-content select{
   width: 100%; padding: 12px 14px;
   border: 1px solid #dcdcdc; border-radius: 10px; outline: none;
   font-size: 1.5rem;
 }
+
 .modal-content .btn-primary{
-  margin-top: 14px; width: 100%; padding: 12px 14px;
-  border: none; border-radius: 10px;
-  background: #13d81a; color: #fff; font-weight: 800; cursor: pointer;
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #13d81a;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
   box-shadow: 0 4px 12px rgba(0,0,0,.8);
   font-size: 1.5rem;
 }
@@ -391,9 +384,8 @@ main.div_parent_main {
   box-shadow: 0 8px 18px rgba(0,0,0,.8);
 }
 
-/* DELETE SECTION MODAL */
 .delete-modal {
-  display: none; /* hidden by default */
+  display: none;
   position: fixed;
   z-index: 2000;
   left: 0;
@@ -405,26 +397,28 @@ main.div_parent_main {
 }
 
 .delete-modal-content {
-  background-color: #fff;
-  margin: 15% auto;
+  background-color: #f9f9f9;
   padding: 30px 40px;
   border-radius: 10px;
-  width: 400px;
-  max-width: 90%;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  animation: fadeInModal 0.2s ease-in-out;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  margin: 0;
 }
 
 .delete-modal-content h3 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-  color: #ff0000;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
   font-weight: 900;
 }
 
 .delete-modal-content p {
-  font-size: 2rem;
+  font-size: 1.2rem;
   margin-bottom: 20px;
 }
 
@@ -434,37 +428,33 @@ main.div_parent_main {
   gap: 15px;
 }
 
-.delete-modal-buttons .confirm-btn,
-.delete-modal-buttons .cancel-btn {
+.delete-modal-buttons
+.confirm-btn,
+.cancel-btn {
+  font-family: 'Karla';
   padding: 10px 18px;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-weight: bold;
-  font-size: 1.8rem;
+  font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,.8);
-  transition: all 0.15s ease-in-out;
-}
-
-.delete-modal-buttons .confirm-btn {
-  background-color: #ff0000;
-  color: #fff;
-}
-
-.delete-modal-buttons .confirm-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-  box-shadow: 0 8px 18px rgba(0,0,0,.8);
-}
-
-.delete-modal-buttons .cancel-btn {
-  background-color: #f4f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
   color: #333;
 }
 
-.delete-modal-buttons .cancel-btn:hover {
-  background-color: #e0e0e0;
+.delete-modal-buttons
+.cancel-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.delete-modal-buttons
+.confirm-btn:hover {
+  background-color: #cecece;
   transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes fadeInModal {
@@ -472,8 +462,6 @@ main.div_parent_main {
   to   { opacity: 1; transform: scale(1); }
 }
 
-
-/* -------------------- Logout modal -------------------- */
 .logout-modal{
   display: none;
   position: fixed; inset: 0;
@@ -482,6 +470,7 @@ main.div_parent_main {
   align-items: center; justify-content: center;
   padding: 18px;
 }
+
 .logout-modal-content{
   background: #fff;
   width: 100%; max-width: 360px;
