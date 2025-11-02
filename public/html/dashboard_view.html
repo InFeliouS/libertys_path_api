@@ -97,14 +97,14 @@
 
 
       <!-- Compress the position of the 3rd button when not admin (keeps fixed layout tidy) -->
-      <script>
+      <!--<script>
         (function () {
           var isAdmin = <?= (function_exists('is_admin') && is_admin()) ? 'true' : 'false' ?>;
           if (!isAdmin) {
             var third = document.querySelector('.top-control.third');
             if (third) third.style.top = '160px';
           }
-        })();
+        })();-->
       </script>
     </div>
 
