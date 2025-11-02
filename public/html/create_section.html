@@ -6,6 +6,7 @@
   <title>Liberty's Path | NEW SECTION</title>
   <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
   <link rel="stylesheet" href="css/create_section.css"/>
+  <link rel="stylesheet" href="css/teacher_create.css"/>
   <link rel="stylesheet" href="css/dashboard_view.css" />
 </head>
 <body>
@@ -58,27 +59,29 @@
 
   <main id="main-container" role="main">
     <section id="form-container">
-      <h2 id="form-title">CREATE NEW SECTION</h2>
+      <h2 id="form-title">CREATE NEW CLASS SECTION FOR GRADE 8</h2>
 
       <form id="create-section-form" action="index.php?r=sections/create" method="POST">
         <label for="section_name">SECTION NAME</label>
         <input type="text" id="section_name" name="section_name" placeholder="ST. DIEGO" required/>
+        <span class="tc-error" data-error-for="last_name"></span>
 
-        <label for="start_school_year">START OF SCHOOL YEAR</label>
+        <label for="start_school_year">START OF ACADEMIC YEAR</label>
         <select id="start_school_year" name="start_school_year" required>
-          <option value="">— Select Year —</option>
+          <option value="">— Select Academic Year —</option>
         </select>
 
-        <label for="end_school_year">END OF SCHOOL YEAR</label>
+        <label for="end_school_year">END OF ACADEMIC YEAR</label>
         <select id="end_school_year" name="end_school_year" required>
-          <option value="">— Select Year —</option>
+          <option value="">— Select Academic Year —</option>
         </select>
 
-        <div class="form-actions">
-          <button type="submit">CREATE SECTION</button>
+        <div class="tc-actions">
+          <button class="tc-btn tc-btn-primary" type="submit">CREATE</button>
         </div>
       </form>
     </section>
+    <br/>
   </main>
   <script src="js/create_section_form.js"></script>
 </body>
