@@ -94,20 +94,21 @@ main.div_parent_main {
 
 .top-control,
 .btn.btn-side {
+  font-family: 'Karla';
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
   padding: 16px;
   border: none;
-  border-radius: 10px;
-  background: #b66203;
+  border-radius: 8px;
+  background: #9b5302;
   color: #fff;
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
   transition: transform 0.06s ease, filter 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .top-control:hover,
@@ -115,10 +116,11 @@ main.div_parent_main {
 .logout-baba:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .logout-baba {
+  font-family: 'Karla';
   position: fixed;      
   bottom: 20px;           
   left: 20px;           
@@ -128,21 +130,21 @@ main.div_parent_main {
   gap: 10px;
   padding: 14px 18px;
   border: none;
-  border-radius: 10px;
-  background: #ff0000;
+  border-radius: 8px;
+  background: #a00000;
   color: #fff;
   font-weight: 700;
   font-size: 16px;
   letter-spacing: .3px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
 }
 
 .logout-baba:hover {
   transform: translateY(-2px);
   filter: brightness(1.05);
-  box-shadow: 0 10px 24px rgba(0,0,0,.8);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 }
 
 .btn-icon {
