@@ -66,28 +66,28 @@
 
         <div class="tc-grid">
           <div class="tc-row">
-            <label for="first_name" class="tc-label">First name <span class="tc-req">*</span></label>
-            <input id="first_name" name="first_name" type="text" class="tc-input" placeholder="e.g., Juan" />
+            <label for="first_name" class="tc-label">GIVEN NAME<span class="tc-req">*</span></label>
+            <input id="first_name" name="first_name" type="text" class="tc-input" placeholder="e.g., Juan Benito" />
             <span class="tc-error" data-error-for="first_name"></span>
           </div>
 
           <div class="tc-row">
-            <label for="last_name" class="tc-label">Last name <span class="tc-req">*</span></label>
+            <label for="last_name" class="tc-label">LAST NAME<span class="tc-req">*</span></label>
             <input id="last_name" name="last_name" type="text" class="tc-input" placeholder="e.g., Dela Cruz" />
             <span class="tc-error" data-error-for="last_name"></span>
           </div>
         </div>
 
         <div class="tc-row">
-          <label for="username" class="tc-label">Username <span class="tc-req">*</span></label>
+          <label for="username" class="tc-label">USERNAME<span class="tc-req">*</span></label>
           <input id="username" name="username" type="text" class="tc-input" />
           <span class="tc-error" data-error-for="username"></span>
-          <div class="tc-hint">Must be unique.</div>
+          <div class="tc-hint">Important Note: It must be unique.</div>
         </div>
 
         <div class="tc-grid">
           <div class="tc-row">
-            <label for="password" class="tc-label">Password <span class="tc-req">*</span></label>
+            <label for="password" class="tc-label">PASSWORD<span class="tc-req">*</span></label>
             <input id="password" name="password" type="password" class="tc-input" />
             <span class="tc-error" data-error-for="password"></span>
 
@@ -102,23 +102,23 @@
           </div>
 
           <div class="tc-row">
-            <label for="confirm" class="tc-label">Confirm Password <span class="tc-req">*</span></label>
+            <label for="confirm" class="tc-label">CONFIRM PASSWORD<span class="tc-req">*</span></label>
             <input id="confirm" name="confirm" type="password" class="tc-input" />
             <span class="tc-error" data-error-for="confirm"></span>
           </div>
         </div>
 
         <div class="tc-row">
-          <label class="tc-label">Assign Sections <span class="tc-req">*</span></label>
+          <label class="tc-label">ASSIGN CLASS SECTION/S<span class="tc-req">*</span></label>
           <div id="tcSections" class="tc-sections">
-            <div class="tc-hint">No unassigned sections found.</div>
+            <div class="tc-hint">Sorry, no unassigned class sections found.</div>
           </div>
           <!-- Error badge for sections (used by the JS validation) -->
           <span class="tc-error" data-error-for="sections"></span>
         </div>
 
         <div class="tc-actions">
-          <button class="tc-btn tc-btn-primary" type="submit">Create Teacher</button>
+          <button class="tc-btn tc-btn-primary" type="submit">CREATE</button>
         </div>
       </form>
     </main>

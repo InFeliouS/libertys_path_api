@@ -1,15 +1,9 @@
-// public/js/teacher_create.js
-// 1) Load sections into #tcSections
-// 2) Client-side validation with right-side red messages
-// 3) Live password checklist (✓ green when satisfied, ✕ red when not)
-
 (function () {
-  // ------- Sections loader -------
   const container = document.getElementById('tcSections');
   if (container) {
     function renderSections(items) {
       if (!Array.isArray(items) || items.length === 0) {
-        container.innerHTML = '<div class="tc-hint">No unassigned sections found.</div>';
+        container.innerHTML = '<div class="tc-hint">Sorry, no unassigned class sections found.</div>';
         return;
       }
       container.innerHTML = items.map(s => {
