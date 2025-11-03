@@ -66,8 +66,8 @@ body {
   width: 100%;
   background: rgb(255, 255, 255);
   border: 1px solid rgba(0,0,0,.06);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.4);
+  border-radius: 10px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.2);
   padding: 34px;
 }
 
@@ -94,8 +94,8 @@ input[type="text"], select {
   font-size: 1.2rem;
   font-family: 'Karla';
   color: #3b2f2f;
-  border: 1px solid #d6ae7b;
-  border-radius: 10px;
+  border: 2px solid #d6ae7b;
+  border-radius: 5px;
   background: rgba(255,255,255,0.95);
   outline: none;
 }
@@ -125,14 +125,14 @@ button[type="submit"] {
   font-family: 'Karla';
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0,0,0,.8);
+  box-shadow: 0 8px 18px rgba(0,0,0,.2);
   transition: background-color .25s ease, transform .02s ease;
 }
 
 button[type="submit"]:hover { 
   transform: translateY(-1px); 
   filter: brightness(1.06); 
-  box-shadow: 0 8px 18px rgba(0,0,0,.8); 
+  box-shadow: 0 8px 18px rgba(0,0,0,.2); 
 }
 
 button[type="submit"]:active { 
