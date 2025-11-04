@@ -6,6 +6,7 @@
   <title>Liberty's Path | NEW SECTION</title>
   <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
   <link rel="stylesheet" href="css/create_section.css"/>
+  <link rel="stylesheet" href="css/teachers_create.css"/>
   <link rel="stylesheet" href="css/dashboard_view.css" />
 </head>
 <body>
@@ -62,8 +63,8 @@
 
       <form id="create-section-form" action="index.php?r=sections/create" method="POST">
         <label for="section_name">SECTION NAME<span class="sc-req">*</span></label>
-        <input type="text" id="section_name" name="section_name" placeholder="e.g., ST. DIEGO" required/>
-        <span class="tc-error" data-error-for="last_name"></span>
+        <input type="text" id="section_name" name="section_name" class="sc-input sc-inavlid" placeholder="e.g., ST. DIEGO" required/>
+        <span class="sc-error" data-error-for="last_name"></span>
 
         <label for="start_school_year">START OF ACADEMIC YEAR<span class="sc-req">*</span></label>
         <select id="start_school_year" name="start_school_year" required>

@@ -123,6 +123,32 @@ input[type="text"]:focus, select:focus {
   color: #b00020;
 }
 
+.sc-input .sc-invalid {
+  border-color: #b00020;
+  box-shadow: 0 0 0 3px rgba(176,0,32,.12);
+}
+
+.sc-error {
+  position: absolute;
+  right: 10px;
+  top: 70%;
+  transform: translateY(-50%);
+  color: #b00020;
+  line-height: 1;
+  background: #fff;
+  padding: 8px;
+  border-radius: 5px;
+  pointer-events: none;
+  max-width: 45%;
+  text-align: right;
+  display: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 1.1rem;
+  font-family: 'Karla';
+}
+
 ::-webkit-input-placeholder {
   text-transform: none;
 }

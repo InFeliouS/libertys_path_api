@@ -94,12 +94,12 @@ body {
   box-shadow: 0 0 0 3px rgba(182,98,3,.15);
 }
 
-.tc-input.tc-invalid {
+.tc-input .tc-invalid {
   border-color: #b00020;
   box-shadow: 0 0 0 3px rgba(176,0,32,.12);
 }
 
-.tc-error{
+.tc-error {
   position: absolute;
   right: 10px;
   top: 70%;
