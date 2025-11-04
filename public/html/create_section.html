@@ -61,16 +61,16 @@
       <h2 id="form-title">CREATE NEW CLASS SECTION FOR GRADE 8</h2>
 
       <form id="create-section-form" action="index.php?r=sections/create" method="POST">
-        <label for="section_name">SECTION NAME</label>
-        <input type="text" id="section_name" name="section_name" placeholder="ST. DIEGO" required/>
+        <label for="section_name">SECTION NAME<span class="sc-req">*</span></label>
+        <input type="text" id="section_name" name="section_name" placeholder="e.g., ST. DIEGO" required/>
         <span class="tc-error" data-error-for="last_name"></span>
 
-        <label for="start_school_year">START OF ACADEMIC YEAR</label>
+        <label for="start_school_year">START OF ACADEMIC YEAR<span class="sc-req">*</span></label>
         <select id="start_school_year" name="start_school_year" required>
           <option value="">— Select Year —</option>
         </select>
 
-        <label for="end_school_year">END OF ACADEMIC YEAR</label>
+        <label for="end_school_year">END OF ACADEMIC YEAR<span class="sc-req">*</span></label>
         <select id="end_school_year" name="end_school_year" required>
           <option value="">— Select Year —</option>
         </select>

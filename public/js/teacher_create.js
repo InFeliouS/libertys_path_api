@@ -146,7 +146,7 @@
     if (key === 'confirm') {
       const p = (fields.password.value || '').trim();
       if (!v) { setError(key, 'Required'); return false; }
-      if (v !== p) { setError(key, 'Passwords don’t match.'); return false; }
+      if (v !== p) { setError(key, 'Don’t match.'); return false; }
       setError(key, ''); return true;
     }
 
@@ -162,7 +162,7 @@
       const checked = form.querySelectorAll('input[name="section_ids[]"]:checked');
       if (!checked || checked.length === 0) {
         if (errors['sections']) {
-          errors['sections'].textContent = 'Select at least one section';
+          errors['sections'].textContent = 'Select at least one section.';
           errors['sections'].style.display = 'inline-block';
         }
         boxes[0].focus();

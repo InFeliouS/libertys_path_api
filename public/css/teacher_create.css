@@ -116,7 +116,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: 'Karla';
 }
 
@@ -240,13 +240,13 @@ body {
 .pw-item.bad {
   color:#d73737; 
   font-family: 'Karla';
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .pw-item.ok {
   color:#148f2e;
   font-family: 'Karla';
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .pw-item.ok::before {
