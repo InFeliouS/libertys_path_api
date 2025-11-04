@@ -1,6 +1,10 @@
-.content-pane{
-  flex: 1;
-  padding: 12px;
+.content-pane {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto; 
 }
 
 html, body {
@@ -33,6 +37,8 @@ body {
   margin: 0 0 12px; 
   font-size: 1.5rem;
   font-weight: 900;
+  text-align: center;
+
 }
 
 .tc-label {
@@ -56,23 +62,13 @@ body {
 }
 
 .tc-form {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%;
+  width: 100%;
   max-width: 600px;
-  margin: 0;
   background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 10px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 20px;
-
-  box-sizing: border-box;
-  max-height: calc(100vh - 40px); /* leave 20px gutter top & bottom */
-  overflow: auto;                  /* allow the whole modal to scroll */
-  -webkit-overflow-scrolling: touch;
 }
 
 .tc-row{
@@ -163,7 +159,10 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 18px;
+  justify-content: center;
+  align-items: center;
 }
+
 .tc-btn {
   display: inline-flex;
   align-items: center;
@@ -179,10 +178,22 @@ body {
 }
 
 .tc-btn-primary {
-  background: #9b5302;
+  /*background: #9b5302;
   color: #fff;
   font-family: 'Karla';
-  font-size: 1rem;
+  font-size: 1rem;*/
+
+  padding: 12px 18px;
+  background-color: #9b5302;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-family: 'Karla';
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,.2);
+  transition: background-color .25s ease, transform .02s ease;
 }
 
 .tc-btn-primary:hover {
