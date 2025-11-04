@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (editStartYear && editEndYear) {
     const thisYear = new Date().getFullYear();
-    editStartYear.innerHTML = '<option value="">--Select Year--</option>';
-    editEndYear.innerHTML   = '<option value="">--Select Year--</option>';
+    editStartYear.innerHTML = '<option value="">— Select Year —</option>';
+    editEndYear.innerHTML   = '<option value="">— Select Year —</option>';
     for (let y = thisYear - 1; y <= thisYear + 5; y++) {
       editStartYear.add(new Option(y, y));
       editEndYear.add(new Option(y, y));

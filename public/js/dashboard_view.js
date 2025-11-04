@@ -1,24 +1,11 @@
-/**function showLogoutConfirmation() {
-  document.getElementById("logoutModal").style.display = "flex";
+function showLogoutConfirmation() {
+  document.querySelector(".logout-modal").style.display = "flex";
 }
 
 function closeLogoutConfirmation() {
-  document.getElementById("logoutModal").style.display = "none";
+  document.querySelector(".logout-modal").style.display = "none";
 }
 
 function confirmLogout() {
   window.location.href = "index.php?r=logout";
-}**/
-
-  function showLogoutConfirmation() {
-    document.querySelector(".logout-modal").style.display = "flex";
-  }
-
-  function closeLogoutConfirmation() {
-    document.querySelector(".logout-modal").style.display = "none";
-  }
-
-  function confirmLogout() {
-    window.location.href = "index.php?r=logout";
-  }
-  
+}

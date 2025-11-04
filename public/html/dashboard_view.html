@@ -60,7 +60,6 @@
       <div class="controls">
         <?php if (function_exists('is_admin') && is_admin()): ?>
           <button class="top-control" onclick="location.href='index.php?r=teachers/create'">
-            <!-- plus icon -->
             <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor"/>
             </svg>
@@ -68,7 +67,6 @@
           </button>
 
           <button class="top-control second" onclick="location.href='index.php?r=sections/create'">
-            <!-- plus icon -->
             <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor"/>
             </svg>
@@ -78,7 +76,6 @@
 
         <?php if (strtoupper($_SESSION['role'] ?? '') !== 'ADMIN'): ?>
           <button onclick="location.href='./index.php?r=questions/manage'" class="btn btn-side">
-            <!-- wrench/settings icon -->
             <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M19.14 12.94a7 7 0 1 1-7.08-7.08 4 4 0 0 0 6.83-1.76 1 1 0 0 1 1.49-1.05 9 9 0 1 0 2.59 2.59 1 1 0 0 1-1.05 1.49 4 4 0 0 0-1.78 6.81zM12 9a3 3 0 1 0 3 3 3 3 0 0 0-3-3z" fill="currentColor"/>
             </svg>
@@ -87,7 +84,6 @@
         <?php endif; ?>
 
         <button onclick="showLogoutConfirmation()" class="logout-baba">
-          <!-- power/logout icon -->
           <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm6.36 3.64a1 1 0 0 1 1.41 1.41A9 9 0 1 1 5.23 7.05a1 1 0 1 1 1.41-1.41 7 7 0 1 0 9.72 0z" fill="currentColor"/>
           </svg>
@@ -124,7 +120,6 @@
   </div>
   </main>
 
-  <!-- Edit-Section Modal -->
   <div id="editSectionModal" class="modal">
     <div class="modal-content">
       <span id="closeEditSectionModal" class="modal-close">&times;</span>
@@ -150,7 +145,6 @@
     </div>
   </div>
 
-  <!-- Delete-Section Modal -->
   <div class="delete-modal" id="deleteSectionModal">
     <div class="delete-modal-content">
       <h3>CONFIRM DELETE</h3>
