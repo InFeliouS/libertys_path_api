@@ -6,133 +6,263 @@
   <title>Guard Question Bank</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
+
+  <!-- Reuse dashboard layout styles -->
   <link rel="stylesheet" href="css/dashboard_view.css" />
-  <!-- Page-specific styles + scroll fix -->
+
+  <!-- Page-specific styles -->
   <link rel="stylesheet" href="css/questions_manage.css" />
 </head>
 
 <body>
-  <!-- Top: title left + back-to-dashboard right -->
-  <div class="page-top">
-    <h1>Guard Question Bank</h1>
-    <a class="btn btn-brand btn-back" href="index.php?r=dashboard" aria-label="Back to dashboard">
-      <svg class="back-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-        <path d="M15.5 19.5L8 12l7.5-7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-      <span>MONITORING BOARD</span>
-    </a>
+
+<?php 
+  // Detect admin role
+  $sessionRole = strtoupper($_SESSION['role'] ?? '');
+  $isAdmin = function_exists('is_admin') ? is_admin() : ($sessionRole === 'ADMIN');
+  $route = $_GET['r'] ?? 'dashboard';
+?>
+
+<header>
+  <div class="header-titles">
+    <h1><?= $isAdmin ? 'ADMIN BOARD' : 'MONITORING BOARD' ?></h1>
+
+    <p class="page-subtitle">
+      <?php
+        if ($isAdmin) {
+          echo "Hi, AP Department Head";
+        } else {
+          $first = trim($_SESSION['teacher_first_name'] ?? $_SESSION['first_name'] ?? '');
+          $last  = trim($_SESSION['teacher_last_name'] ?? $_SESSION['last_name'] ?? '');
+          if ($first || $last) {
+            echo "Hi, Teacher " . htmlspecialchars(trim("$first $last"));
+          } else {
+            echo "Hi, Teacher";
+          }
+        }
+      ?>
+    </p>
   </div>
-  <!--<p class="muted">Route: <code>index.php?r=questions/manage</code></p>-->
 
-  <!--Create / Update Form -->
-  <div class="card">
-    <h2 id="formTitle">Add New Question</h2>
-    <div class="question-meta-row">
-      <div class="difficulty-group">
-        <span>Difficulty:</span>
-        <label>
-          <input type="radio" name="difficulty" value="easy" checked>
-          <span>EASY</span>
-        </label>
-        <label>
-          <input type="radio" name="difficulty" value="medium">
-          <span>MEDIUM</span>
-        </label>
-        <label>
-          <input type="radio" name="difficulty" value="hard">
-          <span>HARD</span>
-        </label>
-      </div>
+  <div class="header-left-logos">
+    <img src="assets/SDPS-LOGO-transparent.png" class="header-logo" />
+    <img src="assets/libertys-path-logo-2d-transparent.png" class="header-logo" />
+  </div>
+</header>
 
-      <div class="meta-input">
-        <label>Rooms:</label>
-        <div class="icon-input">
-          <span class="icon">🏠</span>
-          <!-- limit 1–8 -->
-          <input id="roomCount" type="number" min="1" max="8" value="1">
-        </div>
-      </div>
+<main class="div_parent_main">
+  <div class="div_sidebar_left">
+    <div class="controls">
 
-      <div class="meta-input">
-        <label>Enemies:</label>
-        <div class="icon-input">
-          <span class="icon">👾</span>
-          <!-- limit 1–8 -->
-          <input id="enemyCount" type="number" min="1" max="8" value="1">
-        </div>
-      </div>
+      <!-- ✅ ADMIN VIEW -->
+      <?php if ($isAdmin): ?>
 
-      <!-- added ID + CSS class for styling & JS hook -->
-      <button id="metaSaveBtn" class="btn btn-brand">Save</button>
-    </div>
+        <!-- ADMIN BOARD -->
+        <button 
+          class="top-control <?= $route === 'dashboard' ? 'active-page' : '' ?>" 
+          onclick="location.href='index.php?r=dashboard'">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zm0 6h14v-2H7v2zM3 7v2h2V7H3z" fill="currentColor"/>
+          </svg>
+          <span>ADMIN BOARD</span>
+        </button>
 
+        <!-- TEACHER ACCOUNT -->
+        <button 
+          class="top-control <?= $route === 'teachers/create' ? 'active-page' : '' ?>" 
+          onclick="location.href='index.php?r=teachers/create'">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z"/>
+          </svg>
+          <span>TEACHER ACCOUNT</span>
+        </button>
 
-    <form id="qForm" class="q-form">
-      <input type="hidden" id="qId">
+        <!-- NEW SECTION -->
+        <button 
+          class="top-control <?= $route === 'sections/create' ? 'active-page' : '' ?>" 
+          onclick="location.href='index.php?r=sections/create'">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z"/>
+          </svg>
+          <span>NEW SECTION</span>
+        </button>
 
-      <label for="question_text">Question</label>
-      <textarea id="question_text" rows="3" placeholder="Type the question here…" required></textarea>
+      <?php endif; ?>
 
-      <div class="grid-2">
-        <div>
-          <label for="choice1">Choice A</label>
-          <input id="choice1" type="text" placeholder="Choice A" required>
-        </div>
-        <div>
-          <label for="choice2">Choice B</label>
-          <input id="choice2" type="text" placeholder="Choice B" required>
-        </div>
-        <div>
-          <label for="choice3">Choice C</label>
-          <input id="choice3" type="text" placeholder="Choice C" required>
-        </div>
-        <div>
-          <label for="choice4">Choice D</label>
-          <input id="choice4" type="text" placeholder="Choice D" required>
-        </div>
-      </div>
+      <!-- ✅ TEACHER VIEW -->
+      <?php if (!$isAdmin): ?>
 
-      <label for="correct_index">Correct Answer</label>
-      <select id="correct_index" required>
-        <option value="" disabled selected>Select the correct choice…</option>
-        <option value="0">A</option>
-        <option value="1">B</option>
-        <option value="2">C</option>
-        <option value="3">D</option>
-      </select>
+        <!-- MONITORING BOARD -->
+        <button 
+          class="top-control <?= $route === 'dashboard' ? 'active-page' : '' ?>" 
+          onclick="location.href='index.php?r=dashboard'">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zm0 6h14v-2H7v2zM3 7v2h2V7H3z"/>
+          </svg>
+          <span>MONITORING BOARD</span>
+        </button>
 
-      <div class="form-actions">
-        <button id="submitBtn" type="submit">Create</button>
-        <button id="cancelEditBtn" type="button" class="hidden">Cancel</button>
-        <span id="formMsg" class="form-msg"></span>
-      </div>
-    </form>
+        <!-- GUARD QUESTIONS -->
+        <button 
+          class="top-control <?= $route === 'questions/manage' ? 'active-page' : '' ?>" 
+          onclick="location.href='index.php?r=questions/manage'">
+          <svg class="btn-icon" viewBox="0 0 24 24">
+            <path d="M19.14 12.94a7 7 0 1 1-7.08-7.08 4 4 0 0 0 6.83-1.76 1 1 0 0 1 1.49-1.05 9 9 0 1 0 2.59 2.59 1 1 0 0 1-1.05 1.49 4 4 0 0 0-1.78 6.81zM12 9a3 3 0 1 0 3 3 3 3 0 0 0-3-3z"/>
+          </svg>
+          <span>GUARD QUESTIONS</span>
+        </button>
 
-    <!-- Table -->
-    <div class="card">
-      <h2>Existing Questions</h2>
-      <table class="q-table">
-        <thead>
-          <tr>
-            <th>Question</th>
-            <th>Choices</th>
-            <th>Correct</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="qTbody">
-          <tr>
-            <td colspan="4">Loading…</td>
-          </tr>
-        </tbody>
-      </table>
+      <?php endif; ?>
+
+      <!-- ✅ LOGOUT -->
+      <button onclick="showLogoutConfirmation()" class="logout-baba">
+        <svg class="btn-icon" viewBox="0 0 24 24">
+          <path d="M12 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm6.36 3.64a1 1 0 0 1 1.41 1.41A9 9 0 1 1 5.23 7.05a1 1 0 1 1 1.41-1.41 7 7 0 1 0 9.72 0z"/>
+        </svg>
+        <span>LOG OUT</span>
+      </button>
+
     </div>
   </div>
 
-  <script src="js/questions_manage.js"></script>
-  <script src="js/teacher_config.js"></script>
+  <!-- ✅ MAIN CONTENT -->
+  <div class="div_sidebar_right">
+    <div class="section-divider">
+      
+      <!-- Top title + back link -->
+      <div class="page-top">
+        <h1>Guard Question Bank</h1>
+      </div>
 
+      <!-- ✅ CREATE / EDIT QUESTION FORM -->
+      <div class="card">
+        <h2 id="formTitle">Add New Question</h2>
+
+        <div class="question-meta-row">
+
+          <div class="difficulty-group">
+            <span>Difficulty:</span>
+
+            <label>
+              <input type="radio" name="difficulty" value="easy" checked />
+              <span>EASY</span>
+            </label>
+
+            <label>
+              <input type="radio" name="difficulty" value="medium" />
+              <span>MEDIUM</span>
+            </label>
+
+            <label>
+              <input type="radio" name="difficulty" value="hard" />
+              <span>HARD</span>
+            </label>
+          </div>
+
+          <!-- ROOMS -->
+          <div class="meta-input">
+            <label>Rooms:</label>
+            <div class="icon-input">
+              <span class="icon">🏠</span>
+              <input id="roomCount" type="number" min="1" max="8" value="1">
+            </div>
+          </div>
+
+          <!-- ENEMIES -->
+          <div class="meta-input">
+            <label>Enemies:</label>
+            <div class="icon-input">
+              <span class="icon">👾</span>
+              <input id="enemyCount" type="number" min="1" max="8" value="1">
+            </div>
+          </div>
+
+          <button id="metaSaveBtn" class="btn btn-brand">Save</button>
+        </div>
+
+        <!-- FORM -->
+        <form id="qForm" class="q-form">
+          <input type="hidden" id="qId">
+
+          <label>Question</label>
+          <textarea id="question_text" rows="3" placeholder="Type the question here…" required></textarea>
+
+          <div class="grid-2">
+            <div>
+              <label>Choice A</label>
+              <input id="choice1" type="text" required>
+            </div>
+            <div>
+              <label>Choice B</label>
+              <input id="choice2" type="text" required>
+            </div>
+            <div>
+              <label>Choice C</label>
+              <input id="choice3" type="text" required>
+            </div>
+            <div>
+              <label>Choice D</label>
+              <input id="choice4" type="text" required>
+            </div>
+          </div>
+
+          <label>Correct Answer</label>
+          <select id="correct_index" required>
+            <option value="" disabled selected>Select the correct choice…</option>
+            <option value="0">A</option>
+            <option value="1">B</option>
+            <option value="2">C</option>
+            <option value="3">D</option>
+          </select>
+
+          <div class="form-actions">
+            <button id="submitBtn" type="submit">Create</button>
+            <button id="cancelEditBtn" type="button" class="hidden">Cancel</button>
+            <span id="formMsg" class="form-msg"></span>
+          </div>
+        </form>
+      </div>
+
+      <!-- ✅ QUESTION TABLE -->
+      <div class="card">
+        <h2>Existing Questions</h2>
+
+        <table class="q-table">
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Choices</th>
+              <th>Correct</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="qTbody">
+            <tr><td colspan="4">Loading…</td></tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+  <div class="logout-modal">
+    <div class="logout-modal-content">
+      <h3>CONFIRM LOGOUT</h3>
+      <p>Are you sure you want to log out?</p>
+      <div class="logout-modal-buttons">
+        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+        <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+      </div>
+    </div>
+  </div>
+  
+<script src="js/dashboard_view.js?v=20250908"></script>
+<script src="js/questions_manage.js"></script>
+<script src="js/teacher_config.js"></script>
+
+<!-- ✅ Logout modal (imported from dashboard logic if needed) -->
 </body>
-
 </html>

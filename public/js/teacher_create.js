@@ -218,28 +218,52 @@
     });
   }
 
-  // Block submit if anything invalid
-  form.addEventListener('submit', (e) => {
+  // ======= Handle backend duplicate username response =======
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // prevent normal submit
+
+    // Run existing validations
     let ok = true;
     ok = validateField('first_name') && ok;
     ok = validateField('last_name')  && ok;
     ok = validateField('username')   && ok;
     ok = validateField('password')   && ok;
     ok = validateField('confirm')    && ok;
+    ok = validateSections()          && ok;
 
-    // sections are REQUIRED (even if none exist)
-    ok = validateSections() && ok;
+    if (!ok) return;
 
-    if (!ok) {
-      e.preventDefault();
+    // Clear previous backend username error
+    setError('username', '');
 
-      // focus first invalid input (falls back to sections focus inside validateSections)
-      for (const key of ['first_name','last_name','username','password','confirm']) {
-        if (fields[key] && fields[key].classList.contains('tc-invalid')) {
-          fields[key].focus();
-          break;
-        }
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch('src/dashboard/teachers_store.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      // Handle backend duplicate username (409)
+      if (res.status === 409) {
+        const data = await res.json();
+        setError('username', data.error || 'Username already exists.');
+        fields.username.focus();
+        return;
       }
+
+      if (!res.ok) {
+        const text = await res.text();
+        alert('Something went wrong: ' + text);
+        return;
+      }
+
+      // ✅ Success - redirect to dashboard
+      window.location.href = 'index.php?r=dashboard';
+
+    } catch (err) {
+      console.error(err);
+      alert('Network error, please try again.');
     }
   });
 })();

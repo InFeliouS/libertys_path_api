@@ -92,6 +92,9 @@ main.div_parent_main {
   flex: 1 1 auto;
 }
 
+/* ============================================================
+   FIXED — POSITIONING FOR GLOW + LEFT GOLD BAR
+============================================================= */
 .top-control,
 .btn.btn-side {
   font-family: 'Karla';
@@ -109,6 +112,10 @@ main.div_parent_main {
   cursor: pointer;
   transition: transform 0.06s ease, filter 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  /* ✅ REQUIRED FIX FOR GLOW + SIDE BAR */
+  position: relative;
+  overflow: visible;
 }
 
 .top-control:hover,
@@ -121,9 +128,9 @@ main.div_parent_main {
 
 .logout-baba {
   font-family: 'Karla';
-  position: fixed;      
-  bottom: 20px;                      
-  z-index: 100;      
+  position: fixed;
+  bottom: 20px;
+  z-index: 100;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -181,7 +188,7 @@ main.div_parent_main {
 #sectionCards .no-results {
   padding: 24px;
   text-align: center;
-  color: #6b7280; 
+  color: #6b7280;
   font-size: 5rem;
   font-weight: 900;
   font-style: italic;
@@ -191,7 +198,7 @@ main.div_parent_main {
 .div_sidebar_right {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 12px;
+  padding: 12px 24px;
   overflow: auto;
 }
 
@@ -219,13 +226,13 @@ main.div_parent_main {
   display: grid;
   gap: 18px;
   grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  align-items: start;      
-  justify-items: center;     
-  width: 100%;               
-  height: auto;              
-  grid-auto-rows: auto;      
-  overflow: visible;         
-  box-sizing: border-box;   
+  align-items: start;
+  justify-items: center;
+  width: 100%;
+  height: auto;
+  grid-auto-rows: auto;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 .section-card {
@@ -317,11 +324,15 @@ main.div_parent_main {
 }
 
 .card-actions .btn-delete {
-  font-family: 'Karla';       
+  font-family: 'Karla';
   background: #a00000;
   color: #fff;
   width: auto;
 }
+
+/* ============================================================
+   MODALS
+============================================================= */
 
 .modal {
   display: none;
@@ -361,7 +372,8 @@ main.div_parent_main {
   text-align: center;
   letter-spacing: .6px;
   font-size: 1.5rem;
-  font-weight: 900; }
+  font-weight: 900;
+}
 
 .modal-content label {
   font-family: 'Karla';
@@ -482,7 +494,7 @@ main.div_parent_main {
   to   { opacity: 1; transform: scale(1); }
 }
 
-.logout-modal{
+.logout-modal {
   display: none;
   position: fixed;
   inset: 0;
@@ -538,7 +550,7 @@ main.div_parent_main {
 
 .logout-modal-buttons .confirm-btn {
   background: #9b5302;
-  color: #fff; 
+  color: #fff;
 }
 
 .logout-modal-buttons .confirm-btn:hover {
@@ -549,21 +561,21 @@ main.div_parent_main {
 
 .logout-modal-buttons .cancel-btn {
   background: #eef1f4;
-  color: #333; 
+  color: #333;
 }
 
 .logout-modal-buttons .cancel-btn:hover {
   transform: translateY(-1px);
   filter: brightness(1.06);
-  box-shadow: 0 8px 18px rgba(0,0,0,8); 
+  box-shadow: 0 8px 18px rgba(0,0,0,8);
 }
 
 .center {
-  text-align: center; 
+  text-align: center;
 }
 
-.hidden { 
-  display: none !important; 
+.hidden {
+  display: none !important;
 }
 
 button:focus,
@@ -616,4 +628,44 @@ select:focus{
     margin-top: 10px;
     width: 100%;
   }
+}
+
+/* ============================================================
+   ✅ ACTIVE SIDEBAR BUTTON (Glow + left gold bar + pulse)
+============================================================= */
+
+.top-control.active-page {
+  background: #c56f14 !important;
+  box-shadow: 0 0 12px rgba(197,111,20,0.65);
+  transform: translateY(-1px);
+  animation: sidebarPulse 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes sidebarPulse {
+  from { background-color: #c56f14; }
+  to   { background-color: #d17805; }
+}
+
+/* ✅ Left glowing bar */
+.top-control.active-page::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg,#ffca28,#ff9100);
+  border-radius: 0 4px 4px 0;
+  transform: translateX(-10px);
+  animation: slideBar .35s ease forwards;
+}
+
+@keyframes slideBar {
+  from { transform: translateX(-10px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+/* ✅ Icon becomes white for visibility */
+.top-control.active-page .btn-icon path {
+  fill: #ffffff !important;
 }

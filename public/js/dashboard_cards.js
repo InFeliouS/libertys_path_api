@@ -9,8 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
 
-  const IS_ADMIN = !!document.querySelector('.div_sidebar_left .top-control');
+  // ✅ Reliable admin detection
+  const IS_ADMIN = (window.userRole === "ADMIN" || document.body.dataset.role === "ADMIN");
 
+  // Hide Edit/Delete for non-admin users
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;
@@ -34,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Make input uppercase automatically
   if (editSectionName) {
     editSectionName.style.textTransform = "uppercase";
     editSectionName.addEventListener("input", () => {
@@ -43,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Populate start/end year dropdowns
   if (editStartYear && editEndYear) {
     const thisYear = new Date().getFullYear();
     editStartYear.innerHTML = '<option value="">— Select Year —</option>';
@@ -62,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Close Edit Modal
   if (closeEditBtn && editModal) {
     closeEditBtn.onclick = () => editModal.style.display = "none";
     window.addEventListener("click", e => {
@@ -69,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Handle Edit Form Submit
   if (editForm) {
     editForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -102,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Helper functions
   const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
   const resolveTeacherName = (sec) => {
     const fn = sec?.teacher_first_name || sec?.first_name || sec?.adviser_first_name || sec?.handler_first_name || sec?.teacherFname || sec?.adviserFname || "";
@@ -113,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return combined ? titleCase(String(combined).trim()) : null;
   };
 
+  // Fetch and render sections
   let allSections = []; 
   fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } })
     .then(r => r.json())
@@ -127,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
     });
 
+  // Render all section cards
   function renderSections(list) {
     if (!container) return;
     container.innerHTML = "";
@@ -197,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     adjustContainerHeight();
 
+    // Extra cleanup for non-admins (safety)
     if (!IS_ADMIN) {
       const stripOnce = () => {
         const candidates = container.querySelectorAll('.section-card button');
@@ -209,6 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Delete modal logic
   const deleteModal = document.getElementById("deleteSectionModal");
   let deleteTargetId = null;
   let deleteCardRef = null;
@@ -249,12 +260,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Adjust container layout height
   function adjustContainerHeight() {
     if (!container) return;
     container.style.height = "auto";
   }
 
   window.addEventListener("resize", adjustContainerHeight);
+
+  // Debounce search
   function debounce(fn, delay = 200) {
     let t = null;
     return function (...args) {
@@ -263,6 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // Search functionality
   if (searchInput) {
     const doSearch = () => {
       const raw = (searchInput.value || "").trim().toLowerCase();

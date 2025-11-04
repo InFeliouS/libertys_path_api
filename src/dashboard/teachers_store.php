@@ -2,8 +2,6 @@
 // src/dashboard/teachers_store.php
 require_once __DIR__ . '/../config/db.php'; // $pdo
 
-header('Content-Type: text/html; charset=utf-8');
-
 $username   = trim($_POST['username'] ?? '');
 $password   = (string)($_POST['password'] ?? '');
 $confirm    = (string)($_POST['confirm'] ?? '');
@@ -13,11 +11,16 @@ $sectionIds = isset($_POST['section_ids']) && is_array($_POST['section_ids']) ? 
 
 if ($username === '' || $password === '' || $confirm === '') {
   http_response_code(400);
-  echo "Missing required fields."; exit;
+  header('Content-Type: application/json');
+  echo json_encode(["error" => "Missing required fields."]);
+  exit;
 }
+
 if ($password !== $confirm) {
   http_response_code(400);
-  echo "Passwords do not match."; exit;
+  header('Content-Type: application/json');
+  echo json_encode(["error" => "Passwords do not match."]);
+  exit;
 }
 
 try {
@@ -25,13 +28,16 @@ try {
   $stmt = $pdo->prepare("SELECT 1 FROM teachers WHERE username = ? LIMIT 1");
   $stmt->execute([$username]);
   if ($stmt->fetchColumn()) {
-    http_response_code(400);
-    echo "Username already exists."; exit;
+    http_response_code(409);
+    header('Content-Type: application/json');
+    echo json_encode(["error" => "Username already exists."]);
+    exit;
   }
 
   // 2) Create teacher
   $hash = password_hash($password, PASSWORD_DEFAULT);
-  $ins  = $pdo->prepare("INSERT INTO teachers (username, password, first_name, last_name, role) VALUES (?, ?, ?, ?, 'TEACHER')");
+  $ins  = $pdo->prepare("INSERT INTO teachers (username, password, first_name, last_name, role)
+                         VALUES (?, ?, ?, ?, 'TEACHER')");
   $ins->execute([$username, $hash, $first_name, $last_name]);
   $newTeacherId = (int)$pdo->lastInsertId();
 
@@ -61,11 +67,20 @@ try {
     }
   }
 
-  // 4) Done
+  // 4) Done — if this was called via fetch, just send JSON success
+  if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+    header('Content-Type: application/json');
+    echo json_encode(["success" => true]);
+    exit;
+  }
+
+  // Default: redirect for normal form POSTs
   header("Location: ./index.php?r=dashboard");
   exit;
 
 } catch (Throwable $e) {
   http_response_code(500);
-  echo "Error: " . htmlspecialchars($e->getMessage());
+  header('Content-Type: application/json');
+  echo json_encode(["error" => $e->getMessage()]);
+  exit;
 }
