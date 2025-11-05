@@ -220,7 +220,8 @@ body {
 .tc-input {
   width: 100%;
   padding: 12px 14px;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-family: 'Karla';
   border: 1px solid #dcdcdc;
   border-radius: 8px;
   background: #fff;
@@ -236,6 +237,8 @@ body {
 .tc-input.tc-invalid {
   border-color: var(--danger);
   box-shadow: 0 0 0 3px rgba(176,0,32,.15);
+  font-size: 1.1rem;
+  font-family: 'Karla';
 }
 
 /* Error */
@@ -245,7 +248,8 @@ body {
   top: 70%;
   transform: translateY(-50%);
   padding: 6px 10px;
-  font-size: .95rem;
+  font-size: 1rem;
+  font-family: 'Karla';
   color: var(--danger);
   background: #fff;
   border-radius: 5px;
@@ -316,10 +320,10 @@ body {
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
+  font-family: 'Karla';
   font-weight: 900;
   cursor: pointer;
-
   transition: .25s;
   box-shadow: 0 8px 18px rgba(0,0,0,.2);
 }

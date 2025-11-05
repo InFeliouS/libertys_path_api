@@ -67,7 +67,7 @@
 
     // SECTION NAME
     if (sectionInput.value.trim() === "") {
-        markInvalid(sectionWrapper, errorSection, "Section name is required.");
+        markInvalid(sectionWrapper, errorSection, "Please fill in the box above.");
         valid = false;
     } else {
         clearInvalid(sectionWrapper, errorSection);
