@@ -172,7 +172,7 @@
           <input type="hidden" id="qId">
 
           <label>QUESTION</label>
-          <textarea id="question_text" rows="3" placeholder="Type the question here…" required></textarea>
+          <textarea id="question_text" rows="3" placeholder="Type the question here . . ." required></textarea>
 
           <div class="grid-2">
             <div>
@@ -193,17 +193,19 @@
             </div>
           </div>
 
-          <label>CORRECT ANSWER</label>
-          <select id="correct_index" required>
-            <option value="" disabled selected>Select the correct choice…</option>
-            <option value="0">A</option>
-            <option value="1">B</option>
-            <option value="2">C</option>
-            <option value="3">D</option>
-          </select>
+          <div class="space-up">
+            <label>CORRECT ANSWER</label>
+              <select id="correct_index" required>
+                <option value="" disabled selected>Select the correct choice . . .</option>
+                <option value="0">CHOICE A</option>
+                <option value="1">CHOICE B</option>
+                <option value="2">CHOICE C</option>
+                <option value="3">CHOICE D</option>
+              </select>
+          </div>
 
           <div class="form-actions">
-            <button id="submitBtn" type="submit">CREATE</button>
+            <button id="submitBtn" type="submit">CREATE QUESTION</button>
             <button id="cancelEditBtn" type="button" class="hidden">CANCEL</button>
             <span id="formMsg" class="form-msg"></span>
           </div>
