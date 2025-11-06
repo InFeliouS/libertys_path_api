@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liberty’s Path | Create Teacher</title>
+  <title>Liberty’s Path | TEACHER ACCOUNT</title>
 
   <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
   <link rel="stylesheet" href="css/dashboard_view.css" />
@@ -49,12 +49,11 @@
       <div class="controls">
 
         <!-- ✅ TEACHER ACCOUNT (CURRENT PAGE = active-page) -->
-
         <?php if (function_exists('is_admin') && is_admin()): ?>
          <!-- ADMIN BOARD -->
         <button class="top-control" onclick="location.href='index.php?r=dashboard'">
           <svg class="btn-icon" viewBox="0 0 24 24">
-                  <path d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zm0 6h14v-2H7v2zM3 7v2h2V7H3z" fill="currentColor"/>
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>
                 </svg>
           <span>ADMIN BOARD</span>
         </button>
@@ -62,8 +61,7 @@
           <!-- TEACHER ACCOUNT -->
           <button class="top-control active-page" onclick="location.href='index.php?r=teachers/create'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z"
-                fill="currentColor"/>
+              <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
             </svg>
             <span>TEACHER ACCOUNT</span>
           </button>
@@ -71,8 +69,7 @@
           <!-- ✅ NEW SECTION -->
           <button class="top-control" onclick="location.href='index.php?r=sections/create'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z"
-                fill="currentColor"/>
+              <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
             </svg>
             <span>NEW SECTION</span>
           </button>
@@ -92,7 +89,7 @@
         <!-- ✅ LOGOUT -->
         <button class="logout-baba" onclick="showLogoutConfirmation()">
           <svg class="btn-icon" viewBox="0 0 24 24">
-            <path d="M12 2a1 1 0 0 1 1 1v8a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1zm6.36 3.64a1 1 0 0 1 1.41 1.41A9 9 0 1 1 5.23 7.05a1 1 0 1 1 1.41-1.41 7 7 0 1 0 9.72 0z"
+            <path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3h-6v2h6v14h-6v2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
               fill="currentColor"/>
           </svg>
           <span>LOG OUT</span>
@@ -104,7 +101,8 @@
     <!-- ============================================================
          CONTENT (AUTO-CENTERED FORM)
     ============================================================ -->
-    <section class="content-pane">
+    <div class="div_sidebar_right">
+      <section class="content-pane">
       <form id="tcForm" class="tc-form" method="post" action="index.php?r=teachers/store" autocomplete="off" novalidate>
 
         <h3 class="tc-title">CREATE AP 8 TEACHER ACCOUNT</h3>
@@ -181,8 +179,10 @@
 
       </form>
     </section>
+    </div>
 
   </main>
+  
   <div class="logout-modal">
     <div class="logout-modal-content">
       <h3>CONFIRM LOGOUT</h3>

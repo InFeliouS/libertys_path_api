@@ -21,7 +21,7 @@ html, body { height: 100%; }
 body {
   font-family: 'Karla';
   color: #2c1b0c;
-  background: linear-gradient(135deg, #faf6f3, #cac8c1);
+  background-color: #f7eece;
   background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
   background-blend-mode: overlay;
 }
@@ -285,15 +285,6 @@ button[type="submit"]:active {
   #form-title { font-size: 1.6rem; }
 }
 
-/* ✅ RIGHT SIDE CONTENT WRAPPER */
-.div_sidebar_right {
-  flex: 1;
-  display: flex;
-  justify-content: center;      /* center horizontally */
-  align-items: center;          /* center vertically */
-  padding: 20px;
-}
-
 /* ✅ Replace old #main-container rules */
 #main-container {
   width: 100%;
@@ -309,6 +300,13 @@ button[type="submit"]:active {
   width: 100%;
   max-width: 600px;
   margin: auto;
+}
+
+.sidebar_right {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 1px;
+  overflow: auto;
 }
 
 .logout-modal{

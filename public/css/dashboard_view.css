@@ -112,8 +112,6 @@ main.div_parent_main {
   cursor: pointer;
   transition: transform 0.06s ease, filter 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-
-  /* ✅ REQUIRED FIX FOR GLOW + SIDE BAR */
   position: relative;
   overflow: visible;
 }
@@ -198,8 +196,9 @@ main.div_parent_main {
 .div_sidebar_right {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 12px 24px;
+  padding: 10px;
   overflow: auto;
+  background-color: #f7eece;
 }
 
 .section-divider {
