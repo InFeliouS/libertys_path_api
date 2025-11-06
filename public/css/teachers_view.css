@@ -1,0 +1,79 @@
+/* css/teachers_view.css */
+.tv-table-wrap {
+  margin: 18px 12px;
+  font-family: inherit;
+}
+.tv-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.tv-toolbar h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #3b2a12;
+}
+.tv-actions .btn {
+  margin-left: 8px;
+}
+
+.tv-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tv-table thead tr {
+  background: #8c4f05;
+  color: #fff;
+}
+.tv-table th,
+.tv-table td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #f0e9e0;
+  vertical-align: middle;
+}
+.tv-table tbody tr:nth-child(odd) {
+  background: #fffaf7;
+}
+.tv-table .mono {
+  font-family: monospace;
+}
+.tv-actions-col {
+  white-space: nowrap;
+}
+
+.btn {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #b66b0f;
+  color: #fff;
+}
+.btn.small {
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  background: #8c4f05;
+}
+.btn.btn-edit {
+  background: #bd7a20;
+  margin-right: 6px;
+}
+.btn.btn-delete {
+  background: #c43131;
+}
+
+.tv-loading,
+.tv-error {
+  padding: 18px;
+  color: #6b6b6b;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
