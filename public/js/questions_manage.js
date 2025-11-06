@@ -190,7 +190,7 @@
         } catch (_) {}
       }
 
-    if (action === "delete") {
+    /*if (action === "delete") {
       if (!confirm("Delete this question?")) return;
       try {
         btn.disabled = true;
@@ -198,28 +198,62 @@
         await loadQuestions();
       } catch (err) {
         console.error(err);
-        alert(err?.message || "Delete failed");
+        alert(err?.message || "Delete failed.");
       } finally {
         btn.disabled = false;
       }
+    }*/
+
+      if (action === "delete") {
+  showDeleteConfirmation(async () => {
+    try {
+      btn.disabled = true;
+      await deleteQuestion(id);
+      await loadQuestions();
+    } catch (err) {
+      console.error(err);
+      alert(err?.message || "Delete failed.");
+    } finally {
+      btn.disabled = false;
     }
   });
+}
+  });
+
+  function showDeleteConfirmation(onConfirm) {
+  const modal = document.getElementById("deleteModal");
+  const confirmBtn = document.getElementById("confirmDeleteBtn");
+  const cancelBtn = document.getElementById("cancelDeleteBtn");
+
+  modal.classList.remove("hidden");
+
+  confirmBtn.onclick = null;
+  cancelBtn.onclick = null;
+
+  confirmBtn.onclick = () => {
+    modal.classList.add("hidden");
+    onConfirm();
+  };
+
+  cancelBtn.onclick = () => {
+    modal.classList.add("hidden");
+  };
+}
 
   clearForm();
   loadQuestions();
 })();
 
-// Bounce animation when number changes
 ["roomCount", "enemyCount"].forEach(id => {
   const el = document.getElementById(id);
   el.addEventListener("input", () => {
     el.classList.remove("value-bounce");
-    void el.offsetWidth; // trigger reflow
+    void el.offsetWidth; 
     el.classList.add("value-bounce");
   });
 });
 
-// Change border color based on difficulty
+
 const radios = document.querySelectorAll('input[name="difficulty"]');
 const formCard = document.querySelector(".card");
 
