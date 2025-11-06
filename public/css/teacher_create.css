@@ -1,7 +1,7 @@
 /* ============================================================
    IMPORT FONTS
 ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Karla:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Karla:wght@400;700&display=swap");
 
 /* ============================================================
    ROOT VARIABLES
@@ -21,15 +21,16 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
-  font-family: 'Karla';
+  font-family: "Karla";
   color: #172028;
   background-color: #f7eece;
-  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
   background-repeat: repeat;
   line-height: 1.6;
   overflow-x: hidden;
@@ -48,7 +49,7 @@ body {
 
 /* SIDEBAR BUTTON */
 .top-control {
-  font-family: 'Karla';
+  font-family: "Karla";
   display: flex;
   align-items: center;
   gap: 10px;
@@ -64,20 +65,15 @@ body {
   position: relative;
   overflow: hidden;
 
-  transition:
-    background-color .25s ease,
-    filter .25s ease,
-    transform .10s ease,
-    box-shadow .25s ease;
+  transition: background-color 0.25s ease, filter 0.25s ease,
+    transform 0.1s ease, box-shadow 0.25s ease;
 }
 
 /* Hover Glow */
 .top-control:hover {
   filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow:
-    0 0 15px rgba(255,155,0,0.55),
-    0 0 25px rgba(255,140,0,0.35);
+  box-shadow: 0 0 15px rgba(255, 155, 0, 0.55), 0 0 25px rgba(255, 140, 0, 0.35);
 }
 
 /* Icon */
@@ -85,7 +81,7 @@ body {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  transition: fill .3s ease;
+  transition: fill 0.3s ease;
 }
 
 /* Ripple Effect */
@@ -96,7 +92,7 @@ body {
   top: 50%;
   width: 0;
   height: 0;
-  background: rgba(255,255,255,.4);
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: ripple 0.45s ease-out forwards;
@@ -113,14 +109,18 @@ body {
 /* ✅ ACTIVE PAGE */
 .top-control.active-page {
   background: var(--accent-light) !important;
-  box-shadow: 0 0 12px rgba(197,111,20,0.65);
+  box-shadow: 0 0 12px rgba(197, 111, 20, 0.65);
   transform: translateY(-1px);
   animation: sidebarPulse 1.3s ease-in-out infinite alternate;
 }
 
 @keyframes sidebarPulse {
-  from { background-color: #c56f14; }
-  to   { background-color: #d17805; }
+  from {
+    background-color: #c56f14;
+  }
+  to {
+    background-color: #d17805;
+  }
 }
 
 /* ✅ Left Indicator Bar */
@@ -131,15 +131,21 @@ body {
   top: 0;
   width: 6px;
   height: 100%;
-  background: linear-gradient(180deg,#ffca28,#ff9100);
+  background: linear-gradient(180deg, #ffca28, #ff9100);
   border-radius: 0 4px 4px 0;
   transform: translateX(-10px);
-  animation: slideBar .35s ease forwards;
+  animation: slideBar 0.35s ease forwards;
 }
 
 @keyframes slideBar {
-  from { transform: translateX(-10px); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* Icon turns white when active */
@@ -166,13 +172,11 @@ body {
   width: 100%;
   max-width: 600px;
   background: #fff;
-  border: 1px solid rgba(0,0,0,0.02);
+  border: 1px solid rgba(0, 0, 0, 0.02);
   border-radius: 10px;
   padding: 26px;
 
-  box-shadow:
-      0 16px 40px rgba(0,0,0,0.22),
-      0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .tc-title {
@@ -180,7 +184,7 @@ body {
   font-size: 1.5rem;
   font-weight: 900;
   margin-bottom: 18px;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
 }
 
 /* ============================================================
@@ -219,24 +223,24 @@ body {
   width: 100%;
   padding: 12px 14px;
   font-size: 1.1rem;
-  font-family: 'Karla';
+  font-family: "Karla";
   border: 1px solid #dcdcdc;
   border-radius: 8px;
   background: #fff;
   outline: none;
-  transition: .15s;
+  transition: 0.15s;
 }
 
 .tc-input:focus {
   border-color: var(--accent-light);
-  box-shadow: 0 0 0 3px rgba(182,98,3,.15);
+  box-shadow: 0 0 0 3px rgba(182, 98, 3, 0.15);
 }
 
 .tc-input.tc-invalid {
   border-color: var(--danger);
-  box-shadow: 0 0 0 3px rgba(176,0,32,.15);
+  box-shadow: 0 0 0 3px rgba(176, 0, 32, 0.15);
   font-size: 1.1rem;
-  font-family: 'Karla';
+  font-family: "Karla";
 }
 
 /* Error */
@@ -247,7 +251,7 @@ body {
   transform: translateY(-50%);
   padding: 6px 10px;
   font-size: 1rem;
-  font-family: 'Karla';
+  font-family: "Karla";
   color: var(--danger);
   background: #fff;
   border-radius: 5px;
@@ -285,8 +289,12 @@ body {
   font-weight: 700;
 }
 
-.pw-item.bad { color: #d73737; }
-.pw-item.ok  { color: #148f2e; }
+.pw-item.bad {
+  color: #d73737;
+}
+.pw-item.ok {
+  color: #148f2e;
+}
 
 /* ============================================================
    SECTION LIST
@@ -319,11 +327,11 @@ body {
   border: none;
   border-radius: 6px;
   font-size: 1.1rem;
-  font-family: 'Karla';
+  font-family: "Karla";
   font-weight: 900;
   cursor: pointer;
-  transition: .25s;
-  box-shadow: 0 8px 18px rgba(0,0,0,.2);
+  transition: 0.25s;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .tc-btn-primary:hover {
@@ -338,7 +346,7 @@ body {
 /* ============================================================
    LOGOUT MODAL
 ============================================================ */
-.logout-modal{
+.logout-modal {
   display: none;
   position: fixed;
   inset: 0;

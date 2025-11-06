@@ -29,6 +29,7 @@
         .replaceAll("'", '&#039;');
     }
 
+    // <-- changed: call router endpoint (index.php?r=...) instead of direct src path
     fetch('api/v1/sections_available.php', { method: 'GET' })
       .then(r => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -239,7 +240,8 @@
     const formData = new FormData(form);
 
     try {
-      const res = await fetch('src/dashboard/teachers_store.php', {
+      // <-- changed: post via router so file is included correctly
+      const res = await fetch('index.php?r=teachers/store', {
         method: 'POST',
         body: formData
       });

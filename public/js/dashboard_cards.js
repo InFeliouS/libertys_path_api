@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const editSectionName   = document.getElementById("editSectionName");
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
+  const editTeacherSelect = document.getElementById("editTeacherSelect"); // NEW
 
   // ✅ Reliable admin detection
   const IS_ADMIN = (window.userRole === "ADMIN" || document.body.dataset.role === "ADMIN");
@@ -74,39 +75,121 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Handle Edit Form Submit
-  if (editForm) {
-    editForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const payload = {
-        section_id:        parseInt(editSectionId.value, 10),
-        section_name:      (editSectionName.value || "").trim(),
-        start_school_year: editStartYear.value,
-        end_school_year:   editEndYear.value
-      };
+  // ---------- Teachers loader ----------
+  // teachersMap: id -> display name, teachersLoaded: Promise that resolves when list loaded (or failed)
+  const teachersMap = new Map();
+  let teachersLoaded = null;
 
-      fetch("index.php?r=sections/update", {
+  function setTeacherDefaultOption(text = "— Unassigned —") {
+    if (!editTeacherSelect) return;
+    editTeacherSelect.innerHTML = "";
+    const o = document.createElement("option");
+    o.value = "";
+    o.textContent = text;
+    editTeacherSelect.appendChild(o);
+  }
+
+  function loadTeachersOnce() {
+    if (!editTeacherSelect) {
+      // nothing to do
+      return Promise.resolve();
+    }
+    if (teachersLoaded) return teachersLoaded;
+
+    setTeacherDefaultOption();
+
+    teachersLoaded = fetch("index.php?r=api/v1/teachers_list", { headers: { Accept: "application/json" } })
+      .then(async (res) => {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const txt = await res.text();
+        try {
+          return JSON.parse(txt);
+        } catch (err) {
+          console.warn("teachers_list: JSON parse failed — raw response follows:\n", txt);
+          throw new Error("Invalid JSON from teachers_list");
+        }
+      })
+      .then(json => {
+        if (!json || json.ok !== true || !Array.isArray(json.data)) {
+          console.warn("teachers_list returned unexpected payload:", json);
+          return;
+        }
+        // populate
+        setTeacherDefaultOption();
+        json.data.forEach(t => {
+          const id = String(t.id || "");
+          const fname = (t.first_name || "").trim();
+          const lname = (t.last_name || "").trim();
+          const username = (t.username || "").trim();
+          const display = (fname || lname)
+            ? `${(fname + " " + lname).trim()} (${username})`
+            : (username || `Teacher ${id}`);
+          teachersMap.set(id, display);
+          const opt = document.createElement("option");
+          opt.value = id;
+          opt.textContent = display;
+          editTeacherSelect.appendChild(opt);
+        });
+      })
+      .catch(err => {
+        console.warn("Could not load teachers list:", err);
+        // leave default option only
+        setTeacherDefaultOption("— (unable to load teachers) —");
+      });
+
+    return teachersLoaded;
+  }
+
+  // Start loading teachers early
+  loadTeachersOnce();
+
+// Handle Edit Form Submit (improved: refresh sections after successful save)
+if (editForm) {
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Build payload (include teacher_id if present in select)
+    const payload = {
+      section_id:        parseInt(editSectionId.value, 10),
+      section_name:      (editSectionName.value || "").trim(),
+      start_school_year: editStartYear.value,
+      end_school_year:   editEndYear.value
+    };
+
+    // include teacher assignment if the select exists
+    const teacherSelect = document.getElementById("editTeacherSelect");
+    if (teacherSelect) {
+      const v = teacherSelect.value;
+      // send empty string/null to indicate "unassigned"
+      payload.teacher_id = v === "" ? "" : v;
+    }
+
+    try {
+      const res = await fetch("index.php?r=sections/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      })
-      .then(r => r.json())
-      .then(json => {
-        if (!json.success) throw new Error(json.error || "Update failed");
-        const card = document.querySelector(`.section-card[data-id="${payload.section_id}"]`);
-        if (card) {
-          const titleEl = card.querySelector("h2");
-          const yearsEl = card.querySelector("p.section-years");
-          if (titleEl) titleEl.textContent = (payload.section_name || "").toUpperCase();
-          if (yearsEl) yearsEl.textContent = `${payload.start_school_year} – ${payload.end_school_year}`;
-        }
-        if (editModal) editModal.style.display = "none";
-      })
-      .catch(err => {
-        alert(err.message || "Could not save changes");
       });
-    });
-  }
+      const json = await res.json();
+      if (!json || !json.success) {
+        throw new Error(json?.error || "Update failed");
+      }
+
+      // refresh the entire sections list so local state and UI are consistent
+      await loadSections();
+
+      // close modal
+      if (editModal) editModal.style.display = "none";
+
+      // optional: small user confirmation (toast/alert)
+      // alert("Section updated");
+    } catch (err) {
+      console.error("Update error:", err);
+      alert(err.message || "Could not save changes");
+    }
+  });
+}
+
 
   // Helper functions
   const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
@@ -120,20 +203,28 @@ document.addEventListener("DOMContentLoaded", () => {
     return combined ? titleCase(String(combined).trim()) : null;
   };
 
-  // Fetch and render sections
-  let allSections = []; 
-  fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } })
-    .then(r => r.json())
-    .then(data => {
-      if (!data || !data.success) throw new Error(data?.message || "Load failed");
-      if (!container) return;
-      allSections = Array.isArray(data.sections) ? data.sections : [];
-      renderSections(allSections);
-    })
-    .catch(err => {
-      console.error(err);
-      if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
-    });
+// Fetch and render sections (now wrapped in loadSections so we can re-use it)
+let allSections = [];
+
+async function loadSections() {
+  if (!container) return;
+  container.innerHTML = "<p class='muted'>Loading…</p>";
+  try {
+    const res = await fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (!data || !data.success) throw new Error(data?.message || "Load failed");
+    allSections = Array.isArray(data.sections) ? data.sections : [];
+    renderSections(allSections);
+  } catch (err) {
+    console.error("Could not load sections:", err);
+    if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
+  }
+}
+
+// initial load
+loadSections();
+
 
   // Render all section cards
   function renderSections(list) {
@@ -182,13 +273,33 @@ document.addEventListener("DOMContentLoaded", () => {
       if (IS_ADMIN) {
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
-        editBtn.className = "btn-edit";
+        editBtn.className = "btn-edit edit-section-btn"; // keep class for earlier code compatibility
+        editBtn.setAttribute("data-section-id", String(sec.id ?? ""));
+        // If the section object includes a teacher id field, attach it as data attribute so loader can preselect
+        if (sec.teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.teacher_id));
+        if (sec.assigned_teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.assigned_teacher_id));
+        if (sec.adviser_id) editBtn.setAttribute("data-teacher-id", String(sec.adviser_id));
+
         editBtn.onclick = () => {
           if (!editModal) return;
           editSectionId.value      = sec.id ?? "";
           editSectionName.value    = sec.section_name ?? "";
           editStartYear.value      = sec.start_school_year ?? "";
           editEndYear.value        = sec.end_school_year ?? "";
+          // Ensure teacher select is populated before preselecting
+          loadTeachersOnce().then(() => {
+            // find teacher id value from multiple possible fields on sec
+            const tid = String(sec.teacher_id ?? sec.assigned_teacher_id ?? sec.adviser_id ?? sec.teacher_id ?? "");
+            if (tid && Array.from((editTeacherSelect || {options:[]}).options).some(o => o.value === tid)) {
+              editTeacherSelect.value = tid;
+            } else {
+              editTeacherSelect.value = "";
+            }
+          }).catch(() => {
+            // fallback if load fails
+            if (editTeacherSelect) editTeacherSelect.value = "";
+          });
+
           editModal.style.display  = "flex";
         };
         actions.appendChild(editBtn);

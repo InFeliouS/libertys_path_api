@@ -65,6 +65,34 @@ switch ($route) {
         require __DIR__ . "/../public/html/teachers_create.html";
         break;
 
+    case "teachers/update":
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . "/dashboard/teachers_update.php";
+        break;
+
+    case "teachers/delete":
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . "/dashboard/teachers_delete.php";
+        break;
+
+
+    case "teachers/view":
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . "/../public/html/teachers_view.html";
+        break;
+
     case "teachers/store":
         require_auth();
         if (!is_admin()) {
@@ -73,6 +101,17 @@ switch ($route) {
         }
         require __DIR__ . "/dashboard/teachers_store.php";
         break;
+
+    case 'api/v1/teachers_list':
+        // 🔒 protected + admin-only
+        require_auth();
+        if (!is_admin()) {
+            http_response_code(403);
+            exit('Admins only');
+        }
+        require __DIR__ . '/../public/api/v1/teachers_list.php';
+        break;
+
 
 
     /* =========================
@@ -118,11 +157,12 @@ switch ($route) {
         require __DIR__ . "/dashboard/delete_section.php";
         break;
 
-    case "sections/download_csv":
-        // 🔒 protected (per-section checks happen inside PHP)
+    case "sections/delete_students":
+        // 🔒 protected (only logged-in teachers or admins)
         require_auth();
-        require __DIR__ . "/dashboard/download_section_students_csv.php";
+        require __DIR__ . "/dashboard/delete_students.php";
         break;
+
 
     case "questions/manage":
         require_auth();
