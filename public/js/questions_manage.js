@@ -173,15 +173,22 @@
     const action = btn.getAttribute("data-action");
     const id = btn.getAttribute("data-id");
     if (!action || !id) return;
-
+    
     if (action === "edit") {
       try {
         const res = await fetch(`${API_BASE}/list.php`, { credentials: "same-origin" });
         const data = await res.json().catch(() => ({}));
         const row = (data.items || []).find((r) => String(r.id) === String(id));
-        if (row) fillForm(row);
-      } catch (_) {}
-    }
+      if (row) {
+        fillForm(row);
+        document.querySelector(".div_sidebar_right").scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+        f.question_text.focus();
+      }
+        } catch (_) {}
+      }
 
     if (action === "delete") {
       if (!confirm("Delete this question?")) return;
@@ -222,3 +229,4 @@ radios.forEach(radio => {
     formCard.classList.add(radio.value + "-active");
   });
 });
+
