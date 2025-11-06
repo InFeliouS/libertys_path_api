@@ -65,25 +65,6 @@ switch ($route) {
         require __DIR__ . "/../public/html/teachers_create.html";
         break;
 
-    case "teachers/update":
-        require_auth();
-        if (!is_admin()) {
-            http_response_code(403);
-            exit('Admins only');
-        }
-        require __DIR__ . "/dashboard/teachers_update.php";
-        break;
-
-    case "teachers/delete":
-        require_auth();
-        if (!is_admin()) {
-            http_response_code(403);
-            exit('Admins only');
-        }
-        require __DIR__ . "/dashboard/teachers_delete.php";
-        break;
-
-
     case "teachers/view":
         require_auth();
         if (!is_admin()) {
