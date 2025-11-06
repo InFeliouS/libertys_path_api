@@ -81,15 +81,17 @@
 }
 
 .btn-brand {
+  font-size: 1.1rem;
+  font-family: 'Karla';
   background: #b66203;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
 }
 
 .btn-brand:hover {
   transform: translateY(-1px);
   filter: brightness(1.06);
-  box-shadow: 0 10px 24px rgba(0,0,0,.8);
+  box-shadow: 0 10px 24px rgba(0,0,0,.2);
 }
 
 /* -------------------------
@@ -108,7 +110,8 @@
 }
 
 .card h2 {
-  font-size: 2.1rem; /* smaller */
+  font-size: 1.5rem;
+  font-family: 'Karla';
   font-weight: 900;
   color: #944b02;
   margin: 0 0 18px 0;
@@ -133,10 +136,12 @@
 .difficulty-group span {
   color: #000;
   font-weight: 800;
+  font-size: 1.3rem;
+  font-family: 'Karla';
 }
 
 .difficulty-group label {
-  font-size: 1.4rem; /* smaller */
+  font-size: 1.4rem; 
   cursor: pointer;
 }
 
@@ -148,7 +153,8 @@
 }
 
 .meta-input label {
-  font-size: 1.6rem; /* smaller */
+  font-size: 1.3rem; 
+  font-family: 'Karla';
   font-weight: 800;
   color: #000;
   margin: 0;
@@ -157,7 +163,7 @@
 .meta-input input {
   width: 80px;
   padding: 10px;
-  font-size: 1.4rem; /* smaller */
+  font-size: 1.4rem;
   font-weight: 700;
   border-radius: 10px;
   border: 2px solid #b66203;
@@ -206,22 +212,21 @@
 .icon-input input {
   width: 90px;
   padding: 10px 10px 10px 32px;
-  font-size: 1.4rem; /* smaller */
+  font-size: 1.3rem; 
+  font-family: 'Karla';
   font-weight: 700;
-  border-radius: 12px;
+  border-radius: 5px;
   border: 2px solid #b66203;
   background: #fff;
   text-align: center;
   color: #111;
   outline: none;
   transition: 0.22s ease;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
 }
 
 /* Hover & focus */
 .icon-input:hover input {
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px rgba(0,0,0,0.28);
 }
 
 .icon-input:hover .icon {
@@ -229,7 +234,6 @@
 }
 
 .icon-input input:focus {
-  box-shadow: 0 0 0 4px rgba(182, 98, 3, 0.32);
   border-color: #944b02;
 }
 
@@ -344,7 +348,8 @@ input[value="hard"]:checked {
   font-weight: 800;
   margin-bottom: 6px;
   color: #000000;
-  font-size: 1.6rem; /* smaller */
+  font-size: 1.3rem;
+  font-family: 'Karla';
 }
 
 .q-form textarea,
@@ -396,13 +401,13 @@ input[value="hard"]:checked {
   font-size: 1.3rem; /* smaller */
   cursor: pointer;
   transition: background .12s ease, transform .12s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
 }
 
 #submitBtn:hover {
   transform: translateY(-1px);
   filter: brightness(1.0);
-  box-shadow: 0 10px 24px rgba(0,0,0,.8);
+  box-shadow: 0 10px 24px rgba(0,0,0,.2);
 }
 
 #cancelEditBtn {
@@ -412,9 +417,9 @@ input[value="hard"]:checked {
   border-radius: 8px;
   padding: 10px 16px;
   font-weight: 600;
-  font-size: 1.3rem; /* smaller */
+  font-size: 1.3rem; 
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,.8);
+  box-shadow: 0 4px 12px rgba(0,0,0,2);
   transition: background .12s ease, transform .12s ease;
 }
 
@@ -422,7 +427,7 @@ input[value="hard"]:checked {
   background: #e5e5e5;
   transform: translateY(-1px);
   filter: brightness(1.06);
-  box-shadow: 0 10px 24px rgba(0,0,0,.8);
+  box-shadow: 0 10px 24px rgba(0,0,0,.2);
 }
 
 .form-msg {
@@ -447,6 +452,8 @@ input[value="hard"]:checked {
   background: #944b02;
   color: #ffffff;
   text-align: left;
+  font-size: 1.1rem;
+  font-family: 'Karla';
   padding: 12px 14px;
   font-weight: 700;
   border-bottom: 2px solid #f3f3f3;
@@ -456,7 +463,8 @@ input[value="hard"]:checked {
   padding: 12px 14px;
   border-bottom: 1px solid #faf7f3;
   vertical-align: top;
-  font-size: 1.5rem; /* smaller */
+  font-size: 1rem;
+  font-family: 'Karla';
   color: #333;
 }
 
@@ -469,26 +477,27 @@ input[value="hard"]:checked {
 .row-actions button {
   background: none;
   border: none;
-  font-size: 1.5rem; /* smaller */
+  font-size: .85rem;
+  font-family: 'Karla';
   font-weight: 700;
   cursor: pointer;
-  padding: 6px 8px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  padding: 3.5px;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transition: background .12s ease;
 }
 .row-actions button.edit {
-  background: #13d81a;
+  background: #9b5302;
   color: #fff;
 }
 .row-actions button.btn-ghost {
-  background: #ff0000;
+  background: #a00000;
   color: #fff;
 }
 .row-actions button:hover {
   transform: translateY(-1px);
   filter: brightness(1.05);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 /* muted helper text */

@@ -128,7 +128,7 @@
         <h2 id="formTitle">EDIT DIFFICULTY & ADD QUESTION</h2>
         <div class="question-meta-row">
           <div class="difficulty-group">
-            <span>Difficulty:</span>
+            <span>DIFFICULTY:</span>
 
             <label>
               <input type="radio" name="difficulty" value="easy" checked />
@@ -148,7 +148,7 @@
 
           <!-- ROOMS -->
           <div class="meta-input">
-            <label>Rooms:</label>
+            <label>ROOMS:</label>
             <div class="icon-input">
               <span class="icon">🏠</span>
               <input id="roomCount" type="number" min="1" max="8" value="1">
@@ -157,43 +157,43 @@
 
           <!-- ENEMIES -->
           <div class="meta-input">
-            <label>Enemies:</label>
+            <label>ENEMIES:</label>
             <div class="icon-input">
               <span class="icon">👾</span>
               <input id="enemyCount" type="number" min="1" max="8" value="1">
             </div>
           </div>
 
-          <button id="metaSaveBtn" class="btn btn-brand">Save</button>
+          <button id="metaSaveBtn" class="btn btn-brand">SAVE DIFFICULTY</button>
         </div>
 
         <!-- FORM -->
         <form id="qForm" class="q-form">
           <input type="hidden" id="qId">
 
-          <label>Question</label>
+          <label>QUESTION</label>
           <textarea id="question_text" rows="3" placeholder="Type the question here…" required></textarea>
 
           <div class="grid-2">
             <div>
-              <label>Choice A</label>
+              <label>CHOICE A</label>
               <input id="choice1" type="text" required>
             </div>
             <div>
-              <label>Choice B</label>
+              <label>CHOICE B</label>
               <input id="choice2" type="text" required>
             </div>
             <div>
-              <label>Choice C</label>
+              <label>CHOICE C</label>
               <input id="choice3" type="text" required>
             </div>
             <div>
-              <label>Choice D</label>
+              <label>CHOICE D</label>
               <input id="choice4" type="text" required>
             </div>
           </div>
 
-          <label>Correct Answer</label>
+          <label>CORRECT ANSWER</label>
           <select id="correct_index" required>
             <option value="" disabled selected>Select the correct choice…</option>
             <option value="0">A</option>
@@ -203,8 +203,8 @@
           </select>
 
           <div class="form-actions">
-            <button id="submitBtn" type="submit">Create</button>
-            <button id="cancelEditBtn" type="button" class="hidden">Cancel</button>
+            <button id="submitBtn" type="submit">CREATE</button>
+            <button id="cancelEditBtn" type="button" class="hidden">CANCEL</button>
             <span id="formMsg" class="form-msg"></span>
           </div>
         </form>
@@ -217,10 +217,10 @@
         <table class="q-table">
           <thead>
             <tr>
-              <th>Question</th>
-              <th>Choices</th>
-              <th>Correct</th>
-              <th>Actions</th>
+              <th>QUESTIONS</th>
+              <th>CHOICES</th>
+              <th>CORRECT</th>
+              <th>ACTIONS</th>
             </tr>
           </thead>
 

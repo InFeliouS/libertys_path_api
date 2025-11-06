@@ -82,8 +82,8 @@
     f.choice3.value = "";
     f.choice4.value = "";
     f.correct_index.value = "";
-    formTitle.textContent = "Add New Question";
-    submitBtn.textContent = "Create";
+    formTitle.textContent = "EDIT DIFFICULTY & ADD QUESTION";
+    submitBtn.textContent = "CREATE";
     cancelEditBtn.classList.add("hidden");
     formMsg.textContent = "";
   }
@@ -97,7 +97,7 @@
     f.choice4.value = row.choice4 ?? "";
     f.correct_index.value = String(row.correct_index ?? "");
     formTitle.textContent = "Edit Question";
-    submitBtn.textContent = "Save";
+    submitBtn.textContent = "SAVE";
     cancelEditBtn.classList.remove("hidden");
     formMsg.textContent = "";
   }
