@@ -1,260 +1,281 @@
-
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Liberty’s Path | TEACHER ACCOUNT</title>
+    <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
+    <link rel="stylesheet" href="css/dashboard_view.css" />
+    <link rel="stylesheet" href="css/teachers_view.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liberty’s Path | TEACHER ACCOUNT</title>
-  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
-  <link rel="stylesheet" href="css/dashboard_view.css" />
-  <link rel="stylesheet" href="css/teachers_view.css" />
-</head>
+  <body>
+    <header>
+      <div class="header-titles">
+        <h1>CREATE TEACHER ACCOUNT</h1>
+        <p class="page-subtitle">Hi, Teacher</p>
+      </div>
 
-<body data-role="<?php echo htmlspecialchars($_SESSION['role'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
-  <?php
-  // ensure session
-  if (session_status() === PHP_SESSION_NONE) session_start();
+      <div class="header-left-logos">
+        <img
+          src="assets/SDPS-LOGO-transparent.png"
+          class="header-logo"
+          alt="SDPS Logo"
+        />
+        <img
+          src="assets/libertys-path-logo-2d-transparent.png"
+          class="header-logo"
+          alt="Liberty's Path Logo"
+        />
+      </div>
+    </header>
 
-  // Try common locations for DB config so this file is portable.
-  $dbPaths = [
-    __DIR__ . '/src/config/db.php',
-    __DIR__ . '/../src/config/db.php',
-    __DIR__ . '/../config/db.php',
-    __DIR__ . '/config/db.php',
-  ];
-  $dbLoaded = false;
-  foreach ($dbPaths as $p) {
-    if (file_exists($p)) {
-      require_once $p;
-      $dbLoaded = true;
-      break;
-    }
-  }
-
-  // determine admin role
-  $sessionRole = strtoupper($_SESSION['role'] ?? '');
-  $isAdmin = ($sessionRole === 'ADMIN');
-
-  // fetch teachers safely
-  $teachers = [];
-  if (isset($pdo)) {
-    try {
-      $stmt = $pdo->query("SELECT id, username, first_name, last_name, role FROM teachers ORDER BY id ASC");
-      $teachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Throwable $e) {
-      error_log("teachers_view: failed to load teachers: " . $e->getMessage());
-    }
-  }
-
-  // escape helper
-  function e($s) { return htmlspecialchars((string)$s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
-  ?>
-
-  <header>
-    <div class="header-titles">
-      <h1>CREATE TEACHER ACCOUNT</h1>
-
-      <p class="page-subtitle">
-        <?php
-        if ($isAdmin) {
-          $greeting = 'Hi, AP Department Head';
-        } else {
-          $first = trim($_SESSION['teacher_first_name'] ?? $_SESSION['first_name'] ?? '');
-          $last  = trim($_SESSION['teacher_last_name'] ?? $_SESSION['last_name'] ?? '');
-          $name  = trim($first . ' ' . $last);
-          if ($name === '') {
-            $name = $_SESSION['teacher_username'] ?? $_SESSION['username'] ?? 'User';
-          }
-          $greeting = "Hi, Teacher $name";
-        }
-        echo e($greeting);
-        ?>
-      </p>
-    </div>
-
-    <div class="header-left-logos">
-      <img src="assets/SDPS-LOGO-transparent.png" class="header-logo" alt="SDPS Logo" />
-      <img src="assets/libertys-path-logo-2d-transparent.png" class="header-logo" alt="Liberty's Path Logo" />
-    </div>
-  </header>
-
-  <!-- ============================================================
+    <!-- ============================================================
        MAIN LAYOUT (SIDEBAR + CONTENT)
   ============================================================ -->
-  <main class="div_parent_main">
-
-    <!-- SIDEBAR (unchanged) -->
-    <div class="div_sidebar_left">
-      <div class="controls">
-        <?php if ($isAdmin): ?>
-          <button class="top-control" onclick="location.href='index.php?r=dashboard'">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/></svg>
+    <main class="div_parent_main">
+      <!-- SIDEBAR (unchanged layout; static links) -->
+      <div class="div_sidebar_left">
+        <div class="controls">
+          <button
+            class="top-control"
+            onclick="location.href='index.php?r=dashboard'"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
+                fill="currentColor"
+              />
+            </svg>
             <span>ADMIN BOARD</span>
           </button>
 
-          <button class="top-control" onclick="location.href='index.php?r=teachers/create'">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/></svg>
+          <button
+            class="top-control"
+            onclick="location.href='index.php?r=teachers/create'"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                fill="currentColor"
+              />
+            </svg>
             <span>CREATE ACCOUNT</span>
           </button>
 
-          <button class="top-control active-page" onclick="location.href='index.php?r=teachers/view'">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/></svg>
+          <button
+            class="top-control active-page"
+            onclick="location.href='index.php?r=teachers/view'"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                fill="currentColor"
+              />
+            </svg>
             <span>TEACHER ACCOUNT</span>
           </button>
 
-          <button class="top-control" onclick="location.href='index.php?r=sections/create'">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/></svg>
+          <button
+            class="top-control"
+            onclick="location.href='index.php?r=sections/create'"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+                fill="currentColor"
+              />
+            </svg>
             <span>NEW SECTION</span>
           </button>
-        <?php endif; ?>
 
-        <?php if (!$isAdmin): ?>
-          <button class="top-control" onclick="location.href='index.php?r=questions/manage'">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.14 12.94a7 7 0 1 1-7.08-7.08 4 4 0 0 0 6.83-1.76 1 1 0 0 1 1.49-1.05 9 9 0 1 0 2.59 2.59 1 1 0 0 1-1.05 1.49 4 4 0 0 0-1.78 6.81zM12 9a3 3 0 1 0 3 3 3 3 0 0 0-3-3z" fill="currentColor"/></svg>
+          <button
+            class="top-control"
+            onclick="location.href='index.php?r=questions/manage'"
+          >
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M19.14 12.94a7 7 0 1 1-7.08-7.08 4 4 0 0 0 6.83-1.76 1 1 0 0 1 1.49-1.05 9 9 0 1 0 2.59 2.59 1 1 0 0 1-1.05 1.49 4 4 0 0 0-1.78 6.81zM12 9a3 3 0 1 0 3 3 3 3 0 0 0-3-3z"
+                fill="currentColor"
+              />
+            </svg>
             <span>GUARD QUESTIONS</span>
           </button>
-        <?php endif; ?>
 
-        <button class="logout-baba" onclick="showLogoutConfirmation()">
-          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3h-6v2h6v14h-6v2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" fill="currentColor"/></svg>
-          <span>LOG OUT</span>
-        </button>
+          <button class="logout-baba" onclick="showLogoutConfirmation()">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path
+                d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3h-6v2h6v14h-6v2h6c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>LOG OUT</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- ============================================================
-         CONTENT (table server-rendered)
+      <!-- ============================================================
+         CONTENT (table)
     ============================================================ -->
-    <div class="div_sidebar_right">
-      <section class="content-pane">
-        <!-- SERVER-RENDERED TEACHERS TABLE -->
-        <div class="tv-table-wrap">
-          <div class="tv-toolbar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-            <h2 style="margin:0">Teachers</h2>
-            <div>
-              <button id="tvReloadBtn" class="btn small" onclick="location.reload()">Reload</button>
+      <div class="div_sidebar_right">
+        <section class="content-pane">
+          <div class="tv-table-wrap">
+            <div
+              class="tv-toolbar"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+              "
+            >
+              <h2 style="margin: 0">Teachers</h2>
+              <div>
+                <button
+                  id="tvReloadBtn"
+                  class="btn small"
+                  onclick="location.reload()"
+                >
+                  Reload
+                </button>
+              </div>
             </div>
-          </div>
 
-          <table class="tv-table" role="grid" aria-live="polite" style="width:100%;border-collapse:collapse;">
-            <thead>
-              <tr style="background:#A35905;color:#fff;">
-                <th style="padding:10px 12px;border-radius:6px 6px 0 0;">#</th>
-                <th style="padding:10px 12px;">Username</th>
-                <th style="padding:10px 12px;">First name</th>
-                <th style="padding:10px 12px;">Last name</th>
-                <th style="padding:10px 12px;">Role</th>
-                <th style="padding:10px 12px;">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if (empty($teachers)): ?>
-                <tr><td colspan="6" style="padding:18px;text-align:center;">No teachers found.</td></tr>
-              <?php else: foreach ($teachers as $i => $t):
-                $id = (int)($t['id'] ?? 0);
-                // encode a safe JSON for JS — use ENT_QUOTES so it's safe inside attributes
-                $dataTeacher = htmlspecialchars(json_encode([
-                  'id' => $id,
-                  'username' => $t['username'] ?? '',
-                  'first_name' => $t['first_name'] ?? '',
-                  'last_name' => $t['last_name'] ?? '',
-                  'role' => $t['role'] ?? ''
-                ]), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-              ?>
-                <tr data-id="<?php echo $id; ?>" style="border-bottom:1px solid rgba(0,0,0,0.06);">
-                  <td class="mono" style="padding:12px 10px;"><?php echo $i + 1; ?></td>
-                  <td class="td-username" style="padding:12px 10px;"><?php echo e($t['username'] ?? ''); ?></td>
-                  <td style="padding:12px 10px;"><?php echo e($t['first_name'] ?? ''); ?></td>
-                  <td style="padding:12px 10px;"><?php echo e($t['last_name'] ?? ''); ?></td>
-                  <td style="padding:12px 10px;"><?php echo e($t['role'] ?? ''); ?></td>
-                  <td class="tv-actions-col" style="padding:12px 10px;">
-                    <?php if ($isAdmin): ?>
-                      <!-- NOTE: data-json is what the JS expects (safe JSON string) -->
-                      <button class="btn btn-edit" data-id="<?php echo $id; ?>" data-json="<?php echo $dataTeacher; ?>" style="margin-right:8px;">Edit</button>
-                    <?php endif; ?>
-                    <button class="btn btn-delete" data-id="<?php echo $id; ?>">Delete</button>
-                  </td>
+            <table
+              class="tv-table"
+              role="grid"
+              aria-live="polite"
+              style="width: 100%; border-collapse: collapse"
+            >
+              <thead>
+                <tr style="background: #a35905; color: #fff">
+                  <th style="padding: 10px 12px; border-radius: 6px 6px 0 0">
+                    #
+                  </th>
+                  <th style="padding: 10px 12px">First name</th>
+                  <th style="padding: 10px 12px">Last name</th>
+                  <th style="padding: 10px 12px">Username</th>
+                  <th style="padding: 10px 12px">Actions</th>
                 </tr>
-              <?php endforeach; endif; ?>
-            </tbody>
-          </table>
-        </div>
-        <!-- END SERVER-RENDERED TEACHERS TABLE -->
-      </section>
-    </div>
+              </thead>
 
-  </main>
+              <!-- IMPORTANT: keep layout unchanged — JS will inject rows here -->
+              <tbody id="teachersTbody">
+                <tr>
+                  <td colspan="5" style="padding:18px;text-align:center;color:#666;">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- END TEACHERS TABLE -->
+        </section>
+      </div>
+    </main>
 
-  <!-- Teacher Edit Modal (hidden by default) -->
-  <div id="teacherEditModal" class="modal" style="display:none;">
-    <div class="modal-content small">
-      <button id="teacherEditClose" class="modal-close" aria-label="Close">&times;</button>
-      <h3>Edit Teacher</h3>
+    <!-- Teacher Edit Modal (hidden by default) -->
+    <div id="teacherEditModal" class="modal" style="display: none">
+      <div class="modal-content small">
+        <button id="teacherEditClose" class="modal-close" aria-label="Close">
+          &times;
+        </button>
+        <h3>Edit Teacher</h3>
 
-      <!--
-         Important: field names and IDs match the JS expected names:
-         - hidden input name="id" id="edit_id"
-         - username => name="username" id="edit_username"
-         - first_name => name="first_name" id="edit_first_name"
-         - last_name => name="last_name" id="edit_last_name"
-         - password => name="password" id="edit_password"
-      -->
-      <form id="teacherEditForm">
-        <input type="hidden" name="id" id="edit_id">
+        <form id="teacherEditForm">
+          <input type="hidden" name="id" id="edit_id" />
 
-        <label>Username
-          <input type="text" name="username" id="edit_username" required>
-        </label>
+          <label
+            >Username
+            <input type="text" name="username" id="edit_username" required />
+          </label>
 
-        <label>First name
-          <input type="text" name="first_name" id="edit_first_name">
-        </label>
+          <label
+            >First name
+            <input type="text" name="first_name" id="edit_first_name" />
+          </label>
 
-        <label>Last name
-          <input type="text" name="last_name" id="edit_last_name">
-        </label>
+          <label
+            >Last name
+            <input type="text" name="last_name" id="edit_last_name" />
+          </label>
 
-        <label>New password (leave blank to keep)
-          <input type="password" name="password" id="edit_password" placeholder="Optional">
-        </label>
+          <label
+            >New password (leave blank to keep)
+            <input
+              type="password"
+              name="password"
+              id="edit_password"
+              placeholder="Optional"
+            />
+          </label>
 
-        <div style="margin-top:12px;">
-          <button type="submit" class="btn-primary">Save</button>
-          <button type="button" id="teacherEditCancel" class="btn">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="logout-modal" aria-hidden="true" style="display:none;">
-    <div class="logout-modal-content">
-      <h3>CONFIRM LOGOUT</h3>
-      <p>Are you sure you want to log out?</p>
-      <div class="logout-modal-buttons">
-        <button class="confirm-btn" onclick="confirmLogout()">YES</button>
-        <button class="cancel-btn" onclick="closeLogoutConfirmation()">CANCEL</button>
+          <div style="margin-top: 12px">
+            <button type="submit" class="btn-primary">Save</button>
+            <button type="button" id="teacherEditCancel" class="btn">
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
 
-  <!-- expose role to JS as window.userRole for convenience -->
-  <script>
-    window.userRole = "<?php echo htmlspecialchars($_SESSION['role'] ?? '', ENT_QUOTES, 'UTF-8'); ?>";
-    // API endpoint your JS will call
-    window.TEACHERS_API = 'teachers_view.php';
-  </script>
+    <!-- Teacher Delete Confirmation Modal (hidden by default) -->
+    <div
+      id="teacherDeleteModal"
+      class="modal"
+      style="display: none"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="teacherDeleteTitle"
+    >
+      <div class="modal-content small">
+        <button id="teacherDeleteClose" class="modal-close" aria-label="Close">
+          &times;
+        </button>
+        <h3 id="teacherDeleteTitle">Delete Teacher</h3>
 
-  <!-- core page scripts -->
-  <script src="js/dashboard_view.js?v=20250908"></script>
+        <!-- populated by JS: teacher id and display name -->
+        <form id="teacherDeleteForm">
+          <input type="hidden" name="id" id="delete_id" />
 
-  <!-- teachers view script (this one will wire up the server-rendered table rows & modal)
-       Make sure this file is the teachers_view.js I gave you earlier or your own that expects:
-         - buttons with class .btn-edit (data-json contains the teacher object)
-         - .btn-delete with data-id
-         - modal inputs with ids: edit_id, edit_username, edit_first_name, edit_last_name, edit_password
-  -->
-  <script src="js/teachers_view.js?v=20251106"></script>
-</body>
+          <p style="margin: 12px 0">
+            Are you sure you want to permanently delete
+            <strong id="delete_teacher_name">this teacher</strong>?
+          </p>
 
+          <p style="margin: 6px 0; color: #6b6b6b; font-size: 0.95rem">
+            This action cannot be undone.
+          </p>
+
+          <div style="margin-top: 14px; display: flex; gap: 8px">
+            <button
+              type="button"
+              id="teacherDeleteConfirm"
+              class="btn btn-delete"
+            >
+              Confirm Delete
+            </button>
+            <button type="button" id="teacherDeleteCancel" class="btn">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="logout-modal" aria-hidden="true" style="display: none">
+      <div class="logout-modal-content">
+        <h3>CONFIRM LOGOUT</h3>
+        <p>Are you sure you want to log out?</p>
+        <div class="logout-modal-buttons">
+          <button class="confirm-btn" onclick="confirmLogout()">YES</button>
+          <button class="cancel-btn" onclick="closeLogoutConfirmation()">
+            CANCEL
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="js/dashboard_view.js?v=20250908"></script>
+    <script src="js/teachers_view.js?v=demo-ui"></script>
+  </body>
 </html>

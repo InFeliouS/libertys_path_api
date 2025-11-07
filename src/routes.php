@@ -65,13 +65,33 @@ switch ($route) {
         require __DIR__ . "/../public/html/teachers_create.html";
         break;
 
-    case "teachers/view":
+case "teachers/view":
+    require_auth();
+    if (!is_admin()) {
+        http_response_code(403);
+        exit('Admins only');
+    }
+
+    // If the request is a POST, treat it as the AJAX API and include the server-side controller.
+    if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        // server-side API: src/dashboard/teachers_view.php handles list/update/delete
+        require __DIR__ . "/dashboard/teachers_view.php";
+    } else {
+        // normal page view (GET)
+        require __DIR__ . "/../public/html/teachers_view.html";
+    }
+    break;
+
+
+           case "teachers/view_table":
+        // 🔒 protected + admin-only (same policy as teachers/view)
         require_auth();
         if (!is_admin()) {
             http_response_code(403);
             exit('Admins only');
         }
-        require __DIR__ . "/../public/html/teachers_view.html";
+        // file is in src/dashboard/teachers_view_table.php
+        require __DIR__ . "/dashboard/teachers_view_table.php";
         break;
 
     case "teachers/store":
