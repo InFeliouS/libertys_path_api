@@ -131,8 +131,8 @@
       </div>
     </main>
 
-    <div id="teacherEditModal" class="modal" style="display: none">
-      <div class="modal-content small">
+    <div id="teacherEditModal" class="modal">
+      <div class="modal-content">
         <button id="teacherEditClose" class="modal-close" aria-label="Close">
           &times;
         </button>
@@ -141,61 +141,39 @@
         <form id="teacherEditForm">
           <input type="hidden" name="id" id="edit_id" />
 
-          <label
-            >USERNAME
-            <input type="text" name="username" id="edit_username" required />
+          <label>USERNAME
+            <input type="text" name="username" id="edit_username" required/>
           </label>
 
-          <label
-            >GIVEN NAME
-            <input type="text" name="first_name" id="edit_first_name" />
+          <label>GIVEN NAME
+            <input type="text" name="first_name" id="edit_first_name"/>
           </label>
 
-          <label
-            >LAST NAME
-            <input type="text" name="last_name" id="edit_last_name" />
+          <label>LAST NAME
+            <input type="text" name="last_name" id="edit_last_name"/>
           </label>
 
-          <label
-            >NEW PASSWORD (Note: leave blank to keep)
-            <input
-              type="password"
-              name="password"
-              id="edit_password"
-              placeholder="Optional"
-            />
+          <label>NEW PASSWORD (Optional)
+            <input type="password" name="password" id="edit_password" placeholder="Impotant Note: Leave blank to keep."          />
           </label>
 
-          <div style="margin-top: 12px">
+          <div>
             <button type="submit" class="btn-primary">SAVE CHANGES</button>
           </div>
         </form>
       </div>
     </div>
 
-    <div id="teacherDeleteModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="teacherDeleteTitle">
-      <div class="modal-content small">
-        <h3 id="teacherDeleteTitle">DELETE TEACHER</h3>
-
+    <div class="delete-modal" id="teacherDeleteModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="teacherDeleteTitle">
+      <div class="delete-modal-content">
+        <h3 id="teacherDeleteTitle">DELETE TEACHER ACCOUNT</h3>
         <form id="teacherDeleteForm">
           <input type="hidden" name="id" id="delete_id" />
-
-          <p>Are you sure you want to permanently delete<strong id="delete_teacher_name">this teacher</strong>?</p>
-
-          <p>This action cannot be undone.
-          </p>
-
-          <div style="margin-top: 14px; display: flex; gap: 8px">
-            <button
-              type="button"
-              id="teacherDeleteConfirm"
-              class="btn btn-delete"
-            >
-              YES
-            </button>
-            <button type="button" id="teacherDeleteCancel" class="btn">
-              CANCEL
-            </button>
+          <p>Are you sure you want to permanently delete <strong id="delete_teacher_name"> this teacher</strong>?</p>
+          <p>Take Note: This action cannot be undone.</p>
+          <div>
+            <button type="button" id="teacherDeleteConfirm" class="teacher-confirm-btn">YES</button>
+            <button type="button" id="teacherDeleteCancel" class="cancel-btn">CANCEL</button>
           </div>
         </form>
       </div>

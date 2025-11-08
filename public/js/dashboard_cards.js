@@ -356,13 +356,13 @@ loadSections();
     })
     .then(r => r.json())
     .then(json => {
-      if (!json.success) throw new Error(json.error || "Deletion failed");
+      if (!json.success) throw new Error(json.error || "Deletion failed.");
       if (deleteCardRef && deleteCardRef.remove) deleteCardRef.remove();
       closeDeleteModal();
       adjustContainerHeight();
     })
     .catch(err => {
-      alert(err.message || "Could not delete section");
+      alert(err.message || "Could not delete section.");
       closeDeleteModal();
     });
   };
