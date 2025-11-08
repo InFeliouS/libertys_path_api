@@ -203,7 +203,6 @@ if (editForm) {
     return combined ? titleCase(String(combined).trim()) : null;
   };
 
-// Fetch and render sections (now wrapped in loadSections so we can re-use it)
 let allSections = [];
 
 async function loadSections() {
@@ -222,11 +221,8 @@ async function loadSections() {
   }
 }
 
-// initial load
 loadSections();
 
-
-  // Render all section cards
   function renderSections(list) {
     if (!container) return;
     container.innerHTML = "";

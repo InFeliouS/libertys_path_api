@@ -6,107 +6,85 @@
     <title>Liberty’s Path | TEACHER ACCOUNT</title>
     <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
     <link rel="stylesheet" href="css/dashboard_view.css" />
+    <link rel="stylesheet" href="css/questions_manage.css" />
     <link rel="stylesheet" href="css/teachers_view.css" />
   </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liberty’s Path | TEACHERS ACCOUNT</title>
-  <link rel="icon" href="assets/libertys-path-logo-2d.png" type="image/png" />
-  <link rel="stylesheet" href="css/dashboard_view.css" />
-  <link rel="stylesheet" href="css/teachers_view.css" />
-</head>
+<body>
 
-  <body>
-    <header>
-      <div class="header-titles">
-        <h1>CREATE TEACHER ACCOUNT</h1>
-        <p class="page-subtitle">Hi, Teacher</p>
-      </div>
+<?php 
+  // Detect admin role
+  $sessionRole = strtoupper($_SESSION['role'] ?? '');
+  $isAdmin = function_exists('is_admin') ? is_admin() : ($sessionRole === 'ADMIN');
+  $route = $_GET['r'] ?? 'dashboard';
+?>
+<header>
+  <div class="header-titles">
+    <h1>TEACHERS ACCOUNT TABLE LIST</h1>
+    <p class="page-subtitle">
+      <?php
+        if ($isAdmin) {
+          echo "Hi, AP Department Head";
+        } else {
+          $first = trim($_SESSION['teacher_first_name'] ?? $_SESSION['first_name'] ?? '');
+          $last  = trim($_SESSION['teacher_last_name'] ?? $_SESSION['last_name'] ?? '');
+          if ($first || $last) {
+            echo "Hi, Teacher " . htmlspecialchars(trim("$first $last"));
+          } else {
+            echo "Hi, Teacher";
+          }
+        }
+      ?>
+    </p>
+  </div>
 
-      <div class="header-left-logos">
-        <img
-          src="assets/SDPS-LOGO-transparent.png"
-          class="header-logo"
-          alt="SDPS Logo"
-        />
-        <img
-          src="assets/libertys-path-logo-2d-transparent.png"
-          class="header-logo"
-          alt="Liberty's Path Logo"
-        />
-      </div>
-    </header>
+  <div class="header-left-logos">
+    <img src="assets/SDPS-LOGO-transparent.png" class="header-logo" />
+    <img src="assets/libertys-path-logo-2d-transparent.png" class="header-logo" />
+  </div>
+</header>
 
-    <!-- ============================================================
-       MAIN LAYOUT (SIDEBAR + CONTENT)
-  ============================================================ -->
     <main class="div_parent_main">
-      <!-- SIDEBAR (unchanged layout; static links) -->
       <div class="div_sidebar_left">
         <div class="controls">
           <button
-            class="top-control"
-            onclick="location.href='index.php?r=dashboard'"
-          >
+            class="top-control" onclick="location.href='index.php?r=dashboard'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path
-                d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"
-                fill="currentColor"
-              />
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>
             </svg>
             <span>ADMIN BOARD</span>
           </button>
 
           <button
-            class="top-control"
-            onclick="location.href='index.php?r=teachers/create'"
-          >
+            class="top-control" onclick="location.href='index.php?r=sections/create'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path
-                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                fill="currentColor"
-              />
+              <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
+            </svg>
+            <span>CREATE SECTION</span>
+          </button>
+
+          <button
+            class="top-control" onclick="location.href='index.php?r=teachers/create'">
+            <svg class="btn-icon" viewBox="0 0 24 24">
+              <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z" fill="currentColor"/>
             </svg>
             <span>CREATE ACCOUNT</span>
           </button>
 
           <button
-            class="top-control active-page"
-            onclick="location.href='index.php?r=teachers/view'"
-          >
+            class="top-control active-page" onclick="location.href='index.php?r=teachers/view'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path
-                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                fill="currentColor"
-              />
+              <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zM8 11c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2C5.67 13 1 14.17 1 16.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z
+                      " fill="currentColor" />
             </svg>
-            <span>TEACHER ACCOUNT</span>
+            <span>TEACHERS ACCOUNT</span>
           </button>
 
           <button
-            class="top-control"
-            onclick="location.href='index.php?r=sections/create'"
-          >
+            class="top-control" onclick="location.href='index.php?r=questions/manage'">
             <svg class="btn-icon" viewBox="0 0 24 24">
-              <path
-                d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                fill="currentColor"
-              />
-            </svg>
-            <span>NEW SECTION</span>
-          </button>
-
-          <button
-            class="top-control"
-            onclick="location.href='index.php?r=questions/manage'"
-          >
-            <svg class="btn-icon" viewBox="0 0 24 24">
-              <path
-                d="M19.14 12.94a7 7 0 1 1-7.08-7.08 4 4 0 0 0 6.83-1.76 1 1 0 0 1 1.49-1.05 9 9 0 1 0 2.59 2.59 1 1 0 0 1-1.05 1.49 4 4 0 0 0-1.78 6.81zM12 9a3 3 0 1 0 3 3 3 3 0 0 0-3-3z"
-                fill="currentColor"
-              />
+              <path d="M12 2C8.13 4.26 5 5 5 5v6c0 5.55 3.84 10.74 7 11.93 3.16-1.19 7-6.38 7-11.93V5s-3.13-.74-7-3zM12 18a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm0-4.5a.75.75 0 0 1-.75-.75c0-1.22.98-1.75 1.63-2.12.57-.32.87-.62.87-1.13 0-.7-.58-1.25-1.25-1.25s-1.25.55-1.25 1.25a.75.75 0 0 1-1.5 0 2.75 2.75 0 1 1 5.5 0c0 1.17-.77 1.86-1.54 2.29-.57.32-.96.56-.96 1.21a.75.75 0 0 1-.75.75z"
+                fill="currentColor"/>
             </svg>
             <span>GUARD QUESTIONS</span>
           </button>
@@ -123,92 +101,63 @@
         </div>
       </div>
 
-      <!-- ============================================================
-         CONTENT (table)
-    ============================================================ -->
       <div class="div_sidebar_right">
         <section class="content-pane">
           <div class="tv-table-wrap">
-            <div
-              class="tv-toolbar"
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 12px;
-              "
-            >
-              <h2 style="margin: 0">Teachers</h2>
-              <div>
-                <button
-                  id="tvReloadBtn"
-                  class="btn small"
-                  onclick="location.reload()"
-                >
-                  Reload
-                </button>
+            <div class="card">
+              <div class="card-header">
+                <h2>EXISTING AP 8 TEACHER ACCOUNTS</h2>
+                <button id="tvReloadBtn" class="btn small" onclick="location.reload()">RELOAD</button>
               </div>
+
+              <table class="q-table">
+                <thead>
+                  <tr>
+                    <th>NO.</th>
+                    <th>GIVEN NAME</th>
+                    <th>LAST NAME</th>
+                    <th>USERNAME</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+
+                <tbody id="teachersTbody">
+                  <tr><td colspan="5">Loading . . .</td></tr>
+                </tbody>
+              </table>
             </div>
 
-            <table
-              class="tv-table"
-              role="grid"
-              aria-live="polite"
-              style="width: 100%; border-collapse: collapse"
-            >
-              <thead>
-                <tr style="background: #a35905; color: #fff">
-                  <th style="padding: 10px 12px; border-radius: 6px 6px 0 0">
-                    #
-                  </th>
-                  <th style="padding: 10px 12px">First name</th>
-                  <th style="padding: 10px 12px">Last name</th>
-                  <th style="padding: 10px 12px">Username</th>
-                  <th style="padding: 10px 12px">Actions</th>
-                </tr>
-              </thead>
-
-              <!-- IMPORTANT: keep layout unchanged — JS will inject rows here -->
-              <tbody id="teachersTbody">
-                <tr>
-                  <td colspan="5" style="padding:18px;text-align:center;color:#666;">Loading…</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <!-- END TEACHERS TABLE -->
         </section>
       </div>
     </main>
 
-    <!-- Teacher Edit Modal (hidden by default) -->
     <div id="teacherEditModal" class="modal" style="display: none">
       <div class="modal-content small">
         <button id="teacherEditClose" class="modal-close" aria-label="Close">
           &times;
         </button>
-        <h3>Edit Teacher</h3>
+        <h3>EDIT TEACHER</h3>
 
         <form id="teacherEditForm">
           <input type="hidden" name="id" id="edit_id" />
 
           <label
-            >Username
+            >USERNAME
             <input type="text" name="username" id="edit_username" required />
           </label>
 
           <label
-            >First name
+            >GIVEN NAME
             <input type="text" name="first_name" id="edit_first_name" />
           </label>
 
           <label
-            >Last name
+            >LAST NAME
             <input type="text" name="last_name" id="edit_last_name" />
           </label>
 
           <label
-            >New password (leave blank to keep)
+            >NEW PASSWORD (Note: leave blank to keep)
             <input
               type="password"
               name="password"
@@ -218,42 +167,22 @@
           </label>
 
           <div style="margin-top: 12px">
-            <button type="submit" class="btn-primary">Save</button>
-            <button type="button" id="teacherEditCancel" class="btn">
-              Cancel
-            </button>
+            <button type="submit" class="btn-primary">SAVE CHANGES</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Teacher Delete Confirmation Modal (hidden by default) -->
-    <div
-      id="teacherDeleteModal"
-      class="modal"
-      style="display: none"
-      aria-hidden="true"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="teacherDeleteTitle"
-    >
+    <div id="teacherDeleteModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="teacherDeleteTitle">
       <div class="modal-content small">
-        <button id="teacherDeleteClose" class="modal-close" aria-label="Close">
-          &times;
-        </button>
-        <h3 id="teacherDeleteTitle">Delete Teacher</h3>
+        <h3 id="teacherDeleteTitle">DELETE TEACHER</h3>
 
-        <!-- populated by JS: teacher id and display name -->
         <form id="teacherDeleteForm">
           <input type="hidden" name="id" id="delete_id" />
 
-          <p style="margin: 12px 0">
-            Are you sure you want to permanently delete
-            <strong id="delete_teacher_name">this teacher</strong>?
-          </p>
+          <p>Are you sure you want to permanently delete<strong id="delete_teacher_name">this teacher</strong>?</p>
 
-          <p style="margin: 6px 0; color: #6b6b6b; font-size: 0.95rem">
-            This action cannot be undone.
+          <p>This action cannot be undone.
           </p>
 
           <div style="margin-top: 14px; display: flex; gap: 8px">
@@ -262,10 +191,10 @@
               id="teacherDeleteConfirm"
               class="btn btn-delete"
             >
-              Confirm Delete
+              YES
             </button>
             <button type="button" id="teacherDeleteCancel" class="btn">
-              Cancel
+              CANCEL
             </button>
           </div>
         </form>

@@ -1,10 +1,8 @@
-// js/teachers_view.js — full drop-in (load rows, update, delete)
 (() => {
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const on = (el, ev, fn) => { if (!el) return; el.addEventListener(ev, fn); };
 
-  // modal/query refs (set after DOM ready)
   let editModal, editCloseBtn, editCancelBtn, editForm, editInputs, editError;
   let deleteModal, deleteCloseBtn, deleteCancelBtn, deleteConfirmBtn, deleteIdInput, deleteTeacherName, deleteError;
   let tvStatus;
@@ -32,7 +30,6 @@
     if (timeout > 0) setTimeout(() => { if (tvStatus) tvStatus.textContent = ''; }, timeout);
   }
 
-  // parse a teacher from a row (prefers data-json on edit button)
   function parseTeacherFromRow(row) {
     if (!row) return null;
     const editBtn = row.querySelector('.btn-edit');
@@ -125,7 +122,6 @@
     });
   }
 
-  // Fetch server-rendered rows and inject
   function loadTableRows() {
     const url = 'index.php?r=teachers/view_table';
     const tbody = document.querySelector('#teachersTbody') || document.querySelector('table.tv-table tbody');
@@ -134,7 +130,7 @@
       return Promise.resolve();
     }
 
-    tbody.innerHTML = '<tr><td colspan="5" style="padding:12px;text-align:center;color:#666;">Loading…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="padding:12px;text-align:center;color:#666;">Loading . . .</td></tr>';
 
     return fetch(url, { credentials: 'same-origin' })
       .then(resp => {
@@ -151,16 +147,13 @@
       });
   }
 
-  // Helper: update DOM row with new data (id, first_name, last_name, username)
   function updateDomRow(id, newData) {
     const row = document.querySelector(`tr[data-id="${id}"]`);
     if (!row) return;
     const cells = row.querySelectorAll('td');
-    // expected order: 0:id,1:first,2:last,3:username,4:actions
     if (cells[1]) cells[1].textContent = newData.first_name || '';
     if (cells[2]) cells[2].textContent = newData.last_name || '';
     if (cells[3]) cells[3].textContent = newData.username || '';
-    // update data-json on edit button (if exists)
     const editBtn = row.querySelector('.btn-edit');
     if (editBtn) {
       const obj = {
@@ -171,11 +164,10 @@
       };
       try {
         editBtn.setAttribute('data-json', JSON.stringify(obj));
-      } catch (e) { /* ignore */ }
+      } catch (e) {}
     }
   }
 
-// Submit update via fetch (robust JSON parsing & fallback to text)
 function submitUpdate(formEl) {
   const formData = new FormData(formEl);
   formData.append('action', 'update');
@@ -193,12 +185,10 @@ function submitUpdate(formEl) {
   .then(result => {
     if (submitBtn) submitBtn.disabled = false;
 
-    // try parse JSON first
     let json = null;
-    try { json = JSON.parse(result.text); } catch (e) { /* not-json */ }
+    try { json = JSON.parse(result.text); } catch (e) {}
 
     if (!result.ok) {
-      // server returned non-2xx — prefer JSON message, else raw text
       const errMsg = (json && json.error) ? json.error : (result.text || ('HTTP ' + result.status));
       throw new Error(errMsg);
     }
@@ -226,8 +216,6 @@ function submitUpdate(formEl) {
   });
 }
 
-
-  // Submit delete via fetch (robust JSON/text handling)
 function submitDelete(id) {
   const data = new FormData();
   data.append('action', 'delete');
@@ -246,7 +234,7 @@ function submitDelete(id) {
     if (deleteConfirmBtn) deleteConfirmBtn.disabled = false;
 
     let json = null;
-    try { json = JSON.parse(result.text); } catch (e) { /* not-json */ }
+    try { json = JSON.parse(result.text); } catch (e) {}
 
     if (!result.ok) {
       const errMsg = (json && json.error) ? json.error : (result.text || ('HTTP ' + result.status));
@@ -273,10 +261,7 @@ function submitDelete(id) {
   });
 }
 
-
-  // Setup DOM ready
   document.addEventListener('DOMContentLoaded', () => {
-    // query modal elements
     editModal = $('#teacherEditModal');
     editCloseBtn = $('#teacherEditClose');
     editCancelBtn = $('#teacherEditCancel');
@@ -313,12 +298,10 @@ function submitDelete(id) {
       if (deleteCloseBtn) on(deleteCloseBtn, 'click', () => { clearError(deleteError); hide(deleteModal); });
       if (deleteCancelBtn) on(deleteCancelBtn, 'click', () => { clearError(deleteError); hide(deleteModal); });
 
-      // handle edit form submit => call API and update row
       if (editForm) {
         on(editForm, 'submit', (ev) => {
           ev.preventDefault();
           clearError(editError);
-          // basic client validation
           const username = (editInputs.username.value || '').trim();
           if (!username) {
             showEditError('Username is required');
@@ -328,7 +311,6 @@ function submitDelete(id) {
         });
       }
 
-      // handle delete confirm
       if (deleteConfirmBtn) {
         on(deleteConfirmBtn, 'click', (ev) => {
           ev.preventDefault();
@@ -343,7 +325,6 @@ function submitDelete(id) {
       }
     });
 
-    // escape key closes modals
     document.addEventListener('keydown', (ev) => {
       if (ev.key === 'Escape') {
         if (editModal && editModal.style.display !== 'none') { clearError(editError); hide(editModal); }
@@ -351,7 +332,6 @@ function submitDelete(id) {
       }
     });
 
-    // backdrop click closes modals
     const wireBackdrop = (modalEl, closeFn) => {
       if (!modalEl) return;
       modalEl.addEventListener('click', (ev) => {
