@@ -1,0 +1,6 @@
+# Redirect root traffic to /public
+RewriteEngine On
+
+# If the request is for the root or a non-public path
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^$ /public/ [L,R=302]
