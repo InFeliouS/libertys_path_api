@@ -187,7 +187,8 @@ main.div_parent_main {
   padding: 24px;
   text-align: center;
   color: #6b7280;
-  font-size: 5rem;
+  font-size: 1.5rem;
+  font-family: 'Karla';
   font-weight: 900;
   font-style: italic;
   background: transparent;
