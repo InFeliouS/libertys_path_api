@@ -39,12 +39,8 @@
   const studNextBtn = $("studNextBtn");
   const studPageInfo = $("studPageInfo");
   const lastUpdated = $("lastUpdated");
-
-  // Leaderboard
-  // lbPageSizeSel intentionally kept in DOM but ignored by script (fixed page size)
   const lbPageSizeSel = $("lbPageSize");
   const lbPerfectOnly = $("lbPerfectOnly");
-  // const lbAutoRefresh  = $("lbAutoRefresh"); // removed - auto-refresh is always-on
   const lbRefreshBtn = $("lbRefreshBtn");
   const lbBody = $("lbBody");
   const lbPageInfo = $("lbPageInfo");
@@ -52,7 +48,7 @@
   const lbNextBtn = $("lbNextBtn");
   const lbUpdated = $("lbUpdated");
   const lbRows = $("lbRows");
-  const lbDatePicker = $("lbDatePicker"); // optional; present in updated HTML
+  const lbDatePicker = $("lbDatePicker"); 
 
   if (!sectionId) {
     if (studentsTbody)
@@ -112,7 +108,7 @@
         .join("");
     }
 
-    studPageInfo.textContent = `Page ${studPage} of ${pages}`;
+    studPageInfo.textContent = `PAGE ${studPage} OF ${pages}`;
     studPrevBtn.disabled = studPage <= 1;
     studNextBtn.disabled = studPage >= pages;
   }
@@ -206,12 +202,11 @@
       } (showing ${rows.length})`;
     }
 
-    lbPageInfo.textContent = `Page ${lbPage} of ${pages}`;
+    lbPageInfo.textContent = `PAGE ${lbPage} OF ${pages}`;
     lbPrevBtn.disabled = lbPage <= 1;
     lbNextBtn.disabled = lbPage >= pages;
   }
 
-  // loadLeaderboard handles both server-paged responses (meta present) and legacy full-list responses
   async function loadLeaderboard() {
     try {
       lbBody.innerHTML = `<tr><td colspan="6" class="lb-muted">Loading…</td></tr>`;
