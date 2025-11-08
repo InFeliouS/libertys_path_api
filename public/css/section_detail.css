@@ -264,13 +264,12 @@ body {
 .lb-muted { 
   color: #4b4a4a; 
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .muted { 
   text-align: center;
   color:#777; 
-  font-style:italic; 
 }
 
 @media (max-width: 768px) {
@@ -278,10 +277,6 @@ body {
   .lb-toolbar { flex-direction: column; align-items: stretch; gap: 10px; }
   .pager { justify-content: center; }
 }
-
-/* ========================================
-   Subtle animations + reduced-motion support
-   ======================================== */
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(8px); }

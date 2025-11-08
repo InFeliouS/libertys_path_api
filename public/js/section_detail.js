@@ -168,7 +168,6 @@
     renderStudentsPage();
   }
 
-  // ====== LEADERBOARD ======
   function renderLbPage() {
     const size = LB_PAGE_SIZE;
     const pages = Math.max(1, Math.ceil(lbTotal / size));
@@ -178,7 +177,7 @@
     const rows = lbRowsCurrent || [];
 
     if (rows.length === 0) {
-      lbBody.innerHTML = `<tr><td colspan="6" class="lb-muted">No results.</td></tr>`;
+      lbBody.innerHTML = `<tr><td colspan="6" class="muted">No results.</td></tr>`;
       lbRows.textContent = `0 rows`;
     } else {
       lbBody.innerHTML = rows
