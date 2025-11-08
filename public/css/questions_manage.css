@@ -86,9 +86,9 @@
 
 .card {
   background: #fff;
-  border: 1px solid rgba(0,0,0,.06);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.2);
+  border: 1px solid rgba(0,0,0,.02);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2), 0 2px 8px rgba(0,0,0,.2);
   padding: 28px;
   margin-bottom: 24px;
   opacity: 0;
