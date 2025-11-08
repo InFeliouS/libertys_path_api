@@ -75,8 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ---------- Teachers loader ----------
-  // teachersMap: id -> display name, teachersLoaded: Promise that resolves when list loaded (or failed)
   const teachersMap = new Map();
   let teachersLoaded = null;
 
@@ -91,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadTeachersOnce() {
     if (!editTeacherSelect) {
-      // nothing to do
       return Promise.resolve();
     }
     if (teachersLoaded) return teachersLoaded;
@@ -114,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
           console.warn("teachers_list returned unexpected payload:", json);
           return;
         }
-        // populate
         setTeacherDefaultOption();
         json.data.forEach(t => {
           const id = String(t.id || "");
@@ -133,22 +129,18 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(err => {
         console.warn("Could not load teachers list:", err);
-        // leave default option only
         setTeacherDefaultOption("— (unable to load teachers) —");
       });
 
     return teachersLoaded;
   }
 
-  // Start loading teachers early
   loadTeachersOnce();
 
-// Handle Edit Form Submit (improved: refresh sections after successful save)
 if (editForm) {
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Build payload (include teacher_id if present in select)
     const payload = {
       section_id:        parseInt(editSectionId.value, 10),
       section_name:      (editSectionName.value || "").trim(),
@@ -156,11 +148,9 @@ if (editForm) {
       end_school_year:   editEndYear.value
     };
 
-    // include teacher assignment if the select exists
     const teacherSelect = document.getElementById("editTeacherSelect");
     if (teacherSelect) {
       const v = teacherSelect.value;
-      // send empty string/null to indicate "unassigned"
       payload.teacher_id = v === "" ? "" : v;
     }
 
@@ -175,14 +165,10 @@ if (editForm) {
         throw new Error(json?.error || "Update failed");
       }
 
-      // refresh the entire sections list so local state and UI are consistent
       await loadSections();
 
-      // close modal
       if (editModal) editModal.style.display = "none";
 
-      // optional: small user confirmation (toast/alert)
-      // alert("Section updated");
     } catch (err) {
       console.error("Update error:", err);
       alert(err.message || "Could not save changes");
@@ -190,8 +176,6 @@ if (editForm) {
   });
 }
 
-
-  // Helper functions
   const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
   const resolveTeacherName = (sec) => {
     const fn = sec?.teacher_first_name || sec?.first_name || sec?.adviser_first_name || sec?.handler_first_name || sec?.teacherFname || sec?.adviserFname || "";
@@ -269,9 +253,8 @@ loadSections();
       if (IS_ADMIN) {
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
-        editBtn.className = "btn-edit edit-section-btn"; // keep class for earlier code compatibility
+        editBtn.className = "btn-edit edit-section-btn"; 
         editBtn.setAttribute("data-section-id", String(sec.id ?? ""));
-        // If the section object includes a teacher id field, attach it as data attribute so loader can preselect
         if (sec.teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.teacher_id));
         if (sec.assigned_teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.assigned_teacher_id));
         if (sec.adviser_id) editBtn.setAttribute("data-teacher-id", String(sec.adviser_id));
@@ -282,9 +265,7 @@ loadSections();
           editSectionName.value    = sec.section_name ?? "";
           editStartYear.value      = sec.start_school_year ?? "";
           editEndYear.value        = sec.end_school_year ?? "";
-          // Ensure teacher select is populated before preselecting
           loadTeachersOnce().then(() => {
-            // find teacher id value from multiple possible fields on sec
             const tid = String(sec.teacher_id ?? sec.assigned_teacher_id ?? sec.adviser_id ?? sec.teacher_id ?? "");
             if (tid && Array.from((editTeacherSelect || {options:[]}).options).some(o => o.value === tid)) {
               editTeacherSelect.value = tid;
@@ -292,7 +273,6 @@ loadSections();
               editTeacherSelect.value = "";
             }
           }).catch(() => {
-            // fallback if load fails
             if (editTeacherSelect) editTeacherSelect.value = "";
           });
 
@@ -313,7 +293,6 @@ loadSections();
 
     adjustContainerHeight();
 
-    // Extra cleanup for non-admins (safety)
     if (!IS_ADMIN) {
       const stripOnce = () => {
         const candidates = container.querySelectorAll('.section-card button');
@@ -326,7 +305,6 @@ loadSections();
     }
   }
 
-  // Delete modal logic
   const deleteModal = document.getElementById("deleteSectionModal");
   let deleteTargetId = null;
   let deleteCardRef = null;
@@ -367,7 +345,6 @@ loadSections();
     });
   };
 
-  // Adjust container layout height
   function adjustContainerHeight() {
     if (!container) return;
     container.style.height = "auto";
@@ -375,7 +352,6 @@ loadSections();
 
   window.addEventListener("resize", adjustContainerHeight);
 
-  // Debounce search
   function debounce(fn, delay = 200) {
     let t = null;
     return function (...args) {
@@ -384,7 +360,6 @@ loadSections();
     };
   }
 
-  // Search functionality
   if (searchInput) {
     const doSearch = () => {
       const raw = (searchInput.value || "").trim().toLowerCase();

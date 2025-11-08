@@ -631,10 +631,6 @@ select:focus{
   }
 }
 
-/* ============================================================
-   ✅ ACTIVE SIDEBAR BUTTON (Glow + left gold bar + pulse)
-============================================================= */
-
 .top-control.active-page {
   background: #c56f14 !important;
   box-shadow: 0 0 12px rgba(197,111,20,0.65);
@@ -647,7 +643,6 @@ select:focus{
   to   { background-color: #d17805; }
 }
 
-/* ✅ Left glowing bar */
 .top-control.active-page::before {
   content: "";
   position: absolute;
@@ -666,7 +661,10 @@ select:focus{
   to   { transform: translateX(0); opacity: 1; }
 }
 
-/* ✅ Icon becomes white for visibility */
 .top-control.active-page .btn-icon path {
   fill: #ffffff !important;
+}
+
+i {
+  color: #a00000;
 }
