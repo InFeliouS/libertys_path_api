@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2025 at 06:50 AM
+-- Generation Time: Nov 06, 2025 at 03:54 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -149,13 +149,12 @@ CREATE TABLE `sections` (
 --
 
 INSERT INTO `sections` (`id`, `section_name`, `start_school_year`, `end_school_year`, `created_at`) VALUES
-(2, 'ST. ALBERT', '2025', '2026', '2025-05-17 13:37:39'),
-(7, 'St. Matthew', '2025', '2026', '2025-05-23 10:46:56'),
-(8, 'St. John', '2025', '2026', '2025-05-23 10:50:39'),
-(9, 'ST.DIEGO', '2027', '2028', '2025-09-08 12:22:13'),
+(2, 'ST. ALBERT', '2026', '2027', '2025-05-17 13:37:39'),
+(8, 'St. John', '2027', '2028', '2025-05-23 10:50:39'),
 (10, 'ST. ALBERTU (2025–2026)', '2025', '2026', '2025-09-08 12:49:39'),
 (11, 'NF TEST', '2025', '2026', '2025-09-14 13:27:10'),
-(12, 'ST. JOHN MICAHEL', '2027', '2029', '2025-10-26 04:40:51');
+(12, 'ST. JOHN MICAHEL', '2027', '2029', '2025-10-26 04:40:51'),
+(14, 'TEST SECTION', '2027', '2028', '2025-11-06 10:30:27');
 
 -- --------------------------------------------------------
 
@@ -178,10 +177,7 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section_id`, `created_at`) VALUES
 (1, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 11, '2025-09-14 15:12:11'),
-(2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36'),
-(3, 'JON MIKE', '123', 'LESTER', 11, '2025-10-26 04:41:20'),
-(4, 'TEST', '', 'TEST', 12, '2025-10-26 04:42:40'),
-(5, 'JUAN', 'DELA', 'CRUZ', 12, '2025-11-01 05:09:44');
+(2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36');
 
 -- --------------------------------------------------------
 
@@ -202,10 +198,7 @@ CREATE TABLE `student_accounts` (
 
 INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created_at`) VALUES
 (1, 1, 'jogarcia', '2025-09-14 15:12:11'),
-(2, 2, 'kperalta', '2025-09-14 15:12:36'),
-(3, 3, 'j1lester', '2025-10-26 04:41:20'),
-(4, 4, 'ttest', '2025-10-26 04:42:40'),
-(5, 5, 'jdcruz', '2025-11-01 05:09:44');
+(2, 2, 'kperalta', '2025-09-14 15:12:36');
 
 -- --------------------------------------------------------
 
@@ -231,8 +224,9 @@ INSERT INTO `teachers` (`id`, `username`, `first_name`, `last_name`, `password`,
 (2, 'teacher_one', NULL, NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER'),
 (3, 'teacher_two', NULL, NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER'),
 (4, 'teacher3', 'Bing', 'Bong', '$2y$10$LUL5PCVr3Q7b6OoJ8BLvQeyL2AwDehVjIgsKYFZN4iBp9KVSyz5ca', 'TEACHER'),
-(5, 'teach', 'pass', 'pass', '$2y$10$Xsq2Y1MV8MOFpgwVpy2WKulMhNo27stcbioIJf/IwwsrKp2pVSIn6', 'TEACHER'),
-(6, 'teach_test', 'test', 'test', '$2y$10$NGMackgdGqREdDLk04nmxegq64jL11Xogjg2efaPIbVv6LfJtCug2', 'TEACHER');
+(6, 'teach_test', 'test', 'test', '$2y$10$NGMackgdGqREdDLk04nmxegq64jL11Xogjg2efaPIbVv6LfJtCug2', 'TEACHER'),
+(7, 'jdcruz', 'juan', 'cruz', '$2y$10$QCqvG14L7Q72lA0SGGsqaOHrSDVNYUMae7HuxCH9Imf.KqHyEi5Sy', 'TEACHER'),
+(12, 'root', 'test', 'test', '$2y$10$SzriYrhCVjZJ1dkXCElV6OJGqxl7vBs6iBMXNRQWjv8pxLsnvT9E2', 'TEACHER');
 
 -- --------------------------------------------------------
 
@@ -255,7 +249,7 @@ CREATE TABLE `teacher_configs` (
 --
 
 INSERT INTO `teacher_configs` (`id`, `teacher_id`, `room_count`, `enemy_count`, `difficulty`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 1, 0, '2025-10-31 10:59:29', '2025-10-31 11:15:12'),
+(1, 2, 5, 3, 1, '2025-10-31 10:59:29', '2025-11-06 13:47:22'),
 (2, 6, 1, 1, 0, '2025-10-31 12:21:26', '2025-11-01 05:37:44');
 
 -- --------------------------------------------------------
@@ -275,11 +269,10 @@ CREATE TABLE `teacher_sections` (
 --
 
 INSERT INTO `teacher_sections` (`id`, `teacher_id`, `section_id`) VALUES
-(1, 2, 9),
-(2, 3, 7),
-(3, 4, 2),
-(4, 4, 7),
-(5, 5, 12),
+(7, 2, 2),
+(9, 2, 8),
+(5, 2, 12),
+(10, 6, 10),
 (6, 6, 11);
 
 --
@@ -369,25 +362,25 @@ ALTER TABLE `leaderboard_team_runs`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `student_accounts`
 --
 ALTER TABLE `student_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `teacher_configs`
@@ -399,7 +392,7 @@ ALTER TABLE `teacher_configs`
 -- AUTO_INCREMENT for table `teacher_sections`
 --
 ALTER TABLE `teacher_sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables

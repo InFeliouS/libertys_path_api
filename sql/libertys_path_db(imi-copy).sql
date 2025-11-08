@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2025 at 03:54 PM
+-- Generation Time: Nov 08, 2025 at 11:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,13 +48,14 @@ INSERT INTO `guard_questions` (`id`, `question_text`, `choice1`, `choice2`, `cho
 (2, 'this is the 2nd test question', 'test', 'test', 'test', 'answer', 3, NULL, '2025-09-09 14:20:18'),
 (3, 'sertwert', 'qwerwqefqwef', 'qwefqwef', 'qwefqwef', 'qwefqwef', 1, NULL, '2025-09-09 15:58:09'),
 (4, 'New Question 4', '123', '651', 'ANswer', '163', 2, NULL, '2025-09-09 18:47:42'),
-(5, 'teacher_one Question', '1', '2', '3', 'Answer', 3, 2, '2025-10-12 10:44:02'),
-(6, 'test', '1', '2', '3', 'test', 3, 2, '2025-10-31 10:14:56'),
-(7, '1+1', '1', '2', '3', '4', 1, 6, '2025-10-31 12:18:05'),
-(8, 'National Hero', 'Jose Rizal', 'Andres Bonifacio', 'Juan Luna', 'McArthur', 0, 6, '2025-10-31 12:19:24'),
-(9, '2*2', '1', '2', '3', '4', 3, 6, '2025-10-31 12:19:41'),
-(10, 'Hit and ______', 'Search', 'Collect', 'Run', 'Walk', 2, 6, '2025-10-31 12:20:32'),
-(11, '100-10', '90', '80', '70', '60', 0, 6, '2025-10-31 12:21:20');
+(5, 'teacher_one Question', '1', '2', '3', 'Answer', 3, NULL, '2025-10-12 10:44:02'),
+(6, 'test', '1', '2', '3', 'test', 3, NULL, '2025-10-31 10:14:56'),
+(7, '1+1', '1', '2', '3', '4', 1, NULL, '2025-10-31 12:18:05'),
+(8, 'National Hero', 'Jose Rizal', 'Andres Bonifacio', 'Juan Luna', 'McArthur', 0, NULL, '2025-10-31 12:19:24'),
+(9, '2*2', '1', '2', '3', '4', 3, NULL, '2025-10-31 12:19:41'),
+(10, 'Hit and ______', 'Search', 'Collect', 'Run', 'Walk', 2, NULL, '2025-10-31 12:20:32'),
+(11, '100-10', '90', '80', '70', '60', 0, NULL, '2025-10-31 12:21:20'),
+(12, 'hello', 'Doggy', 'Cat', 'Dog', 'Catty', 0, NULL, '2025-11-08 01:28:57');
 
 -- --------------------------------------------------------
 
@@ -149,12 +150,11 @@ CREATE TABLE `sections` (
 --
 
 INSERT INTO `sections` (`id`, `section_name`, `start_school_year`, `end_school_year`, `created_at`) VALUES
-(2, 'ST. ALBERT', '2026', '2027', '2025-05-17 13:37:39'),
-(8, 'St. John', '2027', '2028', '2025-05-23 10:50:39'),
-(10, 'ST. ALBERTU (2025–2026)', '2025', '2026', '2025-09-08 12:49:39'),
 (11, 'NF TEST', '2025', '2026', '2025-09-14 13:27:10'),
-(12, 'ST. JOHN MICAHEL', '2027', '2029', '2025-10-26 04:40:51'),
-(14, 'TEST SECTION', '2027', '2028', '2025-11-06 10:30:27');
+(19, 'ST. FRANCIS', '2025', '2026', '2025-11-08 06:13:25'),
+(20, 'ST. IGNATIUS', '2025', '2026', '2025-11-08 06:13:48'),
+(21, 'ST. ANTHONY', '2025', '2026', '2025-11-08 06:14:11'),
+(22, 'ST. MARIA GORETTI', '2025', '2026', '2025-11-08 06:14:27');
 
 -- --------------------------------------------------------
 
@@ -220,13 +220,8 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`id`, `username`, `first_name`, `last_name`, `password`, `role`) VALUES
-(1, 'admin', NULL, NULL, '$2y$10$6pno/1twL7Q6n4qQW0UWL./GyWI6AXK5Pi3Vu3ts61u/jo1aOmHqW', 'ADMIN'),
-(2, 'teacher_one', NULL, NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER'),
-(3, 'teacher_two', NULL, NULL, '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'TEACHER'),
-(4, 'teacher3', 'Bing', 'Bong', '$2y$10$LUL5PCVr3Q7b6OoJ8BLvQeyL2AwDehVjIgsKYFZN4iBp9KVSyz5ca', 'TEACHER'),
-(6, 'teach_test', 'test', 'test', '$2y$10$NGMackgdGqREdDLk04nmxegq64jL11Xogjg2efaPIbVv6LfJtCug2', 'TEACHER'),
-(7, 'jdcruz', 'juan', 'cruz', '$2y$10$QCqvG14L7Q72lA0SGGsqaOHrSDVNYUMae7HuxCH9Imf.KqHyEi5Sy', 'TEACHER'),
-(12, 'root', 'test', 'test', '$2y$10$SzriYrhCVjZJ1dkXCElV6OJGqxl7vBs6iBMXNRQWjv8pxLsnvT9E2', 'TEACHER');
+(1, 'admin', '', '', '$2y$10$6pno/1twL7Q6n4qQW0UWL./GyWI6AXK5Pi3Vu3ts61u/jo1aOmHqW', 'ADMIN'),
+(16, 'raqueld@2025', 'Racquel', 'Dichoso', '$2y$10$AB05Ol.PlmfbZr.uM27XHuzr1EPvgcCZShoEMAMkA8MY8JjdBhwR2', 'TEACHER');
 
 -- --------------------------------------------------------
 
@@ -249,8 +244,7 @@ CREATE TABLE `teacher_configs` (
 --
 
 INSERT INTO `teacher_configs` (`id`, `teacher_id`, `room_count`, `enemy_count`, `difficulty`, `created_at`, `updated_at`) VALUES
-(1, 2, 5, 3, 1, '2025-10-31 10:59:29', '2025-11-06 13:47:22'),
-(2, 6, 1, 1, 0, '2025-10-31 12:21:26', '2025-11-01 05:37:44');
+(3, 1, 1, 1, 0, '2025-11-08 01:32:45', '2025-11-08 01:33:02');
 
 -- --------------------------------------------------------
 
@@ -269,11 +263,10 @@ CREATE TABLE `teacher_sections` (
 --
 
 INSERT INTO `teacher_sections` (`id`, `teacher_id`, `section_id`) VALUES
-(7, 2, 2),
-(9, 2, 8),
-(5, 2, 12),
-(10, 6, 10),
-(6, 6, 11);
+(21, 16, 19),
+(22, 16, 20),
+(20, 16, 21),
+(23, 16, 22);
 
 --
 -- Indexes for dumped tables
@@ -350,7 +343,7 @@ ALTER TABLE `teacher_sections`
 -- AUTO_INCREMENT for table `guard_questions`
 --
 ALTER TABLE `guard_questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `leaderboard_team_runs`
@@ -362,7 +355,7 @@ ALTER TABLE `leaderboard_team_runs`
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `students`
@@ -380,19 +373,19 @@ ALTER TABLE `student_accounts`
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `teacher_configs`
 --
 ALTER TABLE `teacher_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `teacher_sections`
 --
 ALTER TABLE `teacher_sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables
