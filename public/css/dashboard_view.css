@@ -660,7 +660,3 @@ select:focus{
 .top-control.active-page .btn-icon path {
   fill: #ffffff !important;
 }
-
-i {
-  color: #a00000;
-}
