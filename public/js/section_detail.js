@@ -308,8 +308,6 @@
     }
   }
 
-  // ====== wiring ======
-  // Students
   searchLastName &&
     searchLastName.addEventListener("input", () => {
       clearTimeout(searchLastName._t);
@@ -330,10 +328,9 @@
       studPage = 1;
       renderStudentsPage();
     });
-  // === DELETE SELECTED STUDENTS ===
+
   btnDeleteSelected &&
     btnDeleteSelected.addEventListener("click", async () => {
-      // Collect checked student ids from table rows
       const selected = Array.from(
         document.querySelectorAll("#studentsTbody .rowCheck:checked")
       )
@@ -354,17 +351,15 @@
         return;
       }
 
-      // Disable button while request is in progress
       btnDeleteSelected.disabled = true;
 
       try {
-        // send to router path so auth runs: requires routes.php case
         const res = await fetch(`index.php?r=sections/delete_students`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ids: selected,
-            section_id: sectionId, // helpful safety: server will only delete students in this section if implemented
+            section_id: sectionId, 
           }),
         });
 

@@ -8,12 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const editSectionName   = document.getElementById("editSectionName");
   const editStartYear     = document.getElementById("editStartYear");
   const editEndYear       = document.getElementById("editEndYear");
-  const editTeacherSelect = document.getElementById("editTeacherSelect"); // NEW
+  const editTeacherSelect = document.getElementById("editTeacherSelect"); 
 
-  // ✅ Reliable admin detection
   const IS_ADMIN = (window.userRole === "ADMIN" || document.body.dataset.role === "ADMIN");
 
-  // Hide Edit/Delete for non-admin users
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;

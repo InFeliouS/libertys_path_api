@@ -132,17 +132,19 @@
 
     <div id="teacherEditModal" class="modal">
       <div class="modal-content">
-        <button id="teacherEditClose" class="modal-close" aria-label="Close">
-          &times;
-        </button>
-        <h3>EDIT TEACHER</h3>
+        <span id="teacherEditClose" class="modal-close">&times;</span>
+        <h2>EDIT TEACHER</h2>
         <form id="teacherEditForm">
-          <input type="hidden" name="id" id="edit_id" />
-          <label>USERNAME<input type="text" name="username" id="edit_username" required/></label>
-          <label>GIVEN NAME<input type="text" name="first_name" id="edit_first_name"/></label>
-          <label>LAST NAME<input type="text" name="last_name" id="edit_last_name"/></label>
-          <label>NEW PASSWORD (Optional)<input type="password" name="password" id="edit_password" placeholder="Impotant Note: Leave blank to keep."/></label>
-          <div><button type="submit" class="btn-primary">SAVE CHANGES</button></div>
+          <input type="hidden" name="id" id="edit_id"/>
+          <label>USERNAME</label>
+          <input type="text" id="edit_username" name="username" required/>
+          <label>GIVEN NAME</label>
+          <input type="text" id="edit_first_name" name="first_name" required/>
+          <label>LAST NAME</label>
+          <input type="text" id="edit_last_name" name="last_name" required/>
+          <label>NEW PASSWORD (Optional)</label>
+          <input type="password" id="edit_password" name="password" placeholder="Impotant Note: Leave blank to keep." required/>
+          <button type="submit" class="btn-primary">SAVE CHANGES</button>
         </form>
       </div>
     </div>
