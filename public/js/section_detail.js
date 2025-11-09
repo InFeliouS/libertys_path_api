@@ -48,7 +48,7 @@
   const lbNextBtn = $("lbNextBtn");
   const lbUpdated = $("lbUpdated");
   const lbRows = $("lbRows");
-  const lbDatePicker = $("lbDatePicker"); 
+  const lbDatePicker = $("lbDatePicker");
 
   if (!sectionId) {
     if (studentsTbody)
@@ -204,6 +204,29 @@
     lbPageInfo.textContent = `PAGE ${lbPage} OF ${pages}`;
     lbPrevBtn.disabled = lbPage <= 1;
     lbNextBtn.disabled = lbPage >= pages;
+  }
+
+  // >>> drop-in: student table reload button wiring (paste into section_detail.js)
+  function wireStudentReloadButton() {
+    const sdReloadBtn = $("sdReloadBtn"); // make sure your HTML button uses id="sdReloadBtn"
+    if (!sdReloadBtn) return;
+
+    sdReloadBtn.addEventListener("click", async (ev) => {
+      ev.preventDefault();
+      // UX: reset to first page and show loading state
+      try {
+        sdReloadBtn.disabled = true;
+        studPage = 1; // reset client paging
+        // loadStudents() is the existing async function in your file that fetches + renders rows
+        await loadStudents();
+      } catch (err) {
+        console.error("Failed to reload student table:", err);
+        // optional: user-visible error
+        alert("Failed to reload student table. Check console for details.");
+      } finally {
+        sdReloadBtn.disabled = false;
+      }
+    });
   }
 
   async function loadLeaderboard() {
@@ -447,7 +470,7 @@
   // ====== init ======
   loadStudents();
   loadLeaderboard();
-
+  wireStudentReloadButton(); 
   // Select-all checkbox behavior (preserved)
   checkAll &&
     checkAll.addEventListener("change", () => {

@@ -11,10 +11,12 @@ ini_set('display_errors', '0');
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 header('Content-Type: application/json; charset=utf-8');
 
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (session_status() === PHP_SESSION_NONE)
+    session_start();
 
 // simple JSON helper
-function j($arr, int $code = 200) {
+function j($arr, int $code = 200)
+{
     http_response_code($code);
     echo json_encode($arr, JSON_UNESCAPED_UNICODE);
     exit;
@@ -26,7 +28,7 @@ if (!isset($_SESSION['teacher_id'])) {
 }
 
 // require admin for mutating actions
-$role = strtoupper((string)($_SESSION['role'] ?? ''));
+$role = strtoupper((string) ($_SESSION['role'] ?? ''));
 $isAdmin = ($role === 'ADMIN');
 // Compute DB path (adjust if your project layout differs)
 
@@ -57,14 +59,16 @@ try {
     // LIST (GET)
     // ----------------------------
     if ($method === 'GET' && $action === 'list') {
-        $stmt = $pdo->prepare("SELECT id, first_name, last_name, username FROM teachers ORDER BY id ASC");
+        // List only role = TEACHER
+        $stmt = $pdo->prepare("SELECT id, first_name, last_name, username FROM teachers WHERE UPPER(role) = 'TEACHER' ORDER BY id ASC");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
         // normalize/null-handling
-        $data = array_map(function($r){
+        $data = array_map(function ($r) {
             return [
-                'id' => isset($r['id']) ? (int)$r['id'] : 0,
+                'id' => isset($r['id']) ? (int) $r['id'] : 0,
                 'first_name' => $r['first_name'] ?? '',
                 'last_name' => $r['last_name'] ?? '',
                 'username' => $r['username'] ?? '',
@@ -80,19 +84,31 @@ try {
     }
 
     // ----------------------------
-    // DELETE (POST)
-    // ----------------------------
+// DELETE (POST)
+// ----------------------------
     if ($method === 'POST' && $action === 'delete') {
-        $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         if ($id <= 0) {
             j(['ok' => false, 'error' => 'Invalid id'], 400);
         }
 
         // Prevent deleting yourself (use session teacher_id)
-        $me = (int)($_SESSION['teacher_id'] ?? 0);
+        $me = (int) ($_SESSION['teacher_id'] ?? 0);
         if ($me === $id) {
             j(['ok' => false, 'error' => "Can't delete current user"], 400);
         }
+
+        // --- NEW: refuse to delete ADMIN accounts ---
+        $check = $pdo->prepare("SELECT role FROM teachers WHERE id = :id LIMIT 1");
+        $check->execute([':id' => $id]);
+        $found = $check->fetch(PDO::FETCH_ASSOC);
+        if (!$found) {
+            j(['ok' => false, 'error' => 'No such user'], 404);
+        }
+        if (strtoupper((string) $found['role']) === 'ADMIN') {
+            j(['ok' => false, 'error' => 'Cannot delete ADMIN account'], 403);
+        }
+        // --- end new check ---
 
         // delete
         $stmt = $pdo->prepare("DELETE FROM teachers WHERE id = :id");
@@ -107,19 +123,31 @@ try {
     }
 
     // ----------------------------
-    // UPDATE (POST)
-    // ----------------------------
+// UPDATE (POST)
+// ----------------------------
     if ($method === 'POST' && $action === 'update') {
         // Accept standard form-data fields
-        $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-        $username = trim((string)($_POST['username'] ?? ''));
-        $first_name = trim((string)($_POST['first_name'] ?? ''));
-        $last_name = trim((string)($_POST['last_name'] ?? ''));
+        $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+        $username = trim((string) ($_POST['username'] ?? ''));
+        $first_name = trim((string) ($_POST['first_name'] ?? ''));
+        $last_name = trim((string) ($_POST['last_name'] ?? ''));
         $password = $_POST['password'] ?? '';
 
         if ($id <= 0 || $username === '') {
             j(['ok' => false, 'error' => 'Missing required fields'], 400);
         }
+
+        // --- NEW: refuse to modify ADMIN accounts ---
+        $check = $pdo->prepare("SELECT role FROM teachers WHERE id = :id LIMIT 1");
+        $check->execute([':id' => $id]);
+        $found = $check->fetch(PDO::FETCH_ASSOC);
+        if (!$found) {
+            j(['ok' => false, 'error' => 'No such user'], 404);
+        }
+        if (strtoupper((string) $found['role']) === 'ADMIN') {
+            j(['ok' => false, 'error' => 'Cannot modify ADMIN account'], 403);
+        }
+        // --- end new check ---
 
         // ensure username unique (exclude current id)
         $stmt = $pdo->prepare("SELECT id FROM teachers WHERE username = :u AND id <> :id LIMIT 1");
@@ -151,6 +179,7 @@ try {
         // success
         j(['ok' => true]);
     }
+
 
     // Unknown action
     j(['ok' => false, 'error' => 'Unknown action'], 400);

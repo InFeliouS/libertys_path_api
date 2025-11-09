@@ -100,3 +100,15 @@
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
+
+
+/* Hide the delete modal by default */
+.delete-modal {
+  display: none;
+}
+
+/* Show it only when aria-hidden is false or when activated by JS */
+.delete-modal[aria-hidden="false"],
+.delete-modal.active {
+  display: flex; /* or block, depending on your modal style */
+}

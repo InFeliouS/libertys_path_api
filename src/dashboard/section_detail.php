@@ -1,9 +1,10 @@
 <?php
 /**
- * Section Detail (QPR-free)
+ * Section Detail (safe include)
  * - Validates section_id
- * - Loads section row (for existence check and potential future use)
- * - Includes the frontend HTML; all data tables are fetched via public APIs
+ * - Loads section row (for existence check and to get section_name)
+ * - Reads the static HTML and replaces the placeholder "**name nung section**"
+ *   with the escaped real section name, then echoes the result.
  */
 
 declare(strict_types=1);
@@ -11,16 +12,22 @@ declare(strict_types=1);
 // DB connection
 require_once __DIR__ . '/../config/db.php'; // provides $pdo (PDO)
 
-$sectionId = isset($_GET['section_id']) ? (int)$_GET['section_id'] : 0;
+// get and validate section_id (accept both section_id and id param for flexibility)
+$sectionId = 0;
+if (isset($_GET['section_id'])) {
+    $sectionId = (int)$_GET['section_id'];
+} elseif (isset($_GET['id'])) {
+    $sectionId = (int)$_GET['id'];
+}
 if ($sectionId <= 0) {
     http_response_code(400);
     echo "Missing or invalid section_id.";
     exit;
 }
 
-// Make sure the section exists (and get name if you want to show it elsewhere)
+$sectionName = 'Unnamed Section';
 try {
-    $stmt = $pdo->prepare("SELECT id, section_name FROM sections WHERE id = :id");
+    $stmt = $pdo->prepare("SELECT id, section_name FROM sections WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $sectionId]);
     $section = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -29,32 +36,44 @@ try {
         echo "Section not found.";
         exit;
     }
+
+    $sectionName = trim((string)($section['section_name'] ?? ''));
+    if ($sectionName === '') $sectionName = 'Unnamed Section';
 } catch (Throwable $e) {
     http_response_code(500);
-    echo "Database error: " . htmlspecialchars($e->getMessage());
+    // avoid leaking DB details in production; log instead
+    error_log('section_detail error: ' . $e->getMessage());
+    echo "Database error.";
     exit;
 }
 
-/**
- * NOTE:
- * We intentionally removed all queries to legacy QPR tables
- * (student_progress, *_qpr_* tables, etc.). The roster and leaderboard
- * are now loaded by the page’s JS via:
- *   - public/api/v1/sections_students.php
- *   - public/api/v1/leaderboard/team_top_by_section.php
- * Keep this file as a thin controller that just includes the HTML shell.
- */
-
-// If you ever want the section title in the H1, you can inject it by
-// appending a query param, e.g. ?section_name=... in the URL.
-// For now, we just include the static HTML file.
+// Path to the static HTML shell
 $sectionDetailHtml = __DIR__ . '/../../public/html/section_detail.html';
-
-if (!is_file($sectionDetailHtml)) {
+if (!is_file($sectionDetailHtml) || !is_readable($sectionDetailHtml)) {
     http_response_code(500);
-    echo "Section detail HTML not found at: " . htmlspecialchars($sectionDetailHtml);
+    echo "Section detail HTML not found or unreadable.";
     exit;
 }
 
-// Include the static HTML shell; JS will render roster/leaderboard.
-require $sectionDetailHtml;
+// Read the HTML as plain text and replace the exact placeholder string.
+// NOTE: the placeholder must appear exactly as "**name nung section**" in the HTML.
+$html = file_get_contents($sectionDetailHtml);
+if ($html === false) {
+    http_response_code(500);
+    echo "Failed to load section detail HTML.";
+    exit;
+}
+
+// Escape the section name for HTML insertion
+$escapedName = htmlspecialchars($sectionName, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+// Replace placeholder. If the placeholder isn't found, we still echo the file unchanged.
+$htmlReplaced = str_replace('**name nung section**', $escapedName, $html);
+
+// Optionally expose sectionId and sectionName to client JS (uncomment if you want)
+// $injection = "<script>window.SECTION_DETAIL = { id: " . (int)$sectionId . ", name: " . json_encode($sectionName, JSON_UNESCAPED_UNICODE) . " };</script>";
+// insert after opening <head> if you want; careful with placement. For now we skip automatic injection.
+
+// Output the transformed HTML
+echo $htmlReplaced;
+exit;
