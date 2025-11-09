@@ -348,7 +348,7 @@ main.div_parent_main {
   padding: 20px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 3px rgba(0, 0, 0, 0.5);
   position: relative;
   animation: fadeInModal 0.2s ease-in-out;
 }
@@ -429,7 +429,7 @@ main.div_parent_main {
   padding: 30px 40px;
   border-radius: 10px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   position: fixed;
   left: 50%;
   top: 50%;
