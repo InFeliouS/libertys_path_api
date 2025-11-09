@@ -1,7 +1,4 @@
-// section_detail.js — Section page
-// Minimal surgical edits: remove Auto-refresh checkbox dependency and make auto-refresh always-on (5 minutes).
 (function () {
-  // ====== helpers ======
   const qs = new URLSearchParams(location.search);
   const sectionId = Number(qs.get("section_id") || "0");
 
@@ -26,8 +23,6 @@
       ? "PERFECT RUN"
       : "ONE LIFE USED";
 
-  // ====== DOM refs ======
-  // Students
   const sectionTitleEl = $("sectionTitle");
   const searchLastName = $("searchLastName");
   const btnDeleteSelected = $("btnDeleteSelected");
@@ -58,18 +53,15 @@
     return;
   }
 
-  // ====== state ======
-  let studentsAll = []; // raw list for this section
-  let studentsFiltered = []; // filtered by search
+  let studentsAll = []; 
+  let studentsFiltered = [];
   let studPage = 1;
 
-  // Leaderboard state: server-driven paging
   let lbPage = 1;
-  let lbRowsCurrent = []; // rows for current page (from server or sliced client-side)
-  let lbTotal = 0; // total rows reported by server or derived
-  const LB_PAGE_SIZE = 10; // FIXED page size per request / display
+  let lbRowsCurrent = []; 
+  let lbTotal = 0; 
+  const LB_PAGE_SIZE = 10; 
 
-  // ====== STUDENTS ======
   function matchesSearch(stud, q) {
     if (!q) return true;
     const s = q.toLowerCase();
@@ -123,14 +115,11 @@
         throw new Error("Invalid response.");
       }
       const json = await res.json();
-
-      // Accept either { ok:true, data:[...] } or just [...]
       let data = Array.isArray(json)
         ? json
         : Array.isArray(json.data)
         ? json.data
         : [];
-      // Normalize field names lightly (first name sometimes 'given_name')
       data = data.map((r) => ({
         id: r.id,
         last_name: r.last_name,
@@ -144,7 +133,6 @@
       studPage = 1;
       renderStudentsPage();
 
-      // Try to set section title if endpoint provided it via query param
       const sectionNameFromQuery = qs.get("section_name");
       if (
         sectionTitleEl &&
