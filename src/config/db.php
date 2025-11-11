@@ -22,6 +22,10 @@ try {
         $password,
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
+
+    // ✅ Force all MySQL timestamps (NOW(), CURRENT_TIMESTAMP, etc.) to Philippine time
+    $pdo->exec("SET time_zone = '+08:00'");
+
 } catch (PDOException $e) {
     // In production you might log this instead of outputting
     die(json_encode(['error' => 'Connection failed: ' . $e->getMessage()]));
