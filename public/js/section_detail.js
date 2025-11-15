@@ -53,14 +53,14 @@
     return;
   }
 
-  let studentsAll = []; 
+  let studentsAll = [];
   let studentsFiltered = [];
   let studPage = 1;
 
   let lbPage = 1;
-  let lbRowsCurrent = []; 
-  let lbTotal = 0; 
-  const LB_PAGE_SIZE = 10; 
+  let lbRowsCurrent = [];
+  let lbTotal = 0;
+  const LB_PAGE_SIZE = 10;
 
   function matchesSearch(stud, q) {
     if (!q) return true;
@@ -68,20 +68,55 @@
     return (stud.last_name || "").toLowerCase().includes(s);
   }
 
+  /**
+   * Show/hide pager prev/next buttons and update page info text.
+   * prevId, nextId, infoId = element ids (strings)
+   * page = current page number (1-based)
+   * pages = total pages (>=1)
+   */
+  function updatePagerControls(prevId, nextId, infoId, page, pages) {
+    const prevBtn = document.getElementById(prevId);
+    const nextBtn = document.getElementById(nextId);
+    const pageInfo = document.getElementById(infoId);
+
+    // safety
+    page = Math.max(1, page || 1);
+    pages = Math.max(1, pages || 1);
+
+    // update page info text
+    if (pageInfo) pageInfo.textContent = `PAGE ${page} of ${pages}`;
+
+    // hide PREV if on first page or only 1 page
+    if (prevBtn) prevBtn.style.display = page > 1 && pages > 1 ? "" : "none";
+
+    // hide NEXT if on last page or only 1 page
+    if (nextBtn)
+      nextBtn.style.display = page < pages && pages > 1 ? "" : "none";
+  }
+
   function renderStudentsPage() {
     const size = Number(studentsPageSizeSel.value || "10");
-    const pages = Math.max(1, Math.ceil(studentsFiltered.length / size));
-    studPage = Math.min(Math.max(1, studPage), pages);
+    const pages = Math.max(
+      1,
+      Math.ceil((studentsFiltered || []).length / size)
+    );
+    studPage = Math.min(Math.max(1, studPage || 1), pages);
 
     const start = (studPage - 1) * size;
-    const slice = studentsFiltered.slice(start, start + size);
+    const slice = (studentsFiltered || []).slice(start, start + size);
 
-    if (slice.length === 0) {
-      studentsTbody.innerHTML = `<tr><td colspan="5" class="muted">No students.</td></tr>`;
+    // Table: empty / populated
+    if (!slice.length) {
+      // show friendly empty row
+      if (typeof studentsTbody !== "undefined" && studentsTbody !== null) {
+        studentsTbody.innerHTML =
+          '<tr><td colspan="5" class="lb-muted">No student records found.</td></tr>';
+      }
     } else {
-      studentsTbody.innerHTML = slice
-        .map(
-          (st) => `
+      if (typeof studentsTbody !== "undefined" && studentsTbody !== null) {
+        studentsTbody.innerHTML = slice
+          .map(
+            (st) => `
         <tr data-id="${esc(st.id || "")}">
           <td style="text-align:center;">
             <input type="checkbox" class="rowCheck" data-username="${esc(
@@ -96,13 +131,64 @@
           <td data-label="USERNAME">${esc(st.username || "—")}</td>
         </tr>
       `
-        )
-        .join("");
+          )
+          .join("");
+      }
     }
 
-    studPageInfo.textContent = `PAGE ${studPage} OF ${pages}`;
-    studPrevBtn.disabled = studPage <= 1;
-    studNextBtn.disabled = studPage >= pages;
+    // Pager info ("PAGE X OF Y")
+    if (typeof studPageInfo !== "undefined" && studPageInfo !== null) {
+      studPageInfo.textContent = `PAGE ${studPage} OF ${pages}`;
+    }
+
+    // Show/hide prev/next buttons (hide when not applicable)
+    if (typeof studPrevBtn !== "undefined" && studPrevBtn !== null) {
+      studPrevBtn.style.display = studPage > 1 && pages > 1 ? "" : "none";
+    }
+    if (typeof studNextBtn !== "undefined" && studNextBtn !== null) {
+      studNextBtn.style.display = studPage < pages && pages > 1 ? "" : "none";
+    }
+
+    // Footer: show range or empty footer
+    try {
+      const studentsFooter = document.getElementById("lastUpdated") || null; // reuse existing footer element or create new id if needed
+      // prefer a dedicated footer element if you have one (e.g. 'studentsRows' similar to lbRows)
+      // if you have a studentsRows element, replace the line above with:
+      // const studentsFooter = typeof studentsRows !== 'undefined' ? studentsRows : document.getElementById('studentsRows')
+
+      const total = (studentsFiltered || []).length;
+      const visible = slice.length;
+
+      // If you have a dedicated footer span element for students, use it instead of 'lastUpdated'
+      // Example assumes a separate element id 'studentsRows' — replace as needed.
+      let footerEl = document.getElementById("studentsRows") || null;
+      if (!footerEl) {
+        // fallback: create a small span below the students table once (only if not already present)
+        const pagerWrap = document.getElementById("studentsPager");
+        if (pagerWrap && !document.getElementById("studentsRows")) {
+          footerEl = document.createElement("div");
+          footerEl.id = "studentsRows";
+          footerEl.className = "lb-muted";
+          pagerWrap.parentNode.insertBefore(footerEl, pagerWrap.nextSibling);
+        } else {
+          footerEl = document.getElementById("studentsRows");
+        }
+      }
+
+      if (footerEl) {
+        if (total === 0 || visible === 0) {
+          footerEl.textContent = "No student records.";
+        } else {
+          const startIndex = start + 1;
+          const endIndex = start + visible;
+          const label = total === 1 ? "student record" : "student records";
+          footerEl.textContent = `Showing ${startIndex}–${endIndex} of ${total} ${label}.`;
+        }
+        footerEl.setAttribute("aria-live", "polite");
+      }
+    } catch (err) {
+      console.error("renderStudentsPage footer error:", err);
+    }
   }
 
   async function loadStudents() {
@@ -157,22 +243,60 @@
   }
 
   function renderLbPage() {
-    const size = LB_PAGE_SIZE;
-    const pages = Math.max(1, Math.ceil(lbTotal / size));
-    lbPage = Math.min(Math.max(1, lbPage), pages);
+    const size = LB_PAGE_SIZE || 10;
+    const pages = Math.max(1, Math.ceil((lbTotal || 0) / size));
+    lbPage = Math.min(Math.max(1, lbPage || 1), pages);
 
     const start = (lbPage - 1) * size;
     const rows = lbRowsCurrent || [];
 
-    if (rows.length === 0) {
-      lbBody.innerHTML = `<tr><td colspan="6" class="muted">No results.</td></tr>`;
-      lbRows.textContent = `0 rows`;
-    } else {
-      lbBody.innerHTML = rows
-        .map(
-          (r, i) => `
+    // DOM references (fall back to document.getElementById if globals are not present)
+    const lbBodyEl =
+      typeof lbBody !== "undefined"
+        ? lbBody
+        : document.getElementById("lbBody");
+    const lbRowsEl =
+      typeof lbRows !== "undefined"
+        ? lbRows
+        : document.getElementById("lbRows");
+    const lbPageInfoEl =
+      typeof lbPageInfo !== "undefined"
+        ? lbPageInfo
+        : document.getElementById("lbPageInfo");
+    const lbPrevBtnEl = document.getElementById("lbPrevBtn");
+    const lbNextBtnEl = document.getElementById("lbNextBtn");
+
+    // ZERO / empty case: update table and footer, then exit
+    if (!rows.length) {
+      if (lbBodyEl) {
+        lbBodyEl.innerHTML =
+          '<tr><td colspan="6" class="lb-muted">No player records found.</td></tr>';
+      }
+
+      if (lbRowsEl) {
+        lbRowsEl.setAttribute("aria-live", "polite");
+        lbRowsEl.textContent = "No player records.";
+      }
+
+      if (lbPageInfoEl) {
+        lbPageInfoEl.textContent = `PAGE ${lbPage} of ${pages}`;
+      }
+
+      // hide prev/next if only one page or no results
+      if (lbPrevBtnEl) lbPrevBtnEl.style.display = "none";
+      if (lbNextBtnEl) lbNextBtnEl.style.display = "none";
+
+      return;
+    }
+
+    // Render rows when present
+    if (lbBodyEl) {
+      lbBodyEl.innerHTML = rows
+        .map((r, i) => {
+          const idx = start + i + 1;
+          return `
         <tr>
-          <td class="mono">${start + i + 1}</td>
+          <td class="mono">${idx}</td>
           <td>${esc(r.player1_name || "")} &amp; ${esc(
             r.player2_name || ""
           )}</td>
@@ -181,17 +305,38 @@
           <td>${esc(runText(r))}</td>
           <td class="mono">${new Date(r.created_at).toLocaleString()}</td>
         </tr>
-      `
-        )
+      `;
+        })
         .join("");
-      lbRows.textContent = `${lbTotal} row${
-        lbTotal === 1 ? "" : "s"
-      } (showing ${rows.length})`;
     }
 
-    lbPageInfo.textContent = `PAGE ${lbPage} OF ${pages}`;
-    lbPrevBtn.disabled = lbPage <= 1;
-    lbNextBtn.disabled = lbPage >= pages;
+    // Footer: show range e.g. "Showing 1–10 of 36 player records."
+    try {
+      const total = typeof lbTotal === "number" ? lbTotal : 0;
+      const visible = rows.length;
+      const startIndex = start + 1;
+      const endIndex = start + visible;
+      const totalLabel = total === 1 ? "player record" : "player records";
+
+      if (lbRowsEl) {
+        lbRowsEl.setAttribute("aria-live", "polite");
+        lbRowsEl.textContent = `Showing ${startIndex}–${endIndex} of ${total} ${totalLabel}.`;
+      }
+
+      if (lbPageInfoEl) {
+        lbPageInfoEl.textContent = `PAGE ${lbPage} of ${pages}`;
+      }
+
+      // Show/hide prev & next buttons
+      if (lbPrevBtnEl) {
+        lbPrevBtnEl.style.display = lbPage > 1 && pages > 1 ? "" : "none";
+      }
+      if (lbNextBtnEl) {
+        lbNextBtnEl.style.display = lbPage < pages && pages > 1 ? "" : "none";
+      }
+    } catch (err) {
+      console.error("renderLbPage footer error:", err);
+    }
   }
 
   // >>> drop-in: student table reload button wiring (paste into section_detail.js)
@@ -347,7 +492,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ids: selected,
-            section_id: sectionId, 
+            section_id: sectionId,
           }),
         });
 
@@ -453,7 +598,7 @@
   // ====== init ======
   loadStudents();
   loadLeaderboard();
-  wireStudentReloadButton(); 
+  wireStudentReloadButton();
   // Select-all checkbox behavior (preserved)
   checkAll &&
     checkAll.addEventListener("change", () => {
