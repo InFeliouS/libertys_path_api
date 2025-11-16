@@ -24,48 +24,69 @@
   function populateYears() {
     const now = new Date();
     const thisYear = now.getFullYear();
-    const startMax = thisYear + 5;   // original max for start
-    const endMax = startMax + 1;     // ensure end has one extra year
+    const startMin = thisYear;
+    const startMax = thisYear + 5;
+    const endMax = startMax + 1; // end will range up to one year higher than startMax
 
-    // clear any existing options (safe)
-    startSelect.innerHTML = "";
-    endSelect.innerHTML = "";
-
-    // placeholder option for both selects
-    const placeholderStart = document.createElement("option");
-    placeholderStart.value = "";
-    placeholderStart.textContent = "— Select Year —";
-    startSelect.appendChild(placeholderStart);
-
-    const placeholderEnd = document.createElement("option");
-    placeholderEnd.value = "";
-    placeholderEnd.textContent = "— Select Year —";
-    endSelect.appendChild(placeholderEnd);
-
-    // populate start years (ascending) from thisYear .. startMax
-    for (let y = thisYear; y <= startMax; y++) {
-      const optStart = document.createElement("option");
-      optStart.value = String(y);
-      optStart.textContent = String(y);
-      startSelect.appendChild(optStart);
+    // helper to (re)build start options
+    function buildStartOptions() {
+      startSelect.innerHTML = '<option value="">— Select Year —</option>';
+      for (let y = startMin; y <= startMax; y++) {
+        const optStart = document.createElement("option");
+        optStart.value = String(y);
+        optStart.textContent = String(y);
+        startSelect.appendChild(optStart);
+      }
+      startSelect.value = "";
     }
 
-    // populate end years (ascending) from thisYear+1 .. endMax
-    // this guarantees that for any selected start (thisYear .. startMax),
-    // start+1 is present in the endSelect options.
-    for (let y = thisYear + 1; y <= endMax; y++) {
-      const optEnd = document.createElement("option");
-      optEnd.value = String(y);
-      optEnd.textContent = String(y);
-      endSelect.appendChild(optEnd);
+    // helper to build end options from a minimum year (inclusive)
+    function buildEndOptions(minYear) {
+      endSelect.innerHTML = '<option value="">— Select Year —</option>';
+      const min = Number(minYear);
+      // ensure we start at least from thisYear+1 if minYear is smaller/invalid
+      const start = Number.isFinite(min) && min > thisYear ? min : thisYear + 1;
+      for (let y = start; y <= endMax; y++) {
+        const optEnd = document.createElement("option");
+        optEnd.value = String(y);
+        optEnd.textContent = String(y);
+        endSelect.appendChild(optEnd);
+      }
+      endSelect.value = "";
     }
+
+    // initial build
+    buildStartOptions();
+    buildEndOptions(thisYear + 1);
 
     // start with end disabled until a start year is chosen
     endSelect.disabled = true;
 
-    // ensure selects show placeholder by default
-    startSelect.value = "";
-    endSelect.value = "";
+    // when start changes: rebuild end options starting at start+1, then set end = start+1
+    startSelect.addEventListener("change", () => {
+      clearInvalid(startSelect.parentElement, errorStart);
+
+      const s = parseInt(startSelect.value, 10);
+      if (isNaN(s)) {
+        // reset end to default range and disable
+        buildEndOptions(thisYear + 1);
+        endSelect.disabled = true;
+        return;
+      }
+
+      const minEnd = s + 1;
+      buildEndOptions(minEnd);
+      endSelect.disabled = false;
+
+      // auto-select start+1
+      if ([...endSelect.options].some((o) => o.value === String(minEnd))) {
+        endSelect.value = String(minEnd);
+        clearInvalid(endSelect.parentElement, errorEnd);
+      } else {
+        // fallback: pick first numeric option
+        if (endSelect.options.length > 1) endSelect.selectedIndex = 1;
+      }
+    });
   }
 
   /* -------------------------------
@@ -151,48 +172,7 @@
     sectionInput.setSelectionRange(pos, pos);
   });
 
-  // Updated start change behavior: enable end, auto-select start+1 when available
-  startSelect.addEventListener("change", () => {
-    clearInvalid(startSelect.parentElement, errorStart);
-
-    const startYear = Number(startSelect.value);
-    if (!startSelect.value) {
-      // if user cleared start, disable end again and clear selection
-      endSelect.value = "";
-      endSelect.disabled = true;
-      return;
-    }
-
-    // enable end when start chosen
-    endSelect.disabled = false;
-
-    const candidate = String(startYear + 1);
-    const hasOption = [...endSelect.options].some(
-      (opt) => opt.value === candidate
-    );
-    if (hasOption) {
-      endSelect.value = candidate;
-      clearInvalid(endSelect.parentElement, errorEnd);
-    } else {
-      // if exact start+1 not present, pick the smallest year > start (defensive)
-      const greater = [...endSelect.options]
-        .map((o) => o.value)
-        .filter((v) => v !== "" && Number(v) > startYear)
-        .map(Number)
-        .sort((a, b) => a - b);
-      if (greater.length) {
-        endSelect.value = String(greater[0]);
-        clearInvalid(endSelect.parentElement, errorEnd);
-      } else {
-        endSelect.value = "";
-        markInvalid(
-          endSelect.parentElement,
-          errorEnd,
-          "No valid end year available for the selected start."
-        );
-      }
-    }
-  });
+ 
 
   endSelect.addEventListener("change", () => {
     clearInvalid(endSelect.parentElement, errorEnd);

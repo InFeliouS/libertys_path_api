@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 08, 2025 at 11:15 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: 127.0.0.1:3306
+-- Generation Time: Nov 15, 2025 at 09:20 AM
+-- Server version: 11.8.3-MariaDB-log
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `libertys_path_db`
+-- Database: `u813043619_libertys_path`
 --
 
 -- --------------------------------------------------------
@@ -55,7 +55,15 @@ INSERT INTO `guard_questions` (`id`, `question_text`, `choice1`, `choice2`, `cho
 (9, '2*2', '1', '2', '3', '4', 3, NULL, '2025-10-31 12:19:41'),
 (10, 'Hit and ______', 'Search', 'Collect', 'Run', 'Walk', 2, NULL, '2025-10-31 12:20:32'),
 (11, '100-10', '90', '80', '70', '60', 0, NULL, '2025-10-31 12:21:20'),
-(12, 'hello', 'Doggy', 'Cat', 'Dog', 'Catty', 0, NULL, '2025-11-08 01:28:57');
+(12, 'hello', 'Doggy', 'Cat', 'Dog', 'Catty', 0, NULL, '2025-11-08 01:28:57'),
+(16, 'What is the capital city of France?', 'Berlin', 'Madrid', 'Paris', 'Rome', 2, 20, '2025-11-10 02:59:51'),
+(17, 'How many days are there in one year?', '360', '364', '365', '366', 2, 20, '2025-11-10 03:00:17'),
+(18, 'Which planet is known as the “Red Planet”?', 'Venus', 'Mars', 'Jupiter', 'Saturn', 1, 20, '2025-11-10 03:00:45'),
+(19, 'Sino ang mayamang pinuno ng Mali Empire?', 'Sundiata Keita', 'Mansa Musa', 'Askia Muhammad', 'Ibn Battuta', 1, 21, '2025-11-11 03:51:55'),
+(20, 'Ano ang tawag sa sistemang lupa kapalit ng serbisyo?', 'Feudalismo', 'Monarkiya', 'Imperyalismo', 'Kapitalismo', 0, 21, '2025-11-11 03:52:33'),
+(21, 'Sino ang gumawa ng printing press?', 'Johannes Gutenberg', 'Leonardo da Vinci', 'Martin Luther', 'Galileo Galilei', 0, 21, '2025-11-11 04:15:01'),
+(22, 'Bakit nagsimula ang Renaissance sa Italya?', 'Pagbagsak ng Constantinople', 'Paglakas ng mga lungsod at mangangalakal', 'Pagkatuklas ng Amerika', 'Pag-aalsa ng mga magsasaka', 1, 21, '2025-11-11 04:15:42'),
+(24, 'test question', '1', '2', '3', '4', 0, NULL, '2025-11-12 06:59:45');
 
 -- --------------------------------------------------------
 
@@ -129,7 +137,15 @@ INSERT INTO `leaderboard_team_runs` (`id`, `player1_name`, `player2_name`, `scor
 (47, 'Player1', 'Player2', 595, 19, 0, 'PERFECT RUN', 'A', '2025-10-21 14:52:25'),
 (48, 'Player1', 'Player2', 625, 25, 0, 'PERFECT RUN', 'A', '2025-10-21 14:53:38'),
 (49, 'jogarcia', 'kperalta', 7185, 1337, 0, 'PERFECT RUN', 'NF TEST', '2025-10-23 13:13:22'),
-(50, 'jogarcia', 'kperalta', 7850, 1470, 0, 'PERFECT RUN', 'NF TEST', '2025-11-01 01:20:16');
+(50, 'jogarcia', 'kperalta', 7850, 1470, 0, 'PERFECT RUN', 'NF TEST', '2025-11-01 01:20:16'),
+(51, 'jogarcia', 'kperalta', 500, 0, 0, 'PERFECT RUN', 'NF TEST', '2025-11-10 02:55:56'),
+(52, 'jogarcia', 'kperalta', 7555, 1411, 0, 'PERFECT RUN', 'NF TEST', '2025-11-10 03:02:49'),
+(53, 'keperalta', 'lpanelo', 5400, 1080, 1, 'ONE LIFE USED', 'ST. JOHN MICHAEL', '2025-11-11 07:56:26'),
+(54, 'keperalta', 'lpanelo', 5355, 1071, 1, 'ONE LIFE USED', 'ST. JOHN MICHAEL', '2025-11-11 08:08:04'),
+(55, 'jogarcia', 'kperalta', 7045, 1309, 0, 'PERFECT RUN', 'NF TEST', '2025-11-11 09:11:05'),
+(56, 'jevangelista', 'keperalta', 6855, 1371, 1, 'ONE LIFE USED', 'ST. JOHN MICHAEL', '2025-11-11 11:31:08'),
+(57, 'jchua', 'jdchua', 3330, 566, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-11 13:56:36'),
+(58, 'tstest', 'tsurnametest', 6330, 1266, 1, 'ONE LIFE USED', '11-12-25 TEST', '2025-11-12 06:51:02');
 
 -- --------------------------------------------------------
 
@@ -154,7 +170,10 @@ INSERT INTO `sections` (`id`, `section_name`, `start_school_year`, `end_school_y
 (19, 'ST. FRANCIS', '2025', '2026', '2025-11-08 06:13:25'),
 (20, 'ST. IGNATIUS', '2025', '2026', '2025-11-08 06:13:48'),
 (21, 'ST. ANTHONY', '2025', '2026', '2025-11-08 06:14:11'),
-(22, 'ST. MARIA GORETTI', '2025', '2026', '2025-11-08 06:14:27');
+(22, 'ST. MARIA GORETTI', '2025', '2026', '2025-11-08 06:14:27'),
+(24, 'TEST SECTION NI CLARK', '2029', '2030', '2025-11-08 14:02:37'),
+(25, 'ST. JOHN MICHAEL', '2029', '2030', '2025-11-10 04:07:43'),
+(26, '11-12-25 TEST', '2025', '2026', '2025-11-12 06:15:16');
 
 -- --------------------------------------------------------
 
@@ -177,7 +196,18 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section_id`, `created_at`) VALUES
 (1, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 11, '2025-09-14 15:12:11'),
-(2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36');
+(2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36'),
+(16, 'NEW WEBSITE', 'TESTER', 'TEST', 11, '2025-11-10 02:51:37'),
+(17, 'KIM', 'EVANGELISTA', 'PERALTA', 25, '2025-11-11 03:43:40'),
+(18, 'JOHN MICHAEL', '', 'EVANGELISTA', 25, '2025-11-11 03:44:29'),
+(19, 'LESTER', '', 'PANELO', 25, '2025-11-11 03:47:16'),
+(20, 'JC', 'DIMACALE', 'CHUA', 19, '2025-11-11 13:13:32'),
+(21, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 19, '2025-11-11 13:15:45'),
+(22, 'JC', '', 'CHUA', 19, '2025-11-11 13:35:14'),
+(23, 'TEST', '', 'SURNAMETEST', 26, '2025-11-12 06:23:09'),
+(24, 'TEST2', '', 'STEST', 26, '2025-11-12 06:31:35'),
+(25, 'LEE', 'P', 'MERCADO', 19, '2025-11-12 12:02:30'),
+(26, 'SUCCESS', 'POPUP', 'TEST', 11, '2025-11-14 14:49:21');
 
 -- --------------------------------------------------------
 
@@ -198,7 +228,18 @@ CREATE TABLE `student_accounts` (
 
 INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created_at`) VALUES
 (1, 1, 'jogarcia', '2025-09-14 15:12:11'),
-(2, 2, 'kperalta', '2025-09-14 15:12:36');
+(2, 2, 'kperalta', '2025-09-14 15:12:36'),
+(18, 16, 'nttest', '2025-11-10 02:51:37'),
+(19, 17, 'keperalta', '2025-11-11 03:43:40'),
+(20, 18, 'jevangelista', '2025-11-11 03:44:29'),
+(21, 19, 'lpanelo', '2025-11-11 03:47:16'),
+(22, 20, 'jdchua', '2025-11-11 13:13:32'),
+(23, 21, 'jogarcia2', '2025-11-11 13:15:45'),
+(24, 22, 'jchua', '2025-11-11 13:35:14'),
+(25, 23, 'tsurnametest', '2025-11-12 06:23:09'),
+(26, 24, 'tstest', '2025-11-12 06:31:35'),
+(27, 25, 'lpmercado', '2025-11-12 12:02:30'),
+(28, 26, 'sptest', '2025-11-14 14:49:21');
 
 -- --------------------------------------------------------
 
@@ -221,7 +262,9 @@ CREATE TABLE `teachers` (
 
 INSERT INTO `teachers` (`id`, `username`, `first_name`, `last_name`, `password`, `role`) VALUES
 (1, 'admin', '', '', '$2y$10$6pno/1twL7Q6n4qQW0UWL./GyWI6AXK5Pi3Vu3ts61u/jo1aOmHqW', 'ADMIN'),
-(16, 'raqueld@2025', 'Racquel', 'Dichoso', '$2y$10$AB05Ol.PlmfbZr.uM27XHuzr1EPvgcCZShoEMAMkA8MY8JjdBhwR2', 'TEACHER');
+(16, 'raqueld@2025', 'Racquel', 'Dichoso', '$2y$10$AB05Ol.PlmfbZr.uM27XHuzr1EPvgcCZShoEMAMkA8MY8JjdBhwR2', 'TEACHER'),
+(20, 'jogarcia', 'Jhon Benedict', 'Garcia', '$2y$10$hlZ6jXfAI0Bb.g/bo5AM0.QKWCWl202g6766yV8TwH3Ma6BWqMOiG', 'TEACHER'),
+(21, 'kep@2025', 'Kimberly Mae', 'Peralta', '$2y$10$ESAxHlyXLLNSTbToYFuXO.JKISspOL.tNff7WADt6nRAzq2jWtceu', 'TEACHER');
 
 -- --------------------------------------------------------
 
@@ -244,7 +287,9 @@ CREATE TABLE `teacher_configs` (
 --
 
 INSERT INTO `teacher_configs` (`id`, `teacher_id`, `room_count`, `enemy_count`, `difficulty`, `created_at`, `updated_at`) VALUES
-(3, 1, 1, 1, 0, '2025-11-08 01:32:45', '2025-11-08 01:33:02');
+(3, 1, 1, 1, 0, '2025-11-08 01:32:45', '2025-11-08 14:11:29'),
+(5, 20, 2, 1, 0, '2025-11-10 02:57:52', '2025-11-10 02:57:52'),
+(6, 21, 3, 2, 2, '2025-11-11 03:52:37', '2025-11-12 02:54:49');
 
 -- --------------------------------------------------------
 
@@ -266,7 +311,10 @@ INSERT INTO `teacher_sections` (`id`, `teacher_id`, `section_id`) VALUES
 (21, 16, 19),
 (22, 16, 20),
 (20, 16, 21),
-(23, 16, 22);
+(23, 16, 22),
+(27, 16, 24),
+(28, 20, 11),
+(29, 21, 25);
 
 --
 -- Indexes for dumped tables
@@ -343,49 +391,49 @@ ALTER TABLE `teacher_sections`
 -- AUTO_INCREMENT for table `guard_questions`
 --
 ALTER TABLE `guard_questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `leaderboard_team_runs`
 --
 ALTER TABLE `leaderboard_team_runs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `student_accounts`
 --
 ALTER TABLE `student_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `teacher_configs`
 --
 ALTER TABLE `teacher_configs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `teacher_sections`
 --
 ALTER TABLE `teacher_sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables

@@ -94,6 +94,151 @@
       nextBtn.style.display = page < pages && pages > 1 ? "" : "none";
   }
 
+  /* -------------------------
+   Set section title helper
+   ------------------------- */
+  function setSectionTitleWithYear(section) {
+    const titleEl = document.getElementById("sectionTitle");
+    if (!titleEl) return;
+
+    const base = (
+      section?.section_name ||
+      section?.name ||
+      section?.section ||
+      "Section"
+    )
+      .toString()
+      .trim();
+    const start =
+      section?.start_school_year ??
+      section?.startYear ??
+      section?.start ??
+      null;
+    const end =
+      section?.end_school_year ?? section?.endYear ?? section?.end ?? null;
+
+    let suffix = "";
+    if (start && end) {
+      suffix = ` (A.Y. ${String(start)}–${String(end)})`;
+    } else if (start && !end) {
+      suffix = ` (${String(start)}–${String(Number(start) + 1)})`;
+    } else if (!start && end) {
+      suffix = ` (${String(end)})`;
+    }
+
+    titleEl.textContent = base + suffix;
+  }
+  /* -------------------------
+   Fetch section metadata (handle json.sections)
+   ------------------------- */
+  async function fetchSectionMeta() {
+    try {
+      // candidate endpoints (we'll try them but api/v1 seems to be the real one)
+      const urls = [
+        `api/v1/sections.php?section_id=${sectionId}`,
+        `api/v1/sections.php`,
+        // MVC routes often return HTML so keep them last (and defensive)
+        `index.php?r=sections/get&section_id=${sectionId}`,
+        `index.php?r=sections/detail&section_id=${sectionId}&format=json`,
+        `index.php?r=sections/detail&section_id=${sectionId}`,
+      ];
+
+      for (const url of urls) {
+        try {
+          console.info("fetchSectionMeta: trying", url);
+          const res = await fetch(url, {
+            headers: { Accept: "application/json" },
+          });
+
+          if (!res.ok) {
+            console.warn(
+              `fetchSectionMeta: ${url} returned HTTP ${res.status}`
+            );
+            continue;
+          }
+
+          // try parse JSON; if parse fails, skip this url
+          let json;
+          try {
+            json = await res.json();
+          } catch (err) {
+            console.warn(
+              `fetchSectionMeta: ${url} returned non-JSON or parse error`,
+              err
+            );
+            continue;
+          }
+
+          console.info("fetchSectionMeta: payload from", url, json);
+
+          // 1) Accept { success:true, sections: [...] }
+          if (json && Array.isArray(json.sections) && json.sections.length) {
+            const found =
+              json.sections.find((it) => Number(it.id) === Number(sectionId)) ||
+              json.sections[0];
+            setSectionTitleWithYear(found);
+            return;
+          }
+
+          // 2) Accept { data: [...] } or { data: {...} }
+          if (json && json.data) {
+            if (Array.isArray(json.data) && json.data.length) {
+              const found =
+                json.data.find((it) => Number(it.id) === Number(sectionId)) ||
+                json.data[0];
+              setSectionTitleWithYear(found);
+              return;
+            } else if (typeof json.data === "object") {
+              setSectionTitleWithYear(json.data);
+              return;
+            }
+          }
+
+          // 3) Accept direct object
+          if (
+            json &&
+            (json.id ||
+              json.section_name ||
+              json.start_school_year ||
+              json.end_school_year)
+          ) {
+            setSectionTitleWithYear(json);
+            return;
+          }
+
+          // 4) Accept array of objects
+          if (Array.isArray(json) && json.length) {
+            const found =
+              json.find((it) => Number(it.id) === Number(sectionId)) || json[0];
+            setSectionTitleWithYear(found);
+            return;
+          }
+
+          // nothing useful in this response
+          console.warn(
+            "fetchSectionMeta: response did not include section data (url: " +
+              url +
+              ")",
+            json
+          );
+        } catch (innerErr) {
+          console.warn("fetchSectionMeta: request failed for", url, innerErr);
+        }
+      }
+
+      // fallback: use query-string name (fast)
+      const qsName = qs.get("section_name");
+      if (qsName) {
+        setSectionTitleWithYear({ section_name: qsName });
+        return;
+      }
+
+      console.warn("fetchSectionMeta: no section data found from any endpoint");
+    } catch (err) {
+      console.error("fetchSectionMeta: fatal error", err);
+    }
+  }
+
   function renderStudentsPage() {
     const size = Number(studentsPageSizeSel.value || "10");
     const pages = Math.max(
@@ -225,10 +370,18 @@
         sectionNameFromQuery &&
         sectionTitleEl.textContent.trim() === "Section"
       ) {
+        // use query name as immediate fallback
         sectionTitleEl.textContent = sectionNameFromQuery;
       }
 
       lastUpdated.textContent = `Last updated: ${new Date().toLocaleString()}`;
+
+      // Fetch authoritative section metadata (start/end years) and update title
+      try {
+        await fetchSectionMeta();
+      } catch (err) {
+        console.warn("fetchSectionMeta call failed:", err);
+      }
     } catch (e) {
       console.error(e);
       studentsTbody.innerHTML = `<tr><td colspan="5" class="muted">Load error.</td></tr>`;

@@ -1,24 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const container         = document.getElementById("sectionCards");
-  const searchInput       = document.getElementById("sectionSearch"); 
-  const editModal         = document.getElementById("editSectionModal");
-  const closeEditBtn      = document.getElementById("closeEditSectionModal");
-  const editForm          = document.getElementById("editSectionForm");
-  const editSectionId     = document.getElementById("editSectionId");
-  const editSectionName   = document.getElementById("editSectionName");
-  const editStartYear     = document.getElementById("editStartYear");
-  const editEndYear       = document.getElementById("editEndYear");
-  const editTeacherSelect = document.getElementById("editTeacherSelect"); 
+  const container = document.getElementById("sectionCards");
+  const searchInput = document.getElementById("sectionSearch");
+  const editModal = document.getElementById("editSectionModal");
+  const closeEditBtn = document.getElementById("closeEditSectionModal");
+  const editForm = document.getElementById("editSectionForm");
+  const editSectionId = document.getElementById("editSectionId");
+  const editSectionName = document.getElementById("editSectionName");
+  const editStartYear = document.getElementById("editStartYear");
+  const editEndYear = document.getElementById("editEndYear");
+  const editTeacherSelect = document.getElementById("editTeacherSelect");
 
-  const IS_ADMIN = (window.userRole === "ADMIN" || document.body.dataset.role === "ADMIN");
+  const IS_ADMIN =
+    window.userRole === "ADMIN" || document.body.dataset.role === "ADMIN";
 
   if (!IS_ADMIN) {
     const stripAdminActions = (root) => {
       const scope = root || container || document;
-      const candidates = scope.querySelectorAll('.section-card .btn-edit, .section-card .btn-delete, .section-card button');
+      const candidates = scope.querySelectorAll(
+        ".section-card .btn-edit, .section-card .btn-delete, .section-card button"
+      );
       candidates.forEach((el) => {
-        const label = (el.textContent || '').trim().toLowerCase();
-        if (label === 'edit' || label === 'delete') el.remove();
+        const label = (el.textContent || "").trim().toLowerCase();
+        if (label === "edit" || label === "delete") el.remove();
       });
     };
 
@@ -45,30 +48,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Populate start/end year dropdowns
+  // Populate start/end year dropdowns (rebuild end options based on chosen start)
   if (editStartYear && editEndYear) {
-    const thisYear = new Date().getFullYear();
-    editStartYear.innerHTML = '<option value="">— Select Year —</option>';
-    editEndYear.innerHTML   = '<option value="">— Select Year —</option>';
-    for (let y = thisYear - 1; y <= thisYear + 5; y++) {
-      editStartYear.add(new Option(y, y));
-      editEndYear.add(new Option(y, y));
+    const now = new Date();
+    const thisYear = now.getFullYear();
+    const startMin = thisYear;
+    const startMax = thisYear + 5;
+    const endMax = startMax + 1; // end will range up to one year higher than startMax
+
+    // helper to (re)build start options
+    function buildStartOptions() {
+      editStartYear.innerHTML = '<option value="">— Select Year —</option>';
+      for (let y = startMin; y <= startMax; y++) {
+        const o = document.createElement("option");
+        o.value = String(y);
+        o.textContent = String(y);
+        editStartYear.appendChild(o);
+      }
+      editStartYear.value = "";
     }
+
+    // helper to build end options from a minimum year (inclusive)
+    function buildEndOptions(minYear) {
+      editEndYear.innerHTML = '<option value="">— Select Year —</option>';
+      const min = Number(minYear);
+      // ensure we start at least from thisYear+1 if minYear is smaller/invalid
+      const start = Number.isFinite(min) && min > thisYear ? min : thisYear + 1;
+      for (let y = start; y <= endMax; y++) {
+        const o = document.createElement("option");
+        o.value = String(y);
+        o.textContent = String(y);
+        editEndYear.appendChild(o);
+      }
+      editEndYear.value = "";
+    }
+
+    // initial build
+    buildStartOptions();
+    buildEndOptions(thisYear + 1);
+
+    // when start changes: rebuild end options starting at start+1, then set end = start+1
     editStartYear.addEventListener("change", () => {
-      const start = parseInt(editStartYear.value, 10);
-      if (!isNaN(start)) {
-        const target = (start + 1).toString();
-        if ([...editEndYear.options].some(o => o.value === target)) {
-          editEndYear.value = target;
-        }
+      const s = parseInt(editStartYear.value, 10);
+      if (isNaN(s)) {
+        // reset end to default range
+        buildEndOptions(thisYear + 1);
+        return;
+      }
+      const minEnd = s + 1;
+      buildEndOptions(minEnd);
+      // set end value to start+1 if available
+      if ([...editEndYear.options].some((o) => o.value === String(minEnd))) {
+        editEndYear.value = String(minEnd);
+      } else {
+        // fallback: pick first option (shouldn't normally happen)
+        editEndYear.selectedIndex = 1; // first numeric option after placeholder
       }
     });
   }
 
   // Close Edit Modal
   if (closeEditBtn && editModal) {
-    closeEditBtn.onclick = () => editModal.style.display = "none";
-    window.addEventListener("click", e => {
+    closeEditBtn.onclick = () => (editModal.style.display = "none");
+    window.addEventListener("click", (e) => {
       if (e.target === editModal) editModal.style.display = "none";
     });
   }
@@ -93,31 +135,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTeacherDefaultOption();
 
-    teachersLoaded = fetch("index.php?r=api/v1/teachers_list", { headers: { Accept: "application/json" } })
+    teachersLoaded = fetch("index.php?r=api/v1/teachers_list", {
+      headers: { Accept: "application/json" },
+    })
       .then(async (res) => {
         if (!res.ok) throw new Error("HTTP " + res.status);
         const txt = await res.text();
         try {
           return JSON.parse(txt);
         } catch (err) {
-          console.warn("teachers_list: JSON parse failed — raw response follows:\n", txt);
+          console.warn(
+            "teachers_list: JSON parse failed — raw response follows:\n",
+            txt
+          );
           throw new Error("Invalid JSON from teachers_list");
         }
       })
-      .then(json => {
+      .then((json) => {
         if (!json || json.ok !== true || !Array.isArray(json.data)) {
           console.warn("teachers_list returned unexpected payload:", json);
           return;
         }
         setTeacherDefaultOption();
-        json.data.forEach(t => {
+        json.data.forEach((t) => {
           const id = String(t.id || "");
           const fname = (t.first_name || "").trim();
           const lname = (t.last_name || "").trim();
           const username = (t.username || "").trim();
-          const display = (fname || lname)
-            ? `${(fname + " " + lname).trim()} (${username})`
-            : (username || `Teacher ${id}`);
+          const display =
+            fname || lname
+              ? `${(fname + " " + lname).trim()} (${username})`
+              : username || `Teacher ${id}`;
           teachersMap.set(id, display);
           const opt = document.createElement("option");
           opt.value = id;
@@ -125,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
           editTeacherSelect.appendChild(opt);
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.warn("Could not load teachers list:", err);
         setTeacherDefaultOption("— (unable to load teachers) —");
       });
@@ -135,75 +183,103 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadTeachersOnce();
 
-if (editForm) {
-  editForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (editForm) {
+    editForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const payload = {
-      section_id:        parseInt(editSectionId.value, 10),
-      section_name:      (editSectionName.value || "").trim(),
-      start_school_year: editStartYear.value,
-      end_school_year:   editEndYear.value
-    };
+      const payload = {
+        section_id: parseInt(editSectionId.value, 10),
+        section_name: (editSectionName.value || "").trim(),
+        start_school_year: editStartYear.value,
+        end_school_year: editEndYear.value,
+      };
 
-    const teacherSelect = document.getElementById("editTeacherSelect");
-    if (teacherSelect) {
-      const v = teacherSelect.value;
-      payload.teacher_id = v === "" ? "" : v;
-    }
-
-    try {
-      const res = await fetch("index.php?r=sections/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const json = await res.json();
-      if (!json || !json.success) {
-        throw new Error(json?.error || "Update failed");
+      const teacherSelect = document.getElementById("editTeacherSelect");
+      if (teacherSelect) {
+        const v = teacherSelect.value;
+        payload.teacher_id = v === "" ? "" : v;
       }
 
-      await loadSections();
+      try {
+        const res = await fetch("index.php?r=sections/update", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+        if (!json || !json.success) {
+          throw new Error(json?.error || "Update failed");
+        }
 
-      if (editModal) editModal.style.display = "none";
+        await loadSections();
 
-    } catch (err) {
-      console.error("Update error:", err);
-      alert(err.message || "Could not save changes");
-    }
-  });
-}
+        if (editModal) editModal.style.display = "none";
+      } catch (err) {
+        console.error("Update error:", err);
+        alert(err.message || "Could not save changes");
+      }
+    });
+  }
 
-  const titleCase = (s) => s ? String(s).toLowerCase().replace(/\b([a-z])/g, (m, c) => c.toUpperCase()) : "";
+  const titleCase = (s) =>
+    s
+      ? String(s)
+          .toLowerCase()
+          .replace(/\b([a-z])/g, (m, c) => c.toUpperCase())
+      : "";
   const resolveTeacherName = (sec) => {
-    const fn = sec?.teacher_first_name || sec?.first_name || sec?.adviser_first_name || sec?.handler_first_name || sec?.teacherFname || sec?.adviserFname || "";
-    const ln = sec?.teacher_last_name  || sec?.last_name  || sec?.adviser_last_name  || sec?.handler_last_name  || sec?.teacherLname || sec?.adviserLname || "";
+    const fn =
+      sec?.teacher_first_name ||
+      sec?.first_name ||
+      sec?.adviser_first_name ||
+      sec?.handler_first_name ||
+      sec?.teacherFname ||
+      sec?.adviserFname ||
+      "";
+    const ln =
+      sec?.teacher_last_name ||
+      sec?.last_name ||
+      sec?.adviser_last_name ||
+      sec?.handler_last_name ||
+      sec?.teacherLname ||
+      sec?.adviserLname ||
+      "";
     const fnClean = (fn || "").trim();
     const lnClean = (ln || "").trim();
-    if (fnClean || lnClean) return `${titleCase(fnClean)} ${titleCase(lnClean)}`.trim();
-    const combined = sec?.teacher_name || sec?.adviser_name || sec?.assigned_teacher || sec?.handler_name || "";
+    if (fnClean || lnClean)
+      return `${titleCase(fnClean)} ${titleCase(lnClean)}`.trim();
+    const combined =
+      sec?.teacher_name ||
+      sec?.adviser_name ||
+      sec?.assigned_teacher ||
+      sec?.handler_name ||
+      "";
     return combined ? titleCase(String(combined).trim()) : null;
   };
 
-let allSections = [];
+  let allSections = [];
 
-async function loadSections() {
-  if (!container) return;
-  container.innerHTML = "<p class='muted'>Loading…</p>";
-  try {
-    const res = await fetch("api/v1/sections.php", { headers: { "Accept": "application/json" } });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    if (!data || !data.success) throw new Error(data?.message || "Load failed");
-    allSections = Array.isArray(data.sections) ? data.sections : [];
-    renderSections(allSections);
-  } catch (err) {
-    console.error("Could not load sections:", err);
-    if (container) container.innerHTML = "<p class='error'>Could not load sections.</p>";
+  async function loadSections() {
+    if (!container) return;
+    container.innerHTML = "<p class='muted'>Loading…</p>";
+    try {
+      const res = await fetch("api/v1/sections.php", {
+        headers: { Accept: "application/json" },
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if (!data || !data.success)
+        throw new Error(data?.message || "Load failed");
+      allSections = Array.isArray(data.sections) ? data.sections : [];
+      renderSections(allSections);
+    } catch (err) {
+      console.error("Could not load sections:", err);
+      if (container)
+        container.innerHTML = "<p class='error'>Could not load sections.</p>";
+    }
   }
-}
 
-loadSections();
+  loadSections();
 
   function renderSections(list) {
     if (!container) return;
@@ -217,7 +293,7 @@ loadSections();
       return;
     }
 
-    list.forEach(sec => {
+    list.forEach((sec) => {
       const card = document.createElement("div");
       card.className = "section-card";
       card.dataset.id = String(sec.id ?? "");
@@ -228,7 +304,14 @@ loadSections();
 
       const years = document.createElement("p");
       years.className = "section-years";
-      years.textContent = `${sec.start_school_year || ""} – ${sec.end_school_year || ""}`;
+
+      const sy = sec.start_school_year ? String(sec.start_school_year) : "";
+      const ey = sec.end_school_year ? String(sec.end_school_year) : "";
+
+      // Final formatted output: A.Y. 2025 – 2026
+      years.textContent =
+        sy || ey ? `A.Y. ${sy}${sy && ey ? " – " : ""}${ey}` : "";
+
       card.appendChild(years);
 
       const teacherName = resolveTeacherName(sec);
@@ -244,37 +327,85 @@ loadSections();
       viewBtn.textContent = "View";
       viewBtn.className = "btn-view";
       viewBtn.onclick = () => {
-        location.href = `index.php?r=sections/detail&section_id=${encodeURIComponent(sec.id)}`;
+        location.href = `index.php?r=sections/detail&section_id=${encodeURIComponent(
+          sec.id
+        )}`;
       };
       actions.appendChild(viewBtn);
 
       if (IS_ADMIN) {
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
-        editBtn.className = "btn-edit edit-section-btn"; 
+        editBtn.className = "btn-edit edit-section-btn";
         editBtn.setAttribute("data-section-id", String(sec.id ?? ""));
-        if (sec.teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.teacher_id));
-        if (sec.assigned_teacher_id) editBtn.setAttribute("data-teacher-id", String(sec.assigned_teacher_id));
-        if (sec.adviser_id) editBtn.setAttribute("data-teacher-id", String(sec.adviser_id));
+        if (sec.teacher_id)
+          editBtn.setAttribute("data-teacher-id", String(sec.teacher_id));
+        if (sec.assigned_teacher_id)
+          editBtn.setAttribute(
+            "data-teacher-id",
+            String(sec.assigned_teacher_id)
+          );
+        if (sec.adviser_id)
+          editBtn.setAttribute("data-teacher-id", String(sec.adviser_id));
 
         editBtn.onclick = () => {
           if (!editModal) return;
-          editSectionId.value      = sec.id ?? "";
-          editSectionName.value    = sec.section_name ?? "";
-          editStartYear.value      = sec.start_school_year ?? "";
-          editEndYear.value        = sec.end_school_year ?? "";
-          loadTeachersOnce().then(() => {
-            const tid = String(sec.teacher_id ?? sec.assigned_teacher_id ?? sec.adviser_id ?? sec.teacher_id ?? "");
-            if (tid && Array.from((editTeacherSelect || {options:[]}).options).some(o => o.value === tid)) {
-              editTeacherSelect.value = tid;
-            } else {
-              editTeacherSelect.value = "";
-            }
-          }).catch(() => {
-            if (editTeacherSelect) editTeacherSelect.value = "";
-          });
+          editSectionId.value = sec.id ?? "";
+          editSectionName.value = sec.section_name ?? "";
 
-          editModal.style.display  = "flex";
+          // set start if present, else blank
+          if (sec.start_school_year) {
+            editStartYear.value = String(sec.start_school_year);
+            // dispatch change so change-handler (if any) runs and auto-picks end = start+1
+            try {
+              editStartYear.dispatchEvent(new Event("change"));
+            } catch (e) {}
+          } else {
+            editStartYear.value = "";
+          }
+
+          // prefer stored end if available; otherwise try to use start+1
+          if (sec.end_school_year) {
+            editEndYear.value = String(sec.end_school_year);
+          } else if (sec.start_school_year) {
+            const target = String(Number(sec.start_school_year) + 1);
+            // if option missing, append it so it can be selected
+            if (![...editEndYear.options].some((o) => o.value === target)) {
+              const opt = document.createElement("option");
+              opt.value = target;
+              opt.textContent = target;
+              editEndYear.appendChild(opt);
+            }
+            editEndYear.value = target;
+          } else {
+            editEndYear.value = "";
+          }
+
+          loadTeachersOnce()
+            .then(() => {
+              const tid = String(
+                sec.teacher_id ??
+                  sec.assigned_teacher_id ??
+                  sec.adviser_id ??
+                  sec.teacher_id ??
+                  ""
+              );
+              if (
+                tid &&
+                Array.from((editTeacherSelect || { options: [] }).options).some(
+                  (o) => o.value === tid
+                )
+              ) {
+                editTeacherSelect.value = tid;
+              } else {
+                editTeacherSelect.value = "";
+              }
+            })
+            .catch(() => {
+              if (editTeacherSelect) editTeacherSelect.value = "";
+            });
+
+          editModal.style.display = "flex";
         };
         actions.appendChild(editBtn);
 
@@ -293,10 +424,10 @@ loadSections();
 
     if (!IS_ADMIN) {
       const stripOnce = () => {
-        const candidates = container.querySelectorAll('.section-card button');
+        const candidates = container.querySelectorAll(".section-card button");
         candidates.forEach((el) => {
-          const label = (el.textContent || '').trim().toLowerCase();
-          if (label === 'edit' || label === 'delete') el.remove();
+          const label = (el.textContent || "").trim().toLowerCase();
+          if (label === "edit" || label === "delete") el.remove();
         });
       };
       stripOnce();
@@ -314,7 +445,8 @@ loadSections();
     if (!modal) return;
     modal.style.display = "block";
     const p = modal.querySelector("p");
-    if (p) p.textContent = `Are you sure you want to delete class section "${name}"?`;
+    if (p)
+      p.textContent = `Are you sure you want to delete class section "${name}"?`;
   };
 
   window.closeDeleteModal = () => {
@@ -328,19 +460,19 @@ loadSections();
     fetch("index.php?r=sections/deleteSection", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ section_id: deleteTargetId })
+      body: JSON.stringify({ section_id: deleteTargetId }),
     })
-    .then(r => r.json())
-    .then(json => {
-      if (!json.success) throw new Error(json.error || "Deletion failed.");
-      if (deleteCardRef && deleteCardRef.remove) deleteCardRef.remove();
-      closeDeleteModal();
-      adjustContainerHeight();
-    })
-    .catch(err => {
-      alert(err.message || "Could not delete section.");
-      closeDeleteModal();
-    });
+      .then((r) => r.json())
+      .then((json) => {
+        if (!json.success) throw new Error(json.error || "Deletion failed.");
+        if (deleteCardRef && deleteCardRef.remove) deleteCardRef.remove();
+        closeDeleteModal();
+        adjustContainerHeight();
+      })
+      .catch((err) => {
+        alert(err.message || "Could not delete section.");
+        closeDeleteModal();
+      });
   };
 
   function adjustContainerHeight() {
@@ -365,13 +497,13 @@ loadSections();
         renderSections(allSections);
         return;
       }
-      const query = raw.replace(/\s+/g, " "); 
-      const filtered = allSections.filter(sec => {
+      const query = raw.replace(/\s+/g, " ");
+      const filtered = allSections.filter((sec) => {
         const teacher = (resolveTeacherName(sec) || "").toLowerCase();
         const name = (sec.section_name || "").toLowerCase();
         const startYear = String(sec.start_school_year || "").toLowerCase();
         const endYear = String(sec.end_school_year || "").toLowerCase();
-        const combinedYears = `${startYear} – ${endYear}`.toLowerCase(); 
+        const combinedYears = `${startYear} – ${endYear}`.toLowerCase();
         const altCombined = `${startYear}-${endYear}`.toLowerCase();
         return (
           name.includes(query) ||
