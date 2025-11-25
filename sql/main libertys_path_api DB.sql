@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 16, 2025 at 08:13 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: 127.0.0.1:3306
+-- Generation Time: Nov 25, 2025 at 05:29 AM
+-- Server version: 11.8.3-MariaDB-log
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `libertys_path_db`
+-- Database: `u813043619_libertys_path`
 --
 
 -- --------------------------------------------------------
@@ -44,26 +44,11 @@ CREATE TABLE `guard_questions` (
 --
 
 INSERT INTO `guard_questions` (`id`, `question_text`, `choice1`, `choice2`, `choice3`, `choice4`, `correct_index`, `created_by`, `created_at`) VALUES
-(1, 'this is a test question', 'Answer', 'test', 'test', 'test', 0, NULL, '2025-09-09 14:19:58'),
-(2, 'this is the 2nd test question', 'test', 'test', 'test', 'answer', 3, NULL, '2025-09-09 14:20:18'),
-(3, 'sertwert', 'qwerwqefqwef', 'qwefqwef', 'qwefqwef', 'qwefqwef', 1, NULL, '2025-09-09 15:58:09'),
-(4, 'New Question 4', '123', '651', 'ANswer', '163', 2, NULL, '2025-09-09 18:47:42'),
-(5, 'teacher_one Question', '1', '2', '3', 'Answer', 3, NULL, '2025-10-12 10:44:02'),
-(6, 'test', '1', '2', '3', 'test', 3, NULL, '2025-10-31 10:14:56'),
-(7, '1+1', '1', '2', '3', '4', 1, NULL, '2025-10-31 12:18:05'),
-(8, 'National Hero', 'Jose Rizal', 'Andres Bonifacio', 'Juan Luna', 'McArthur', 0, NULL, '2025-10-31 12:19:24'),
-(9, '2*2', '1', '2', '3', '4', 3, NULL, '2025-10-31 12:19:41'),
-(10, 'Hit and ______', 'Search', 'Collect', 'Run', 'Walk', 2, NULL, '2025-10-31 12:20:32'),
-(11, '100-10', '90', '80', '70', '60', 0, NULL, '2025-10-31 12:21:20'),
-(12, 'hello', 'Doggy', 'Cat', 'Dog', 'Catty', 0, NULL, '2025-11-08 01:28:57'),
 (16, 'What is the capital city of France?', 'Berlin', 'Madrid', 'Paris', 'Rome', 2, 20, '2025-11-10 02:59:51'),
-(17, 'How many days are there in one year?', '360', '364', '365', '366', 2, 20, '2025-11-10 03:00:17'),
-(18, 'Which planet is known as the “Red Planet”?', 'Venus', 'Mars', 'Jupiter', 'Saturn', 1, 20, '2025-11-10 03:00:45'),
 (19, 'Sino ang mayamang pinuno ng Mali Empire?', 'Sundiata Keita', 'Mansa Musa', 'Askia Muhammad', 'Ibn Battuta', 1, 21, '2025-11-11 03:51:55'),
 (20, 'Ano ang tawag sa sistemang lupa kapalit ng serbisyo?', 'Feudalismo', 'Monarkiya', 'Imperyalismo', 'Kapitalismo', 0, 21, '2025-11-11 03:52:33'),
 (21, 'Sino ang gumawa ng printing press?', 'Johannes Gutenberg', 'Leonardo da Vinci', 'Martin Luther', 'Galileo Galilei', 0, 21, '2025-11-11 04:15:01'),
-(22, 'Bakit nagsimula ang Renaissance sa Italya?', 'Pagbagsak ng Constantinople', 'Paglakas ng mga lungsod at mangangalakal', 'Pagkatuklas ng Amerika', 'Pag-aalsa ng mga magsasaka', 1, 21, '2025-11-11 04:15:42'),
-(24, 'test question', '1', '2', '3', '4', 0, NULL, '2025-11-12 06:59:45');
+(22, 'Bakit nagsimula ang Renaissance sa Italya?', 'Pagbagsak ng Constantinople', 'Paglakas ng mga lungsod at mangangalakal', 'Pagkatuklas ng Amerika', 'Pag-aalsa ng mga magsasaka', 1, 21, '2025-11-11 04:15:42');
 
 -- --------------------------------------------------------
 
@@ -145,7 +130,60 @@ INSERT INTO `leaderboard_team_runs` (`id`, `player1_name`, `player2_name`, `scor
 (55, 'jogarcia', 'kperalta', 7045, 1309, 0, 'PERFECT RUN', 'NF TEST', '2025-11-11 09:11:05'),
 (56, 'jevangelista', 'keperalta', 6855, 1371, 1, 'ONE LIFE USED', 'ST. JOHN MICHAEL', '2025-11-11 11:31:08'),
 (57, 'jchua', 'jdchua', 3330, 566, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-11 13:56:36'),
-(58, 'tstest', 'tsurnametest', 6330, 1266, 1, 'ONE LIFE USED', '11-12-25 TEST', '2025-11-12 06:51:02');
+(58, 'tstest', 'tsurnametest', 6330, 1266, 1, 'ONE LIFE USED', '11-12-25 TEST', '2025-11-12 06:51:02'),
+(59, 'ksanmiguel', 'aenalo', 5025, 905, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:17:10'),
+(60, 'rpdelosreyes', 'mrmanalaysay', 4900, 880, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:17:14'),
+(61, 'cbsunga', 'kalabaniego', 4700, 840, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:17:18'),
+(62, 'mfsevilla', 'rvobong', 4300, 760, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:18:05'),
+(63, 'xmtuballa', 'arivera', 4175, 735, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:18:09'),
+(64, 'kartieda', 'dbtipon', 4000, 700, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:18:13'),
+(65, 'pbfajardo', 'equinto', 3925, 685, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:18:17'),
+(66, 'jrjose', 'bmtolentino', 3450, 590, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:19:10'),
+(67, 'rfmangasar', 'kfyu', 3250, 550, 0, 'PERFECT RUN', 'ST. ANTHONY', '2025-11-13 00:19:14'),
+(68, 'mcvilladores', 'icapalad', 2100, 420, 1, 'ONE LIFE USED', 'ST. ANTHONY', '2025-11-13 00:20:20'),
+(69, 'mdeguzman', 'kddelacuesta', 1800, 360, 1, 'ONE LIFE USED', 'ST. ANTHONY', '2025-11-13 00:21:05'),
+(70, 'pgatienza', 'jdchristopher', 1100, 220, 1, 'ONE LIFE USED', 'ST. ANTHONY', '2025-11-13 00:25:15'),
+(71, 'ksmesina', 'jmcabaddu', 4450, 890, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:44:12'),
+(72, 'estangkengco', 'cpdillena', 4825, 865, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:44:16'),
+(73, 'jaeulogio', 'irgementiza', 4150, 830, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:44:20'),
+(74, 'sddelacruz', 'rdsanchez', 4300, 760, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:45:05'),
+(75, 'arandal', 'fmserapio', 3675, 735, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:45:09'),
+(76, 'hjrepellon', 'jjpascua', 4050, 710, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:45:14'),
+(77, 'hrcalingasan', 'crdeguzman', 3500, 600, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:46:00'),
+(78, 'lmtancueco', 'kdmukano', 2800, 560, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:46:05'),
+(79, 'plgundayao', 'msancheta', 2150, 430, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:47:15'),
+(80, 'csduran', 'rrdeguzman', 2550, 410, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:47:19'),
+(81, 'rpquintos', 'rcobina', 1600, 320, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:48:12'),
+(82, 'aimilano', 'mtignacio', 1750, 250, 0, 'PERFECT RUN', 'ST. FRANCIS', '2025-11-13 01:49:40'),
+(83, 'aoperez', 'mspalileo', 900, 180, 1, 'ONE LIFE USED', 'ST. FRANCIS', '2025-11-13 01:55:25'),
+(84, 'srmartin', 'allansang', 4400, 880, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:44:10'),
+(85, 'rtbaril', 'jpsalao', 5000, 900, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:44:16'),
+(86, 'jcmalunhao', 'rlmalicse', 4200, 740, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:44:22'),
+(87, 'nssantiago', 'avcabrera', 3800, 760, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:45:05'),
+(88, 'rylegaspi', 'mapanuncio', 3000, 600, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:45:11'),
+(89, 'jalday', 'vrprietos', 3650, 630, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:45:20'),
+(90, 'rtlazaro', 'crbulanier', 3300, 560, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:46:05'),
+(91, 'csrabara', 'mtdelosreyes', 2100, 420, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:47:10'),
+(92, 'jlazaro', 'pbernabe', 1800, 360, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:48:25'),
+(93, 'vttolentino', 'amtolentino', 4750, 850, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:49:40'),
+(94, 'mdvilladoz', 'gvflores', 1000, 200, 1, 'ONE LIFE USED', 'ST. MARIA GORETTI', '2025-11-13 02:52:10'),
+(95, 'ycabacungan', 'erpaloma', 3250, 550, 0, 'PERFECT RUN', 'ST. MARIA GORETTI', '2025-11-13 02:54:30'),
+(96, 'avganaban', 'ddusares', 5050, 910, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:44:10'),
+(97, 'jpcorrea', 'lgapolonio', 4400, 880, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:44:13'),
+(98, 'rpsantiago', 'iltablan', 4300, 760, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:44:17'),
+(99, 'klenriquez', 'irbergantinos', 3600, 720, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:44:22'),
+(100, 'plgundayao109', 'eveugenio', 3000, 600, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:45:05'),
+(101, 'dmtolentino', 'agfrias', 3750, 650, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:45:11'),
+(102, 'pbdavid', 'dapalileo', 2900, 580, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:45:18'),
+(103, 'frpapa', 'yinatividad', 3200, 540, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:46:05'),
+(104, 'acrenegado', 'jcpapio', 2600, 420, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:46:40'),
+(105, 'dmbello', 'fcnepacina', 1800, 360, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:47:30'),
+(106, 'chsalvador', 'agvergel', 2000, 300, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:48:20'),
+(107, 'jdpalileo', 'jabautista', 1000, 200, 1, 'ONE LIFE USED', 'ST. IGNATIUS', '2025-11-13 04:50:00'),
+(108, 'jdespiritu', 'daadgustin', 1250, 150, 0, 'PERFECT RUN', 'ST. IGNATIUS', '2025-11-13 04:53:15'),
+(109, 'keperalta', 'lpanelo', 5670, 1034, 0, 'PERFECT RUN', 'ST. JOHN MICHAEL', '2025-11-16 08:20:15'),
+(110, 'jbgarcia', 'keperalta', 5915, 1083, 0, 'PERFECT RUN', 'ST. JOHN', '2025-11-19 09:40:22'),
+(111, 'jbgarcia', 'keperalta', 6540, 1308, 1, 'ONE LIFE USED', 'ST. JOHN', '2025-11-19 09:47:59');
 
 -- --------------------------------------------------------
 
@@ -166,14 +204,14 @@ CREATE TABLE `sections` (
 --
 
 INSERT INTO `sections` (`id`, `section_name`, `start_school_year`, `end_school_year`, `created_at`) VALUES
-(11, 'NF TEST', '2025', '2026', '2025-09-14 13:27:10'),
+(11, 'ST. DIEGO', '2025', '2026', '2025-09-14 13:27:10'),
 (19, 'ST. FRANCIS', '2025', '2026', '2025-11-08 06:13:25'),
 (20, 'ST. IGNATIUS', '2025', '2026', '2025-11-08 06:13:48'),
 (21, 'ST. ANTHONY', '2025', '2026', '2025-11-08 06:14:11'),
 (22, 'ST. MARIA GORETTI', '2025', '2026', '2025-11-08 06:14:27'),
-(24, 'TEST SECTION NI CLARK', '2029', '2030', '2025-11-08 14:02:37'),
-(25, 'ST. JOHN MICHAEL', '2029', '2030', '2025-11-10 04:07:43'),
-(26, '11-12-25 TEST', '2025', '2026', '2025-11-12 06:15:16');
+(25, 'ST. JOHN', '2025', '2026', '2025-11-10 04:07:43'),
+(26, '11-12-25 TEST', '2025', '2026', '2025-11-12 06:15:16'),
+(27, 'ST. FRANCIS', '2029', '2030', '2025-11-16 10:01:10');
 
 -- --------------------------------------------------------
 
@@ -197,9 +235,7 @@ CREATE TABLE `students` (
 INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section_id`, `created_at`) VALUES
 (1, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 11, '2025-09-14 15:12:11'),
 (2, 'KIM', '', 'PERALTA', 11, '2025-09-14 15:12:36'),
-(16, 'NEW WEBSITE', 'TESTER', 'TEST', 11, '2025-11-10 02:51:37'),
 (17, 'KIM', 'EVANGELISTA', 'PERALTA', 25, '2025-11-11 03:43:40'),
-(18, 'JOHN MICHAEL', '', 'EVANGELISTA', 25, '2025-11-11 03:44:29'),
 (19, 'LESTER', '', 'PANELO', 25, '2025-11-11 03:47:16'),
 (20, 'JC', 'DIMACALE', 'CHUA', 19, '2025-11-11 13:13:32'),
 (21, 'JHON BENEDICT', 'ORBITA', 'GARCIA', 19, '2025-11-11 13:15:45'),
@@ -207,7 +243,6 @@ INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section
 (23, 'TEST', '', 'SURNAMETEST', 26, '2025-11-12 06:23:09'),
 (24, 'TEST2', '', 'STEST', 26, '2025-11-12 06:31:35'),
 (25, 'LEE', 'P', 'MERCADO', 19, '2025-11-12 12:02:30'),
-(26, 'SUCCESS', 'POPUP', 'TEST', 11, '2025-11-14 14:49:21'),
 (27, 'KAMILAH AZENYTH', '', 'SAN MIGUEL', 21, '2025-11-13 00:04:10'),
 (28, 'AMEER EUKHY', 'ESPIRITU', 'NALO', 21, '2025-11-13 00:04:11'),
 (29, 'REINCY', 'PASCUAL', 'DELOS REYES', 21, '2025-11-13 00:04:12'),
@@ -307,7 +342,15 @@ INSERT INTO `students` (`id`, `given_name`, `middle_name`, `last_name`, `section
 (123, 'JOSEA KRISTINE', 'DE GUZMAN', 'PALILEO', 20, '2025-11-13 04:34:32'),
 (124, 'JEWEL ANNE', 'ALONZO', 'BAUTISTA', 20, '2025-11-13 04:34:33'),
 (125, 'JEON LIAM', 'DE LEON', 'ESPIRITU', 20, '2025-11-13 04:34:34'),
-(126, 'DANIEL DONDIE JR.', 'ALFARO', 'AGUSTIN', 20, '2025-11-13 04:34:35');
+(126, 'DANIEL DONDIE JR.', 'ALFARO', 'AGUSTIN', 20, '2025-11-13 04:34:35'),
+(128, 'DIEGO', '', 'SANTOS', 11, '2025-11-16 08:29:09'),
+(132, 'NEW', 'TEST', 'ACCOUNT', 27, '2025-11-17 11:05:59'),
+(133, 'SECTION', 'REGISTER', 'TEST', 27, '2025-11-17 11:25:45'),
+(135, 'ANN', 'LEE', 'LEE', 19, '2025-11-17 12:28:25'),
+(136, 'YEAR', '', '2025', 19, '2025-11-17 12:29:16'),
+(137, 'NOT IN', '', 'THE YEAR 2029', 19, '2025-11-17 12:30:12'),
+(138, 'ANDRES TEST 2025', '', 'ANDRES TEST 2025', 19, '2025-11-17 12:31:41'),
+(140, 'JHON', 'BENEDICT', 'GARCIA', 25, '2025-11-19 09:30:37');
 
 -- --------------------------------------------------------
 
@@ -329,9 +372,7 @@ CREATE TABLE `student_accounts` (
 INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created_at`) VALUES
 (1, 1, 'jogarcia', '2025-09-14 15:12:11'),
 (2, 2, 'kperalta', '2025-09-14 15:12:36'),
-(18, 16, 'nttest', '2025-11-10 02:51:37'),
 (19, 17, 'keperalta', '2025-11-11 03:43:40'),
-(20, 18, 'jevangelista', '2025-11-11 03:44:29'),
 (21, 19, 'lpanelo', '2025-11-11 03:47:16'),
 (22, 20, 'jdchua', '2025-11-11 13:13:32'),
 (23, 21, 'jogarcia2', '2025-11-11 13:15:45'),
@@ -339,7 +380,6 @@ INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created
 (25, 23, 'tsurnametest', '2025-11-12 06:23:09'),
 (26, 24, 'tstest', '2025-11-12 06:31:35'),
 (27, 25, 'lpmercado', '2025-11-12 12:02:30'),
-(28, 26, 'sptest', '2025-11-14 14:49:21'),
 (29, 27, 'ksanmiguel', '2025-11-13 00:04:10'),
 (30, 28, 'aenalo', '2025-11-13 00:04:11'),
 (31, 29, 'rpdelosreyes', '2025-11-13 00:04:12'),
@@ -370,8 +410,8 @@ INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created
 (56, 54, 'cpdillena', '2025-11-13 01:34:13'),
 (57, 55, 'jaeulogio', '2025-11-13 01:34:14'),
 (58, 56, 'irgementiza', '2025-11-13 01:34:15'),
-(59, 57, 'sd.delacruz', '2025-11-13 01:34:16'),
-(60, 58, 'rd.sanchez', '2025-11-13 01:34:17'),
+(59, 57, 'sddelacruz', '2025-11-13 01:34:16'),
+(60, 58, 'rdsanchez', '2025-11-13 01:34:17'),
 (61, 59, 'arandal', '2025-11-13 01:34:18'),
 (62, 60, 'fmserapio', '2025-11-13 01:34:19'),
 (63, 61, 'hjrepellon', '2025-11-13 01:34:20'),
@@ -439,7 +479,15 @@ INSERT INTO `student_accounts` (`account_id`, `student_id`, `username`, `created
 (125, 123, 'jdpalileo', '2025-11-13 04:34:32'),
 (126, 124, 'jabautista', '2025-11-13 04:34:33'),
 (127, 125, 'jdespiritu', '2025-11-13 04:34:34'),
-(128, 126, 'daadgustin', '2025-11-13 04:34:35');
+(128, 126, 'daadgustin', '2025-11-13 04:34:35'),
+(284, 128, 'dsantos', '2025-11-16 08:29:09'),
+(288, 132, 'ntaccount', '2025-11-17 11:05:59'),
+(289, 133, 'srtest', '2025-11-17 11:25:45'),
+(291, 135, 'allee', '2025-11-17 12:28:25'),
+(292, 136, 'y2025', '2025-11-17 12:29:16'),
+(293, 137, 'ntheyear2029', '2025-11-17 12:30:12'),
+(294, 138, 'aandrestest2025', '2025-11-17 12:31:41'),
+(296, 140, 'jbgarcia', '2025-11-19 09:30:37');
 
 -- --------------------------------------------------------
 
@@ -462,9 +510,10 @@ CREATE TABLE `teachers` (
 
 INSERT INTO `teachers` (`id`, `username`, `first_name`, `last_name`, `password`, `role`) VALUES
 (1, 'admin', '', '', '$2y$10$6pno/1twL7Q6n4qQW0UWL./GyWI6AXK5Pi3Vu3ts61u/jo1aOmHqW', 'ADMIN'),
-(16, 'raqueld@2025', 'Racquel', 'Dichoso', '$2y$10$AB05Ol.PlmfbZr.uM27XHuzr1EPvgcCZShoEMAMkA8MY8JjdBhwR2', 'TEACHER'),
+(16, 'racqueld@2025', 'Racquel', 'Dichoso', '$2y$10$Axvkq6APpJYW/sY9z4rKGO9m/FQIvy85xNAiOUmz/lXFHijXv3Ka2', 'TEACHER'),
 (20, 'jogarcia', 'Jhon Benedict', 'Garcia', '$2y$10$hlZ6jXfAI0Bb.g/bo5AM0.QKWCWl202g6766yV8TwH3Ma6BWqMOiG', 'TEACHER'),
-(21, 'kep@2025', 'Kimberly Mae', 'Peralta', '$2y$10$ESAxHlyXLLNSTbToYFuXO.JKISspOL.tNff7WADt6nRAzq2jWtceu', 'TEACHER');
+(21, 'kep@2025', 'Kimberly Mae', 'Peralta', '$2y$10$jLuTOmy5wHX3DHUTEgXlJe0hTSpIEiwAqHq4/ncCFGjW81SvSDdY.', 'TEACHER'),
+(23, 'cs@2025', 'Clyde', 'Santos', '$2y$10$4fxH9/Ka2A44L2k11MqTy.MhBx4OKa12QsinR/yCO4euyH7Eti172', 'TEACHER');
 
 -- --------------------------------------------------------
 
@@ -489,7 +538,7 @@ CREATE TABLE `teacher_configs` (
 INSERT INTO `teacher_configs` (`id`, `teacher_id`, `room_count`, `enemy_count`, `difficulty`, `created_at`, `updated_at`) VALUES
 (3, 1, 1, 1, 0, '2025-11-08 01:32:45', '2025-11-08 14:11:29'),
 (5, 20, 2, 1, 0, '2025-11-10 02:57:52', '2025-11-10 02:57:52'),
-(6, 21, 3, 2, 2, '2025-11-11 03:52:37', '2025-11-12 02:54:49');
+(6, 21, 1, 1, 2, '2025-11-11 03:52:37', '2025-11-19 09:43:56');
 
 -- --------------------------------------------------------
 
@@ -512,9 +561,10 @@ INSERT INTO `teacher_sections` (`id`, `teacher_id`, `section_id`) VALUES
 (22, 16, 20),
 (20, 16, 21),
 (23, 16, 22),
-(27, 16, 24),
+(32, 16, 27),
 (28, 20, 11),
-(29, 21, 25);
+(29, 21, 25),
+(31, 23, 26);
 
 --
 -- Indexes for dumped tables
@@ -591,37 +641,37 @@ ALTER TABLE `teacher_sections`
 -- AUTO_INCREMENT for table `guard_questions`
 --
 ALTER TABLE `guard_questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `leaderboard_team_runs`
 --
 ALTER TABLE `leaderboard_team_runs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT for table `sections`
 --
 ALTER TABLE `sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT for table `student_accounts`
 --
 ALTER TABLE `student_accounts`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=283;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=297;
 
 --
 -- AUTO_INCREMENT for table `teachers`
 --
 ALTER TABLE `teachers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `teacher_configs`
@@ -633,7 +683,7 @@ ALTER TABLE `teacher_configs`
 -- AUTO_INCREMENT for table `teacher_sections`
 --
 ALTER TABLE `teacher_sections`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables

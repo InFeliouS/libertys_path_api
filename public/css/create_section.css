@@ -390,3 +390,18 @@ button[type="submit"]:active {
   position: relative !important;
 }
 
+/* SECTION CODE — non-editable appearance + disable clicking */
+#section_code[readonly] {
+  background: #f5f5f5;        /* same look as before */
+  cursor: default;           /* not a text cursor */
+  pointer-events: none;      /* prevents mouse clicks/focus */
+  caret-color: transparent;  /* hide caret if somehow focused */
+  color: #6b584a;            /* muted text color */
+  user-select: none;         /* prevent selection highlight */
+}
+
+/* keep layout consistent if using .input-wrapper */
+.input-wrapper #section_code[readonly] {
+  padding-left: 14px;
+  padding-right: 55px;
+}

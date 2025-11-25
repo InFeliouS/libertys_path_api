@@ -99,7 +99,24 @@
    ------------------------- */
   function setSectionTitleWithYear(section) {
     const titleEl = document.getElementById("sectionTitle");
+    const codeEl = document.getElementById("sectionCodeValue");
     if (!titleEl) return;
+
+    // pick section code from likely keys, fallback to empty string
+    const sectionCode = (
+      section?.section_code ??
+      section?.code ??
+      section?.sectionCode ??
+      section?.section_code_value ??
+      ""
+    )
+      .toString()
+      .trim();
+
+    // update code display if element exists
+    if (codeEl) {
+      codeEl.textContent = sectionCode || "—";
+    }
 
     const base = (
       section?.section_name ||
@@ -109,11 +126,13 @@
     )
       .toString()
       .trim();
+
     const start =
       section?.start_school_year ??
       section?.startYear ??
       section?.start ??
       null;
+
     const end =
       section?.end_school_year ?? section?.endYear ?? section?.end ?? null;
 
@@ -128,6 +147,7 @@
 
     titleEl.textContent = base + suffix;
   }
+
   /* -------------------------
    Fetch section metadata (handle json.sections)
    ------------------------- */

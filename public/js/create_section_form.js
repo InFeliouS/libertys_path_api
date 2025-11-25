@@ -172,8 +172,6 @@
     sectionInput.setSelectionRange(pos, pos);
   });
 
- 
-
   endSelect.addEventListener("change", () => {
     clearInvalid(endSelect.parentElement, errorEnd);
   });
@@ -193,3 +191,23 @@
   --------------------------------*/
   populateYears();
 })();
+
+// AUTO-GENERATE 4-letter SECTION CODE on page open
+document.addEventListener("DOMContentLoaded", () => {
+  const codeInput = document.getElementById("section_code");
+  if (!codeInput) return;
+
+  const genCode = () => {
+    let out = "";
+    for (let i = 0; i < 4; i++) {
+      out += String.fromCharCode(65 + Math.floor(Math.random() * 26)); // A-Z
+    }
+    return out;
+  };
+
+  // generate immediately when page loads
+  codeInput.value = genCode();
+
+  // optional: if you want a fresh code when admin changes section name, uncomment:
+  // document.getElementById('section_name').addEventListener('input', () => { codeInput.value = genCode(); });
+});

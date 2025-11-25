@@ -20,6 +20,10 @@
         <input id="searchLastName" type="text" placeholder="Search by last name . . ." />
         <button id="btnDeleteSelected" class="btn btn-danger">DELETE SELECTED</button>
         <button id="sdReloadBtn" class="btn" type="button">RELOAD STUDENT TABLE</button>
+        <div class="section-code-inline">
+          <span class="sc-label">SECTION CODE:</span>
+          <span id="sectionCodeValue" class="sc-value"></span>
+        </div>
 
         <div class="spacer"></div>
         <label class="lb-muted" for="studentsPageSize">ROWS PER PAGE:</label>
@@ -65,9 +69,9 @@
 
       <div class="lb-toolbar">
         <label class="lb-check-wrap">
-          <input type="checkbox" id="lbPerfectOnly" class="lb-checkbox"/>PERFECT ONLY</label>
+          <input type="checkbox" id="lbPerfectOnly" class="lb-checkbox" />PERFECT ONLY</label>
         <label class="lb-date-wrap" for="lbDatePicker">
-          <input type="date" id="lbDatePicker" class="lb-date"/></label>
+          <input type="date" id="lbDatePicker" class="lb-date" /></label>
 
         <div class="spacer"></div>
         <button class="btn" id="lbRefreshBtn">RELOAD LEADERBOARD TABLE</button>

@@ -349,3 +349,26 @@ body {
   border-color: #9b5302;
   box-shadow: 0 0 4px rgba(155, 83, 2, 0.3);
 }
+
+/* Inline Section Code Display */
+.section-code-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  font-family: "Karla";
+  color: #6b3a02;
+  margin-left: auto; /* push to right side */
+}
+
+.sc-label {
+  opacity: 0.85;
+  font-size: 1.1rem;
+}
+
+.sc-value {
+  font-size: 1.3rem;
+  color: #3a2f1a;
+}
+
